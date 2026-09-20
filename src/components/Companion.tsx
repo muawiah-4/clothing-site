@@ -3,22 +3,17 @@ import { AnimatePresence, motion } from "motion/react";
 import { useExperienceStore, type GenderFilter } from "../store/experience";
 
 const OUTFITS: Record<GenderFilter, { garment: string; skin: string; label: string; accent: string }> = {
-  all: { garment: "#3a332a", skin: "#c9a978", label: "Browsing", accent: "#b6905a" },
-  // was #20201d — nearly identical to the puck's own background, so the
-  // Men outfit swap read as an empty torso. Walnut-soft ties it back to the
-  // wardrobe prop the whole palette is drawn from, and actually shows up.
-  men: { garment: "#4a3420", skin: "#c9a978", label: "Dressed for Men", accent: "#8a6b41" },
-  women: { garment: "#c9b79a", skin: "#c9a978", label: "Dressed for Women", accent: "#8a6b41" },
-  kids: { garment: "#e0a13a", skin: "#c9a978", label: "Dressed for Kids", accent: "#c98a2e" },
+  all: { garment: "#8a90a8", skin: "#f0c9a0", label: "Browsing", accent: "#49c1d6" },
+  men: { garment: "#4a5170", skin: "#f0c9a0", label: "Dressed for Men", accent: "#49c1d6" },
+  women: { garment: "#f5cad8", skin: "#f0c9a0", label: "Dressed for Women", accent: "#cbb7e6" },
+  kids: { garment: "#f7c948", skin: "#f0c9a0", label: "Dressed for Kids", accent: "#f2a35a" },
 };
 
 /**
  * A small companion that follows the shopper down the page and changes
  * outfit to match whichever wardrobe (men / women / kids) is active. Lives
- * bottom-right (not bottom-left) so it never sits on top of the Hero's
- * closing pull-quote, and is visible on mobile too, not just desktop — a
- * character that vanishes on the device most fashion traffic actually uses
- * isn't much of a companion. Tapping it is a small, tasteful easter egg.
+ * bottom-right, visible on mobile too. Tapping it is a small, tasteful
+ * easter egg.
  */
 export default function Companion() {
   const activeGender = useExperienceStore((s) => s.activeGender);
@@ -48,8 +43,7 @@ export default function Companion() {
             exit={{ opacity: 0, y: -10, scale: 0.85, rotate: 6 }}
             whileTap={{ scale: 0.88 }}
             transition={{ type: "spring", stiffness: 260, damping: 20 }}
-            className="pointer-events-auto flex h-14 w-14 items-center justify-center rounded-full border border-paper/20 bg-ink-soft/90 backdrop-blur-md md:h-[72px] md:w-[72px]"
-            style={{ boxShadow: "0 18px 32px -8px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.03)" }}
+            className="pointer-events-auto flex h-14 w-14 items-center justify-center rounded-full bg-surface shadow-[0_16px_30px_-12px_rgba(46,42,82,0.5)] md:h-[72px] md:w-[72px]"
           >
             <svg viewBox="0 0 34 46" fill="none" aria-hidden="true" className="h-7 w-5 md:h-10 md:w-[30px]">
               {/* kids' hood sits behind the head */}
@@ -81,13 +75,13 @@ export default function Companion() {
                   fill={outfit.accent}
                 />
               )}
-              <rect x="11" y="37" width="4.4" height="8.4" rx="1.6" fill="#161310" />
-              <rect x="18.6" y="37" width="4.4" height="8.4" rx="1.6" fill="#161310" />
+              <rect x="11" y="37" width="4.4" height="8.4" rx="1.6" fill="#3a3f4b" />
+              <rect x="18.6" y="37" width="4.4" height="8.4" rx="1.6" fill="#3a3f4b" />
             </svg>
           </motion.button>
         </AnimatePresence>
       </motion.div>
-      <span className="rounded-full border border-paper/10 bg-ink-soft/80 px-3 py-1 font-sans text-[9px] uppercase tracking-[0.1em] text-paper-dim backdrop-blur-md">
+      <span className="rounded-full bg-surface px-3 py-1 font-sans text-[9px] font-medium uppercase tracking-[0.1em] text-ink-dim shadow-[0_10px_20px_-14px_rgba(46,42,82,0.5)]">
         {outfit.label}
       </span>
     </div>

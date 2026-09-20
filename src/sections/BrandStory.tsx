@@ -7,17 +7,20 @@ export default function BrandStory() {
   const reducedMotion = useExperienceStore((s) => s.reducedMotion);
 
   return (
-    <section id="story" className="scroll-mt-24 bg-ink px-6 py-28 md:px-10 md:py-40">
+    <section
+      id="story"
+      className="scroll-mt-24 mx-3 mt-3 rounded-[2rem] bg-surface px-6 py-20 md:mx-6 md:mt-4 md:px-14 md:py-28"
+    >
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-16 md:grid-cols-12 md:gap-8">
         <div className="md:col-span-5">
           <motion.div
             {...fade(reducedMotion, { y: 20, duration: 0.9 })}
-            className="aspect-[3/4] overflow-hidden"
+            className="aspect-[3/4] overflow-hidden rounded-[1.75rem]"
           >
             <img
               src={unsplash(PORTRAIT_IMAGE, 900)}
               alt="Studio portrait"
-              className="h-full w-full object-cover grayscale"
+              className="h-full w-full object-cover"
             />
           </motion.div>
         </div>
@@ -25,23 +28,19 @@ export default function BrandStory() {
         <div className="md:col-span-6 md:col-start-7">
           <motion.p
             {...fade(reducedMotion, { y: 16, duration: 0.7 })}
-            className="font-sans text-[11px] uppercase tracking-[0.3em] text-brass"
+            className="font-sans text-[12px] font-semibold uppercase tracking-[0.25em] text-accent-deep"
           >
             The House
           </motion.p>
 
           <motion.h2
             {...fade(reducedMotion, { y: 16, duration: 0.8, delay: 0.1 })}
-            className="mt-5 font-display text-4xl italic leading-tight text-paper sm:text-5xl"
+            className="mt-4 font-display text-3xl font-bold leading-tight text-ink sm:text-4xl"
           >
-            Atelier began as a
-            <br />
-            single room and a
-            <br />
-            refusal to rush.
+            Atelier began as a single room and a refusal to rush.
           </motion.h2>
 
-          <div className="mt-10 flex flex-col gap-6 font-sans text-[15px] leading-relaxed text-paper-dim">
+          <div className="mt-8 flex flex-col gap-5 font-sans text-[15px] leading-relaxed text-ink/70">
             <motion.p {...fade(reducedMotion, { y: 12, duration: 0.7, delay: 0.2 })}>
               We work from a small studio, not a factory floor. Every collection is small by
               intention — a dozen pieces, each one argued over, unpicked, and re-cut until the
@@ -53,9 +52,16 @@ export default function BrandStory() {
             </motion.p>
           </div>
 
+          <motion.blockquote
+            {...fade(reducedMotion, { y: 14, duration: 0.8, delay: 0.35 })}
+            className="mt-8 rounded-2xl bg-surface-soft px-6 py-5 font-display text-lg font-medium leading-snug text-ink"
+          >
+            "We do not chase trend. We chase the garment that still feels correct in ten years."
+          </motion.blockquote>
+
           <motion.div
-            {...fade(reducedMotion, { y: 12, duration: 0.7, delay: 0.4 })}
-            className="mt-12 grid grid-cols-3 gap-6 border-t border-paper/10 pt-8"
+            {...fade(reducedMotion, { y: 12, duration: 0.7, delay: 0.45 })}
+            className="mt-10 grid grid-cols-3 gap-6 border-t border-ink/10 pt-8"
           >
             {[
               ["12", "Pieces per collection"],
@@ -63,8 +69,10 @@ export default function BrandStory() {
               ["No end date", "Seasons intended"],
             ].map(([stat, label]) => (
               <div key={label}>
-                <p className="font-display text-2xl italic text-paper sm:text-3xl">{stat}</p>
-                <p className="mt-1 font-sans text-[11px] uppercase tracking-[0.1em] text-paper-dim">
+                <p className="font-display text-xl font-bold text-accent-deep sm:text-2xl">
+                  {stat}
+                </p>
+                <p className="mt-1 font-sans text-[11px] uppercase tracking-[0.1em] text-ink-dim">
                   {label}
                 </p>
               </div>

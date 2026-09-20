@@ -106,7 +106,7 @@ export default function WardrobeReveal() {
     <section
       id="wardrobe"
       ref={sectionRef}
-      className="relative h-screen overflow-hidden bg-walnut"
+      className="card-shell relative mx-3 mt-3 h-[86vh] overflow-hidden bg-spotlight md:mx-6 md:mt-4"
     >
       {/* the wardrobe itself is now the full-bleed background, not a small floating card */}
       <button
@@ -133,9 +133,9 @@ export default function WardrobeReveal() {
 
         {phase === "closed" && (
           <>
-            <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/25 to-ink/50" />
-            <span className="absolute inset-0 flex items-center justify-center bg-ink/0 opacity-0 transition-opacity duration-300 group-hover:bg-ink/20 group-hover:opacity-100">
-              <span className="flex h-24 w-24 items-center justify-center rounded-full border border-paper/60 font-sans text-[11px] uppercase tracking-[0.2em] text-paper">
+            <div className="absolute inset-0 bg-gradient-to-t from-spotlight via-spotlight/30 to-spotlight/55" />
+            <span className="absolute inset-0 flex items-center justify-center bg-spotlight/0 opacity-0 transition-opacity duration-300 group-hover:bg-spotlight/20 group-hover:opacity-100">
+              <span className="flex h-24 w-24 items-center justify-center rounded-full border border-surface/60 font-sans text-[11px] uppercase tracking-[0.2em] text-surface">
                 Open
               </span>
             </span>
@@ -149,13 +149,13 @@ export default function WardrobeReveal() {
         className="pointer-events-none relative z-10 flex h-full flex-col items-center justify-center px-6 text-center transition-opacity duration-500"
         style={{ opacity: phase === "closed" ? 1 : 0 }}
       >
-        <p className="font-sans text-[11px] uppercase tracking-[0.3em] text-brass">
+        <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.3em] text-accent">
           The Archive
         </p>
-        <h2 className="mt-4 font-display text-5xl italic text-paper sm:text-6xl md:text-7xl">
+        <h2 className="mt-4 font-display text-4xl font-bold text-surface sm:text-5xl md:text-6xl">
           What the house keeps.
         </h2>
-        <p className="mt-5 max-w-md font-sans text-[15px] leading-relaxed text-paper-dim">
+        <p className="mt-5 max-w-md font-sans text-[15px] leading-relaxed text-surface/70">
           Twelve pieces live behind these doors. Open the wardrobe to bring the archive forward.
         </p>
       </div>
@@ -184,7 +184,7 @@ export default function WardrobeReveal() {
                   damping: 16,
                   delay: i * 0.05,
                 }}
-                className="absolute h-28 w-20 overflow-hidden shadow-2xl sm:h-36 sm:w-26"
+                className="absolute h-28 w-20 overflow-hidden rounded-xl shadow-2xl sm:h-36 sm:w-26"
               >
                 <img
                   src={unsplash(item.image, 300)}

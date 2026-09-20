@@ -25,7 +25,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="grain relative">
+    <div className="relative">
       <Cursor />
       <Navbar />
       <Companion />

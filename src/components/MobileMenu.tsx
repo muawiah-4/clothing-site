@@ -10,11 +10,6 @@ const LINKS = [
   { id: "contact", label: "Contact" },
 ];
 
-/**
- * Replaces the old mobile "Menu" button, which didn't open anything — it
- * just jumped straight to Contact, leaving House/Archive/Craft unreachable
- * on mobile without manual scrolling.
- */
 export default function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
   const containerRef = useFocusTrap(open, onClose);
 
@@ -22,7 +17,7 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-[90] flex flex-col bg-ink md:hidden"
+          className="fixed inset-0 z-[90] flex flex-col bg-surface md:hidden"
           role="dialog"
           aria-modal="true"
           aria-label="Site navigation"
@@ -33,13 +28,15 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
           ref={containerRef}
         >
           <div className="flex items-center justify-between px-6 py-6">
-            <span className="font-display text-xl italic tracking-wide text-paper">Atelier</span>
+            <span className="font-display text-lg font-semibold tracking-tight text-ink">
+              Atelier
+            </span>
             <button
               onClick={onClose}
               aria-label="Close menu"
-              className="rounded-full bg-ink-soft/80 p-2 text-paper-dim transition-colors hover:text-paper"
+              className="rounded-full bg-surface-soft p-2 text-ink-dim transition-colors hover:text-accent"
             >
-              <X size={18} strokeWidth={1.4} />
+              <X size={18} strokeWidth={1.6} />
             </button>
           </div>
 
@@ -54,7 +51,7 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
                   onClose();
                   scrollToSection(link.id);
                 }}
-                className="py-3 font-display text-4xl italic text-paper transition-colors hover:text-brass"
+                className="py-3 font-display text-4xl font-semibold text-ink transition-colors hover:text-accent"
               >
                 {link.label}
               </motion.button>

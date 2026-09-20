@@ -17,18 +17,21 @@ export default function Collection() {
   const pieces = COLLECTION.filter((p) => activeGender === "all" || p.gender === activeGender);
 
   return (
-    <section id="collection" className="scroll-mt-24 bg-ink px-6 py-28 md:px-10 md:py-36">
+    <section
+      id="collection"
+      className="scroll-mt-24 mx-3 mt-3 rounded-[2rem] bg-surface px-6 py-20 md:mx-6 md:mt-4 md:px-10 md:py-28"
+    >
       <div className="mx-auto max-w-7xl">
         <div className="mb-10 flex flex-col gap-6 md:mb-14 md:flex-row md:items-end md:justify-between">
           <motion.div {...fade(reducedMotion, { y: 16, duration: 0.7 })}>
-            <p className="font-sans text-[11px] uppercase tracking-[0.3em] text-brass">
+            <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.25em] text-accent-deep">
               The Archive, Opened
             </p>
-            <h2 className="mt-4 font-display text-4xl italic text-paper sm:text-5xl">
+            <h2 className="mt-4 font-display text-3xl font-bold text-ink sm:text-4xl">
               Shop the Wardrobe.
             </h2>
           </motion.div>
-          <p className="max-w-sm font-sans text-[13px] leading-relaxed text-paper-dim">
+          <p className="max-w-sm font-sans text-[13px] leading-relaxed text-ink-dim">
             Three wardrobes, one philosophy — tailoring, outerwear, and eveningwear cut for men,
             women, and the smallest members of the house.
           </p>
@@ -38,7 +41,7 @@ export default function Collection() {
         <div
           role="tablist"
           aria-label="Filter by wardrobe"
-          className="mb-12 flex flex-wrap gap-2 border-b border-paper/10 pb-6 md:mb-16"
+          className="mb-12 flex flex-wrap gap-2 border-b border-ink/10 pb-6 md:mb-16"
         >
           {TABS.map((tab) => (
             <button
@@ -46,10 +49,10 @@ export default function Collection() {
               role="tab"
               aria-selected={activeGender === tab.id}
               onClick={() => setActiveGender(tab.id)}
-              className={`border px-5 py-2.5 font-sans text-[11px] uppercase tracking-[0.15em] transition-colors ${
+              className={`rounded-full border px-5 py-2.5 font-sans text-[12px] font-medium uppercase tracking-[0.1em] transition-colors ${
                 activeGender === tab.id
-                  ? "border-paper bg-paper text-ink"
-                  : "border-paper/20 text-paper-dim hover:border-paper/50 hover:text-paper"
+                  ? "border-accent bg-accent text-surface"
+                  : "border-ink/15 text-ink-dim hover:border-accent/50 hover:text-accent-deep"
               }`}
             >
               {tab.label}
@@ -67,7 +70,7 @@ export default function Collection() {
         </motion.div>
 
         {pieces.length === 0 && (
-          <p className="py-16 text-center font-sans text-[13px] text-paper-dim">
+          <p className="py-16 text-center font-sans text-[13px] text-ink-dim">
             Nothing in this wardrobe yet — check back for the next drop.
           </p>
         )}
@@ -104,22 +107,24 @@ function CollectionCard({
         onMouseLeave={() => setCursorVariant("default")}
         onClick={() => setSelectedPiece(piece)}
       >
-        <div className="aspect-[3/4] overflow-hidden bg-ink-soft">
+        <div className="aspect-[3/4] overflow-hidden rounded-[1.5rem] bg-surface-soft shadow-[0_16px_34px_-20px_rgba(46,42,82,0.35)]">
           <img
             src={unsplash(piece.image, 700)}
             alt={piece.name}
             loading="lazy"
-            className="h-full w-full object-cover grayscale-[45%] brightness-[1.06] contrast-[1.03] transition-[filter,transform] duration-700 ease-out group-hover:scale-[1.04] group-hover:grayscale-0 group-hover:brightness-100 group-hover:contrast-100"
+            className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
           />
         </div>
-        <div className="mt-4 flex items-baseline justify-between border-t border-paper/10 pt-3">
+        <div className="mt-4 flex items-baseline justify-between border-t border-ink/10 pt-3">
           <div>
-            <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-paper-dim">
+            <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-ink-dim">
               {piece.index} — {piece.category}
             </p>
-            <p className="mt-1 font-display text-lg italic text-paper">{piece.name}</p>
+            <p className="mt-1 font-display text-base font-semibold text-ink">{piece.name}</p>
           </div>
-          <p className="font-sans text-[13px] text-paper-dim">${piece.price.toLocaleString()}</p>
+          <p className="font-sans text-[13px] font-medium text-accent-deep">
+            ${piece.price.toLocaleString()}
+          </p>
         </div>
       </button>
     </motion.div>

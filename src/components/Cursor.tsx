@@ -57,7 +57,7 @@ export default function Cursor() {
     <div className="pointer-events-none fixed inset-0 z-[70] hidden md:block" aria-hidden="true">
       <div
         ref={dotRef}
-        className="fixed left-0 top-0 h-1.5 w-1.5 rounded-full bg-paper mix-blend-exclusion transition-opacity duration-200"
+        className="fixed left-0 top-0 h-1.5 w-1.5 rounded-full bg-accent-deep transition-opacity duration-200"
         style={{ opacity: cursorVariant === "hidden" ? 0 : 1 }}
       />
       {/* ringPosRef carries only position (rAF-driven, every frame); the
@@ -65,14 +65,14 @@ export default function Cursor() {
           are never clobbered by the position loop overwriting `transform` */}
       <div ref={ringPosRef} className="fixed left-0 top-0">
         <div
-          className="flex h-11 w-11 items-center justify-center rounded-full border border-paper mix-blend-exclusion transition-transform duration-300 ease-out"
+          className="flex h-11 w-11 items-center justify-center rounded-full border border-accent bg-surface/30 backdrop-blur-[1px] transition-transform duration-300 ease-out"
           style={{
             transform: `translate(-50%, -50%) scale(${scale})`,
             opacity: cursorVariant === "hidden" ? 0 : 1,
           }}
         >
           <span
-            className="font-sans text-[8px] uppercase tracking-[0.1em] text-paper transition-opacity duration-200"
+            className="font-sans text-[8px] font-semibold uppercase tracking-[0.1em] text-accent-deep transition-opacity duration-200"
             style={{ opacity: cursorVariant === "view" ? 1 : 0 }}
           >
             View

@@ -29,7 +29,7 @@ export default function Bag() {
         >
           <motion.button
             aria-label="Close bag"
-            className="absolute inset-0 bg-ink/60 backdrop-blur-md"
+            className="absolute inset-0 bg-ink/30 backdrop-blur-md"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -38,29 +38,29 @@ export default function Bag() {
           />
           <motion.div
             ref={containerRef}
-            className="relative flex h-full w-full max-w-md flex-col border-l border-paper/10 bg-ink"
+            className="relative flex h-full w-full max-w-md flex-col rounded-l-[2rem] bg-surface"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="flex items-center justify-between border-b border-paper/10 px-7 py-6">
-              <h2 className="font-display text-xl italic text-paper">
+            <div className="flex items-center justify-between border-b border-ink/10 px-7 py-6">
+              <h2 className="font-display text-xl font-bold text-ink">
                 Your Bag {items.length > 0 && `(${items.length})`}
               </h2>
               <button
                 onClick={close}
                 aria-label="Close bag"
-                className="rounded-full bg-ink-soft/80 p-2 text-paper-dim backdrop-blur-sm transition-colors hover:text-paper"
+                className="rounded-full bg-surface-soft p-2 text-ink-dim transition-colors hover:text-accent-deep"
               >
-                <X size={16} strokeWidth={1.4} />
+                <X size={16} strokeWidth={1.6} />
               </button>
             </div>
 
             {items.length === 0 ? (
               <div className="flex flex-1 flex-col items-center justify-center gap-2 px-7 text-center">
-                <p className="font-display text-lg italic text-paper">Your bag is empty.</p>
-                <p className="font-sans text-[13px] text-paper-dim">
+                <p className="font-display text-lg font-semibold text-ink">Your bag is empty.</p>
+                <p className="font-sans text-[13px] text-ink-dim">
                   Twelve pieces are waiting in the archive.
                 </p>
               </div>
@@ -70,7 +70,7 @@ export default function Bag() {
                   <ul className="flex flex-col gap-6">
                     {items.map((item) => (
                       <li key={`${item.piece.id}-${item.size}`} className="flex gap-4">
-                        <div className="h-24 w-20 shrink-0 overflow-hidden bg-ink-soft">
+                        <div className="h-24 w-20 shrink-0 overflow-hidden rounded-xl bg-surface-soft">
                           <img
                             src={unsplash(item.piece.image, 200)}
                             alt={item.piece.name}
@@ -79,14 +79,14 @@ export default function Bag() {
                         </div>
                         <div className="flex flex-1 flex-col justify-between">
                           <div>
-                            <p className="font-display text-base italic text-paper">
+                            <p className="font-display text-base font-semibold text-ink">
                               {item.piece.name}
                             </p>
-                            <p className="mt-1 font-sans text-[11px] uppercase tracking-[0.1em] text-paper-dim">
+                            <p className="mt-1 font-sans text-[11px] uppercase tracking-[0.1em] text-ink-dim">
                               Size {item.size} {item.qty > 1 && `· Qty ${item.qty}`}
                             </p>
                           </div>
-                          <p className="font-sans text-[13px] text-paper-dim">
+                          <p className="font-sans text-[13px] font-medium text-accent-deep">
                             ${(item.piece.price * item.qty).toLocaleString()}
                           </p>
                         </div>
@@ -94,14 +94,14 @@ export default function Bag() {
                     ))}
                   </ul>
                 </div>
-                <div className="flex flex-col gap-4 border-t border-paper/10 px-7 py-6">
-                  <div className="flex items-baseline justify-between font-sans text-[13px] uppercase tracking-[0.1em] text-paper-dim">
+                <div className="flex flex-col gap-4 border-t border-ink/10 px-7 py-6">
+                  <div className="flex items-baseline justify-between font-sans text-[13px] uppercase tracking-[0.1em] text-ink-dim">
                     <span>Subtotal</span>
-                    <span className="font-display text-lg italic normal-case tracking-normal text-paper">
+                    <span className="font-display text-lg font-bold normal-case tracking-normal text-ink">
                       ${total.toLocaleString()}
                     </span>
                   </div>
-                  <button className="w-full bg-paper py-4 font-sans text-[12px] uppercase tracking-[0.15em] text-ink transition-colors hover:bg-brass">
+                  <button className="w-full rounded-full bg-accent py-4 font-sans text-[12px] font-semibold uppercase tracking-[0.15em] text-surface transition-colors hover:bg-accent-deep">
                     Checkout
                   </button>
                 </div>

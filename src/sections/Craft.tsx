@@ -25,30 +25,31 @@ export default function Craft() {
   const reducedMotion = useExperienceStore((s) => s.reducedMotion);
 
   return (
-    <section id="craft" className="scroll-mt-24 bg-ink-soft px-6 py-28 md:px-10 md:py-36">
+    <section
+      id="craft"
+      className="scroll-mt-24 mx-3 mt-3 rounded-[2rem] bg-surface-soft px-6 py-20 md:mx-6 md:mt-4 md:px-14 md:py-28"
+    >
       <div className="mx-auto max-w-6xl">
         <motion.p
           {...fade(reducedMotion, { y: 12, duration: 0.7 })}
-          className="font-sans text-[11px] uppercase tracking-[0.3em] text-brass"
+          className="font-sans text-[12px] font-semibold uppercase tracking-[0.25em] text-accent-deep"
         >
           Process
         </motion.p>
         <motion.h2
           {...fade(reducedMotion, { y: 16, duration: 0.8, delay: 0.1 })}
-          className="mt-4 max-w-2xl font-display text-4xl italic leading-tight text-paper sm:text-5xl"
+          className="mt-4 max-w-2xl font-display text-3xl font-bold leading-tight text-ink sm:text-4xl"
         >
           Three steps. No shortcuts.
         </motion.h2>
 
-        <div className="mt-20 grid grid-cols-1 gap-16 md:grid-cols-3 md:gap-8">
+        <div className="mt-16 grid grid-cols-1 gap-16 md:grid-cols-3 md:gap-8">
           {STEPS.map((step, i) => (
             <motion.div
               key={step.num}
               {...fade(reducedMotion, { y: 24, duration: 0.7, delay: i * 0.1 })}
             >
-              {/* a clip-path wipe instead of the fade+slide used everywhere
-                  else on the page — one deliberately distinct reveal beat */}
-              <div className="aspect-[4/5] overflow-hidden">
+              <div className="aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-surface">
                 <motion.img
                   src={unsplash(CRAFT_IMAGES[i], 700)}
                   alt={step.title}
@@ -69,14 +70,14 @@ export default function Craft() {
                     delay: reducedMotion ? 0 : 0.15 + i * 0.12,
                     ease: [0.65, 0, 0.35, 1],
                   }}
-                  className="h-full w-full object-cover grayscale-[40%]"
+                  className="h-full w-full object-cover"
                 />
               </div>
-              <p className="mt-6 font-display text-2xl italic text-brass">{step.num}</p>
-              <h3 className="mt-1 font-sans text-[13px] uppercase tracking-[0.15em] text-paper">
+              <p className="mt-6 font-display text-xl font-bold text-accent-deep">{step.num}</p>
+              <h3 className="mt-1 font-sans text-[13px] font-semibold uppercase tracking-[0.15em] text-ink">
                 {step.title}
               </h3>
-              <p className="mt-3 font-sans text-[14px] leading-relaxed text-paper-dim">
+              <p className="mt-3 font-sans text-[14px] leading-relaxed text-ink-dim">
                 {step.copy}
               </p>
             </motion.div>

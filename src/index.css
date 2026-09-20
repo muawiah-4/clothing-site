@@ -1,23 +1,37 @@
 @import "tailwindcss";
 
 /*
- * Palette lifted directly from the brand's own wardrobe film: near-black
- * boutique dark, the walnut of the cabinet, warm (not stark) paper white,
- * and the brass of its hardware as the single accent. Nothing arbitrary —
- * every color traces back to that one object.
+ * Light, playful e-commerce palette: a blue → violet → pink diagonal
+ * gradient canvas with white/soft-lavender rounded "cards" floating on top —
+ * replacing the earlier dark ink/walnut/brass showroom identity with the
+ * pastel-gradient storefront look the brand asked to match.
  */
 @theme {
-  --font-display: "Bodoni Moda", "Times New Roman", serif;
+  --font-display: "Poppins", "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 
-  --color-ink: #0b0906;
-  --color-ink-soft: #17130d;
-  --color-walnut: #2b1d13;
-  --color-walnut-soft: #4a3420;
-  --color-paper: #f3ede2;
-  --color-paper-dim: #a89e8c;
-  --color-brass: #b6905a;
-  --color-brass-soft: #8a6b41;
+  --color-canvas-a: #b9c5f2;
+  --color-canvas-b: #cbb7e6;
+  --color-canvas-c: #f2c6d8;
+
+  --color-surface: #ffffff;
+  --color-surface-soft: #f5f2fb;
+  --color-surface-dim: #ece7f7;
+
+  --color-ink: #363b4a;
+  --color-ink-dim: #7c8291;
+
+  --color-accent: #49c1d6;
+  --color-accent-deep: #2fa3b8;
+  --color-accent-soft: #d9f2f6;
+
+  --color-blush: #f5cad8;
+
+  /* a deep-violet "spotlight" surface for the one dramatic dark moment
+     (the wardrobe reveal) — stays in the same purple family as the
+     gradient instead of reintroducing the old near-black palette */
+  --color-spotlight: #2e2a52;
+  --color-spotlight-soft: #241f42;
 }
 
 @layer base {
@@ -28,21 +42,22 @@
   }
 
   html {
-    background: var(--color-ink);
+    background: linear-gradient(135deg, var(--color-canvas-a), var(--color-canvas-b) 55%, var(--color-canvas-c));
+    background-attachment: fixed;
   }
 
   body {
     font-family: var(--font-sans);
-    background: var(--color-ink);
-    color: var(--color-paper);
+    background: transparent;
+    color: var(--color-ink);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
   }
 
   ::selection {
-    background: var(--color-brass);
-    color: var(--color-ink);
+    background: var(--color-accent);
+    color: var(--color-surface);
   }
 
   ::-webkit-scrollbar {
@@ -57,7 +72,7 @@
 }
 
 :focus-visible {
-  outline: 1.5px solid var(--color-brass);
+  outline: 2px solid var(--color-accent);
   outline-offset: 3px;
 }
 
@@ -77,22 +92,10 @@
     display: none;
   }
 
-  /*
-   * Film-grain texture: a small tiling SVG-noise data-URI, painted once as a
-   * fixed overlay rather than a WebGL/canvas pass. Costs nothing at runtime,
-   * gives the flat color fields the tactile, "shot on film" warmth that pure
-   * flat digital color lacks — one of the clearest 2025/26 trend signals for
-   * fashion/editorial sites over heavier effects.
-   */
-  .grain::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 60;
-    pointer-events: none;
-    opacity: 0.05;
-    mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  /* the floating rounded "card on a gradient" shell used by every section */
+  .card-shell {
+    border-radius: 2.25rem;
+    box-shadow: 0 24px 60px -20px rgba(78, 66, 110, 0.28);
   }
 }
 

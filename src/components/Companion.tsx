@@ -6,12 +6,11 @@ const OUTFITS: Record<GenderFilter, { garment: string; skin: string; label: stri
   all: { garment: "#8a90a8", skin: "#f0c9a0", label: "Browsing", accent: "#49c1d6" },
   men: { garment: "#4a5170", skin: "#f0c9a0", label: "Dressed for Men", accent: "#49c1d6" },
   women: { garment: "#f5cad8", skin: "#f0c9a0", label: "Dressed for Women", accent: "#cbb7e6" },
-  kids: { garment: "#f7c948", skin: "#f0c9a0", label: "Dressed for Kids", accent: "#f2a35a" },
 };
 
 /**
  * A small companion that follows the shopper down the page and changes
- * outfit to match whichever wardrobe (men / women / kids) is active. Lives
+ * outfit to match whichever wardrobe (men / women) is active. Lives
  * bottom-right, visible on mobile too. Tapping it is a small, tasteful
  * easter egg.
  */
@@ -46,14 +45,6 @@ export default function Companion() {
             className="pointer-events-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/50 bg-surface/50 shadow-[0_16px_30px_-12px_rgba(46,42,82,0.5)] backdrop-blur-xl md:h-[72px] md:w-[72px]"
           >
             <svg viewBox="0 0 34 46" fill="none" aria-hidden="true" className="h-7 w-5 md:h-10 md:w-[30px]">
-              {/* kids' hood sits behind the head */}
-              {activeGender === "kids" && (
-                <path
-                  d="M17 3.6c4 0 6.2 3 5.7 7.4-1.8-1.1-3.6-1.8-5.7-1.8s-3.9.7-5.7 1.8C10.8 6.6 13 3.6 17 3.6Z"
-                  fill={outfit.accent}
-                  opacity="0.85"
-                />
-              )}
               <circle cx="17" cy="8" r="6.4" fill={outfit.skin} />
               {/* garment body — this is the piece that swaps per wardrobe */}
               <motion.path

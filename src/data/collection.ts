@@ -1,6 +1,6 @@
 const U = "https://images.unsplash.com/photo-";
 
-export type Gender = "men" | "women" | "kids";
+export type Gender = "men" | "women";
 
 export interface CollectionPiece {
   id: string;
@@ -162,44 +162,6 @@ export const COLLECTION: CollectionPiece[] = [
     fabric: "Silk-viscose georgette",
     fit: "Draped, relaxed through the body",
     care: "Dry clean only",
-  },
-
-  // ---- kids ----
-  {
-    id: "kids-marigold",
-    name: "Marigold Shell",
-    category: "Outerwear",
-    gender: "kids",
-    index: "13",
-    price: 165,
-    image: `${U}1781735974892-360b1cbf8765`,
-    fabric: "Water-resistant cotton canvas",
-    fit: "Relaxed, room to grow",
-    care: "Machine wash cold",
-  },
-  {
-    id: "kids-berry-hood",
-    name: "Berry Hood",
-    category: "Knitwear",
-    gender: "kids",
-    index: "14",
-    price: 128,
-    image: `${U}1586038693164-cb7ee3fb8e2c`,
-    fabric: "Brushed cotton fleece",
-    fit: "Relaxed, ribbed cuffs",
-    care: "Machine wash cold",
-  },
-  {
-    id: "kids-ecru-shirt",
-    name: "Ecru Poplin Shirt",
-    category: "Shirting",
-    gender: "kids",
-    index: "15",
-    price: 95,
-    image: `${U}1611949341310-61649ecb5144`,
-    fabric: "Cotton poplin",
-    fit: "Classic collar, straight hem",
-    care: "Machine wash cold",
   },
 ];
 

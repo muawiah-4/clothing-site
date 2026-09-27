@@ -59,7 +59,7 @@ export default function Cursor() {
   const active = cursorLabel !== null;
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-[70] hidden md:block" aria-hidden="true">
+    <div className="pointer-events-none fixed inset-0 z-[95] hidden md:block" aria-hidden="true">
       <div
         ref={dotRef}
         className="fixed left-0 top-0 h-2 w-2 rounded-full bg-accent-deep transition-opacity duration-200"

@@ -85,7 +85,7 @@ export default function Bag() {
               <div className="flex flex-1 flex-col items-center justify-center gap-2 px-7 text-center">
                 <p className="font-display text-lg font-semibold text-ink">Your bag is empty.</p>
                 <p className="font-sans text-[13px] text-ink-dim">
-                  Fifteen pieces are waiting in the archive.
+                  Twelve pieces are waiting in the archive.
                 </p>
               </div>
             ) : (

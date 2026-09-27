@@ -60,13 +60,6 @@ const ADULT_SIZE_GUIDE: [string, string, string][] = [
   ["XL", "44-46\"", "38-40\""],
 ];
 
-const KIDS_SIZE_GUIDE: [string, string][] = [
-  ["2-3Y", "Height 92-98cm"],
-  ["4-5Y", "Height 104-110cm"],
-  ["6-7Y", "Height 116-122cm"],
-  ["8-9Y", "Height 128-134cm"],
-];
-
 function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void }) {
   const addToBag = useExperienceStore((s) => s.addToBag);
   const setBagOpen = useExperienceStore((s) => s.setBagOpen);
@@ -74,8 +67,7 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
   const [added, setAdded] = useState(false);
   const [needsSize, setNeedsSize] = useState(false);
   const [showGuide, setShowGuide] = useState(false);
-  const isKids = piece.gender === "kids";
-  const sizes = isKids ? ["2-3Y", "4-5Y", "6-7Y", "8-9Y"] : ["XS", "S", "M", "L", "XL"];
+  const sizes = ["XS", "S", "M", "L", "XL"];
 
   const requireSize = () => {
     if (!size) {
@@ -133,27 +125,18 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
                 <thead>
                   <tr className="border-b border-ink/10 text-ink">
                     <th className="px-3 py-2 text-left font-medium">Size</th>
-                    <th className="px-3 py-2 text-left font-medium">
-                      {isKids ? "Guide" : "Chest"}
-                    </th>
-                    {!isKids && <th className="px-3 py-2 text-left font-medium">Waist</th>}
+                    <th className="px-3 py-2 text-left font-medium">Chest</th>
+                    <th className="px-3 py-2 text-left font-medium">Waist</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {isKids
-                    ? KIDS_SIZE_GUIDE.map(([s, height]) => (
-                        <tr key={s} className="border-b border-ink/5 last:border-0">
-                          <td className="px-3 py-2">{s}</td>
-                          <td className="px-3 py-2">{height}</td>
-                        </tr>
-                      ))
-                    : ADULT_SIZE_GUIDE.map(([s, chest, waist]) => (
-                        <tr key={s} className="border-b border-ink/5 last:border-0">
-                          <td className="px-3 py-2">{s}</td>
-                          <td className="px-3 py-2">{chest}</td>
-                          <td className="px-3 py-2">{waist}</td>
-                        </tr>
-                      ))}
+                  {ADULT_SIZE_GUIDE.map(([s, chest, waist]) => (
+                    <tr key={s} className="border-b border-ink/5 last:border-0">
+                      <td className="px-3 py-2">{s}</td>
+                      <td className="px-3 py-2">{chest}</td>
+                      <td className="px-3 py-2">{waist}</td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>

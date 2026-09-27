@@ -5,9 +5,9 @@ import { COLLECTION, unsplash } from "../data/collection";
 import { useExperienceStore } from "../store/experience";
 import { enter } from "../lib/motion";
 
-// one from each wardrobe, so the very first thing a visitor sees represents
-// men/women/kids evenly rather than skewing toward one category
-const FEATURED_IDS = ["nocturne", "ivory-tailleur", "kids-marigold"];
+// a spread across both wardrobes and all three categories, so the very
+// first thing a visitor sees isn't skewed toward one gender
+const FEATURED_IDS = ["nocturne", "ivory-tailleur", "midnight-sequin"];
 const FEATURED = FEATURED_IDS.map((id) => COLLECTION.find((p) => p.id === id)!);
 
 export default function Hero() {
@@ -63,8 +63,8 @@ export default function Hero() {
             {...enter(reducedMotion, { y: 14, duration: 0.7, delay: 0.2 })}
             className="mt-6 max-w-md font-sans text-[15px] leading-relaxed text-ink/70"
           >
-            A dozen pieces a season, cut for men, women, and the smallest members of the house.
-            Every silhouette earns its place before it earns a home.
+            A dozen pieces a season, cut for men and women alike. Every silhouette earns its
+            place before it earns a home.
           </motion.p>
 
           <motion.div {...enter(reducedMotion, { y: 14, duration: 0.7, delay: 0.3 })} className="mt-9">

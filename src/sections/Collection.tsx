@@ -8,7 +8,6 @@ const TABS: { id: GenderFilter; label: string }[] = [
   { id: "all", label: "All" },
   { id: "men", label: "Men" },
   { id: "women", label: "Women" },
-  { id: "kids", label: "Kids" },
 ];
 
 export default function Collection() {
@@ -39,8 +38,8 @@ export default function Collection() {
             </h2>
           </motion.div>
           <p className="max-w-sm font-sans text-[13px] leading-relaxed text-ink-dim">
-            Three wardrobes, one philosophy — tailoring, outerwear, and eveningwear cut for men,
-            women, and the smallest members of the house.
+            Two wardrobes, one philosophy — tailoring, outerwear, and eveningwear cut for men and
+            women alike.
           </p>
         </div>
 

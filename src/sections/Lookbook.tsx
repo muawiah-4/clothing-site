@@ -1,16 +1,20 @@
+import { useRef } from "react";
 import { motion } from "motion/react";
 import { unsplash } from "../data/collection";
 import { useExperienceStore } from "../store/experience";
 import { fade } from "../lib/motion";
+import { useHorizontalScrollGallery } from "../hooks/useHorizontalScrollGallery";
+import ShimmerImage from "../components/ShimmerImage";
+import SplitReveal from "../components/SplitReveal";
 
 interface LookbookPlate {
   src: string;
   alt: string;
   look: string;
   line: string;
-  /** desktop grid placement — creates the asymmetric, non-uniform rhythm */
+  /** desktop grid placement — creates the asymmetric, non-uniform rhythm in the reduced-motion fallback grid */
   frame: string;
-  /** mobile/tablet aspect ratio, before the grid spans take over at lg */
+  /** aspect ratio — drives the mobile/tablet grid tile shape, and each slide's proportions in the horizontal gallery */
   ratio: string;
 }
 
@@ -81,6 +85,76 @@ const PLATES: LookbookPlate[] = [
   },
 ];
 
+/** Plain, accessible fallback — the original asymmetric vertical masonry grid. No pin, no ScrollTrigger, no horizontal scrub. */
+function LookbookGrid({ reducedMotion }: { reducedMotion: boolean }) {
+  return (
+    <div className="mt-16 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:auto-rows-[13rem] lg:grid-cols-4 lg:grid-flow-dense lg:gap-6">
+      {PLATES.map((plate, i) => (
+        <motion.figure
+          key={plate.look}
+          {...fade(reducedMotion, { y: 24, duration: 0.7, delay: Math.min(i * 0.08, 0.4) })}
+          className={`group flex flex-col ${plate.frame}`}
+        >
+          <div
+            className={`overflow-hidden rounded-[1.5rem] bg-surface-soft ${plate.ratio} lg:aspect-auto lg:h-full`}
+          >
+            <ShimmerImage
+              src={unsplash(plate.src, 900)}
+              alt={plate.alt}
+              loading="lazy"
+              className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+            />
+          </div>
+          <figcaption className="mt-3 font-sans text-[13px] leading-snug text-ink-dim">
+            <span className="font-semibold text-ink">{plate.look}</span> — {plate.line}
+          </figcaption>
+        </motion.figure>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Pinned horizontal-scroll gallery. `viewportRef` is the element ScrollTrigger
+ * pins and clips to; `trackRef` is the flex row it translates. Reading/DOM
+ * order stays the plain left-to-right order of PLATES — slides are
+ * positioned purely with `transform`, never `visibility`/`display`, so
+ * focus order and screen-reader order both stay natural.
+ */
+function LookbookHorizontalGallery({ reducedMotion }: { reducedMotion: boolean }) {
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  useHorizontalScrollGallery(viewportRef, trackRef, !reducedMotion);
+
+  return (
+    <div
+      ref={viewportRef}
+      className="relative mt-16 h-[58vh] max-h-[620px] min-h-[420px] overflow-hidden rounded-[1.75rem] sm:h-[62vh] md:h-[66vh]"
+    >
+      <div ref={trackRef} className="flex h-full w-fit items-start gap-6 will-change-transform md:gap-8">
+        {PLATES.map((plate) => (
+          <figure key={plate.look} className="flex h-full shrink-0 flex-col">
+            <div
+              className={`h-[calc(100%-3.25rem)] overflow-hidden rounded-[1.5rem] bg-surface-soft ${plate.ratio}`}
+            >
+              <ShimmerImage
+                src={unsplash(plate.src, 900)}
+                alt={plate.alt}
+                loading="lazy"
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <figcaption className="mt-3 max-w-[70vw] font-sans text-[13px] leading-snug text-ink-dim sm:max-w-none">
+              <span className="font-semibold text-ink">{plate.look}</span> — {plate.line}
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function Lookbook() {
   const reducedMotion = useExperienceStore((s) => s.reducedMotion);
 
@@ -96,12 +170,11 @@ export default function Lookbook() {
         >
           The Lookbook
         </motion.p>
-        <motion.h2
-          {...fade(reducedMotion, { y: 16, duration: 0.8, delay: 0.1 })}
+        <SplitReveal
+          as="h2"
+          text="Styled by the studio."
           className="mt-4 max-w-2xl font-display text-3xl font-bold leading-tight text-ink sm:text-4xl"
-        >
-          Styled by the studio.
-        </motion.h2>
+        />
         <motion.p
           {...fade(reducedMotion, { y: 12, duration: 0.7, delay: 0.18 })}
           className="mt-6 max-w-xl font-sans text-[15px] leading-relaxed text-ink-dim"
@@ -110,29 +183,11 @@ export default function Lookbook() {
           ten minutes before a shoot goes to print. Not lookbook copy. The actual room.
         </motion.p>
 
-        <div className="mt-16 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:auto-rows-[13rem] lg:grid-cols-4 lg:grid-flow-dense lg:gap-6">
-          {PLATES.map((plate, i) => (
-            <motion.figure
-              key={plate.look}
-              {...fade(reducedMotion, { y: 24, duration: 0.7, delay: Math.min(i * 0.08, 0.4) })}
-              className={`group flex flex-col ${plate.frame}`}
-            >
-              <div
-                className={`overflow-hidden rounded-[1.5rem] bg-surface-soft ${plate.ratio} lg:aspect-auto lg:h-full`}
-              >
-                <img
-                  src={unsplash(plate.src, 900)}
-                  alt={plate.alt}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-                />
-              </div>
-              <figcaption className="mt-3 font-sans text-[13px] leading-snug text-ink-dim">
-                <span className="font-semibold text-ink">{plate.look}</span> — {plate.line}
-              </figcaption>
-            </motion.figure>
-          ))}
-        </div>
+        {reducedMotion ? (
+          <LookbookGrid reducedMotion={reducedMotion} />
+        ) : (
+          <LookbookHorizontalGallery reducedMotion={reducedMotion} />
+        )}
       </div>
     </section>
   );

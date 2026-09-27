@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import MagneticButton from "../components/MagneticButton";
 import { useExperienceStore } from "../store/experience";
 import { fade } from "../lib/motion";
+import SplitReveal from "../components/SplitReveal";
 
 export default function Contact() {
   const reducedMotion = useExperienceStore((s) => s.reducedMotion);
@@ -19,14 +20,11 @@ export default function Contact() {
           Visit / Inquire
         </motion.p>
 
-        <motion.h2
-          {...fade(reducedMotion, { y: 20, duration: 0.9, delay: 0.1 })}
-          className="mt-5 font-display text-4xl font-bold leading-[1.05] text-ink sm:text-6xl md:text-7xl"
-        >
-          Come see
-          <br />
-          the atelier.
-        </motion.h2>
+        <SplitReveal
+          as="h2"
+          text="Come see the atelier."
+          className="mt-5 max-w-xl font-display text-4xl font-bold leading-[1.05] text-ink sm:text-6xl md:text-7xl"
+        />
 
         <motion.div
           {...fade(reducedMotion, { y: 12, duration: 0.7, delay: 0.3 })}

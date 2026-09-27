@@ -2,22 +2,26 @@ import { motion } from "motion/react";
 import { CRAFT_IMAGES, unsplash } from "../data/collection";
 import { useExperienceStore } from "../store/experience";
 import { fade } from "../lib/motion";
+import SplitReveal from "../components/SplitReveal";
 
 const STEPS = [
   {
     num: "I",
     title: "Pattern",
     copy: "Each silhouette is drafted by hand before it is ever cut, held against a form until the proportion earns its place.",
+    alt: "Dress forms and draped pattern pieces in the studio workroom",
   },
   {
     num: "II",
     title: "Cloth",
     copy: "We choose material before design — the weight and drape of a fabric decides what it is allowed to become.",
+    alt: "Two tailors working fabric together at a cutting table",
   },
   {
     num: "III",
     title: "Hand",
     copy: "Every seam is finished by the same small team that drafted it. Nothing leaves the studio unseen.",
+    alt: "Close detail of hand-finished stitching in progress",
   },
 ];
 
@@ -36,12 +40,11 @@ export default function Craft() {
         >
           Process
         </motion.p>
-        <motion.h2
-          {...fade(reducedMotion, { y: 16, duration: 0.8, delay: 0.1 })}
+        <SplitReveal
+          as="h2"
+          text="Three steps. No shortcuts."
           className="mt-4 max-w-2xl font-display text-3xl font-bold leading-tight text-ink sm:text-4xl"
-        >
-          Three steps. No shortcuts.
-        </motion.h2>
+        />
 
         <div className="mt-16 grid grid-cols-1 gap-16 md:grid-cols-3 md:gap-8">
           {STEPS.map((step, i) => (
@@ -52,7 +55,7 @@ export default function Craft() {
               <div className="aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-surface">
                 <motion.img
                   src={unsplash(CRAFT_IMAGES[i], 700)}
-                  alt={step.title}
+                  alt={step.alt}
                   loading="lazy"
                   initial={
                     reducedMotion

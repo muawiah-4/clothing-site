@@ -4,10 +4,12 @@ import { X } from "lucide-react";
 import { useExperienceStore } from "../store/experience";
 import { unsplash, type CollectionPiece } from "../data/collection";
 import { useFocusTrap } from "../hooks/useFocusTrap";
+import ShimmerImage from "./ShimmerImage";
 
 export default function BuyPanel() {
   const piece = useExperienceStore((s) => s.selectedPiece);
   const setSelectedPiece = useExperienceStore((s) => s.setSelectedPiece);
+  const reducedMotion = useExperienceStore((s) => s.reducedMotion);
   const close = () => setSelectedPiece(null);
   const containerRef = useFocusTrap(Boolean(piece), close);
 
@@ -26,16 +28,16 @@ export default function BuyPanel() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: reducedMotion ? 0.05 : 0.3 }}
             onClick={close}
           />
           <motion.div
             ref={containerRef}
             className="relative flex h-full w-full max-w-md flex-col overflow-y-auto rounded-l-[2rem] border-l border-white/40 bg-surface/70 backdrop-blur-2xl"
-            initial={{ x: "100%" }}
+            initial={{ x: reducedMotion ? 0 : "100%" }}
             animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            exit={{ x: reducedMotion ? 0 : "100%" }}
+            transition={{ duration: reducedMotion ? 0.05 : 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
             <button
               onClick={close}
@@ -80,7 +82,7 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
   return (
     <>
       <div className="aspect-[3/4] w-full overflow-hidden rounded-b-[1.5rem] bg-surface-soft">
-        <img src={unsplash(piece.image, 700)} alt={piece.name} className="h-full w-full object-cover" />
+        <ShimmerImage src={unsplash(piece.image, 700)} alt={piece.name} className="h-full w-full object-cover" />
       </div>
       <div className="flex flex-1 flex-col gap-6 px-7 py-8">
         <div>
@@ -113,6 +115,8 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
             <p className="font-sans text-[11px] uppercase tracking-[0.15em] text-ink-dim">Size</p>
             <button
               onClick={() => setShowGuide((v) => !v)}
+              aria-expanded={showGuide}
+              aria-controls="size-guide-table"
               className="font-sans text-[11px] uppercase tracking-[0.1em] text-accent-deep underline-offset-2 hover:underline"
             >
               {showGuide ? "Hide size guide" : "Size guide"}
@@ -120,7 +124,10 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
           </div>
 
           {showGuide && (
-            <div className="mb-3 overflow-hidden rounded-xl border border-white/50 bg-surface/40 backdrop-blur-md">
+            <div
+              id="size-guide-table"
+              className="mb-3 overflow-hidden rounded-xl border border-white/50 bg-surface/40 backdrop-blur-md"
+            >
               <table className="w-full font-sans text-[12px] text-ink-dim">
                 <thead>
                   <tr className="border-b border-ink/10 text-ink">
@@ -162,7 +169,9 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
             ))}
           </div>
           {needsSize && (
-            <p className="mt-2 font-sans text-[12px] text-accent-deep">Please select a size first.</p>
+            <p role="alert" className="mt-2 font-sans text-[12px] text-accent-deep">
+              Please select a size first.
+            </p>
           )}
         </div>
 

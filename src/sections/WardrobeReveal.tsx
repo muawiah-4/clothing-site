@@ -98,7 +98,9 @@ export default function WardrobeReveal() {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          if (phaseRef.current === "closed") openRef.current();
+          // reduced-motion users get the wardrobe closed and waiting for an
+          // explicit click rather than an unrequested autoplay + auto-scroll
+          if (phaseRef.current === "closed" && !reducedMotion) openRef.current();
           return;
         }
         if (phaseRef.current === "closed") return;
@@ -116,7 +118,16 @@ export default function WardrobeReveal() {
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [setWardrobeOpened]);
+  }, [reducedMotion, setWardrobeOpened]);
+
+  const skip = useCallback(() => {
+    timers.current.forEach((t) => window.clearTimeout(t));
+    timers.current = [];
+    const video = videoRef.current;
+    if (video) video.pause();
+    setPhase("leaving");
+    scrollToSection("collection");
+  }, []);
 
   return (
     <section
@@ -178,17 +189,31 @@ export default function WardrobeReveal() {
         </p>
       </div>
 
+      {(phase === "playing" || phase === "bursting") && (
+        <button
+          onClick={skip}
+          className="absolute right-5 top-5 z-30 rounded-full border border-white/40 bg-spotlight/60 px-4 py-2 font-sans text-[11px] uppercase tracking-[0.15em] text-surface backdrop-blur-md transition-colors hover:bg-spotlight/85"
+        >
+          Skip
+        </button>
+      )}
+
       <AnimatePresence>
         {(phase === "bursting" || phase === "leaving") && (
           <motion.div
             className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center"
+            aria-hidden="true"
             exit={{ opacity: 0 }}
             transition={{ duration: 0.6 }}
           >
             {BURST_ITEMS.map((item, i) => (
               <motion.div
                 key={item.id}
-                initial={{ opacity: 0, scale: 0.25, x: 0, y: 40 }}
+                initial={
+                  reducedMotion
+                    ? { opacity: 0, x: scatter[i].x, y: scatter[i].y, rotate: scatter[i].rotate }
+                    : { opacity: 0, scale: 0.25, x: 0, y: 40 }
+                }
                 animate={{
                   opacity: phase === "leaving" ? 0 : 1,
                   scale: phase === "leaving" ? 0.6 : 1,
@@ -196,12 +221,11 @@ export default function WardrobeReveal() {
                   y: scatter[i].y,
                   rotate: scatter[i].rotate,
                 }}
-                transition={{
-                  type: "spring",
-                  stiffness: 140,
-                  damping: 16,
-                  delay: i * 0.05,
-                }}
+                transition={
+                  reducedMotion
+                    ? { duration: 0.2 }
+                    : { type: "spring", stiffness: 140, damping: 16, delay: i * 0.05 }
+                }
                 className="absolute h-28 w-20 overflow-hidden rounded-xl shadow-2xl sm:h-36 sm:w-26"
               >
                 <img

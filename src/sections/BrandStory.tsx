@@ -2,6 +2,8 @@ import { motion } from "motion/react";
 import { PORTRAIT_IMAGE, unsplash } from "../data/collection";
 import { useExperienceStore } from "../store/experience";
 import { fade } from "../lib/motion";
+import ShimmerImage from "../components/ShimmerImage";
+import SplitReveal from "../components/SplitReveal";
 
 export default function BrandStory() {
   const reducedMotion = useExperienceStore((s) => s.reducedMotion);
@@ -17,7 +19,7 @@ export default function BrandStory() {
             {...fade(reducedMotion, { y: 20, duration: 0.9 })}
             className="aspect-[3/4] overflow-hidden rounded-[1.75rem]"
           >
-            <img
+            <ShimmerImage
               src={unsplash(PORTRAIT_IMAGE, 900)}
               alt="Studio portrait"
               className="h-full w-full object-cover"
@@ -33,12 +35,11 @@ export default function BrandStory() {
             The House
           </motion.p>
 
-          <motion.h2
-            {...fade(reducedMotion, { y: 16, duration: 0.8, delay: 0.1 })}
+          <SplitReveal
+            as="h2"
+            text="Atelier began as a single room and a refusal to rush."
             className="mt-4 font-display text-3xl font-bold leading-tight text-ink sm:text-4xl"
-          >
-            Atelier began as a single room and a refusal to rush.
-          </motion.h2>
+          />
 
           <div className="mt-8 flex flex-col gap-5 font-sans text-[15px] leading-relaxed text-ink/70">
             <motion.p {...fade(reducedMotion, { y: 12, duration: 0.7, delay: 0.2 })}>

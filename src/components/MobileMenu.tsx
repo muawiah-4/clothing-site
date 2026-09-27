@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { X } from "lucide-react";
 import { scrollToSection } from "../lib/scroll";
 import { useFocusTrap } from "../hooks/useFocusTrap";
+import { useExperienceStore } from "../store/experience";
 import Logo from "./Logo";
 
 const LINKS = [
@@ -14,6 +15,7 @@ const LINKS = [
 
 export default function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
   const containerRef = useFocusTrap(open, onClose);
+  const reducedMotion = useExperienceStore((s) => s.reducedMotion);
 
   return (
     <AnimatePresence>
@@ -26,7 +28,7 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.25 }}
+          transition={{ duration: reducedMotion ? 0.05 : 0.25 }}
           ref={containerRef}
         >
           <div className="flex items-center justify-between px-6 py-6">
@@ -44,9 +46,13 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
             {LINKS.map((link, i) => (
               <motion.button
                 key={link.id}
-                initial={{ opacity: 0, y: 14 }}
+                initial={{ opacity: 0, y: reducedMotion ? 0 : 14 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.08 + i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+                transition={
+                  reducedMotion
+                    ? { duration: 0.05 }
+                    : { duration: 0.4, delay: 0.08 + i * 0.06, ease: [0.22, 1, 0.36, 1] }
+                }
                 onClick={() => {
                   onClose();
                   scrollToSection(link.id);

@@ -4,6 +4,7 @@ import { Check, X } from "lucide-react";
 import { useExperienceStore } from "../store/experience";
 import { unsplash } from "../data/collection";
 import { useFocusTrap } from "../hooks/useFocusTrap";
+import ShimmerImage from "./ShimmerImage";
 
 /**
  * The "Add to Bag" payoff — previously the bag count lived only in the
@@ -15,6 +16,7 @@ export default function Bag() {
   const setOpen = useExperienceStore((s) => s.setBagOpen);
   const items = useExperienceStore((s) => s.bagItems);
   const clearBag = useExperienceStore((s) => s.clearBag);
+  const reducedMotion = useExperienceStore((s) => s.reducedMotion);
   const [placed, setPlaced] = useState(false);
   const close = () => setOpen(false);
   const containerRef = useFocusTrap(open, close);
@@ -36,16 +38,16 @@ export default function Bag() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: reducedMotion ? 0.05 : 0.3 }}
             onClick={close}
           />
           <motion.div
             ref={containerRef}
             className="relative flex h-full w-full max-w-md flex-col rounded-l-[2rem] border-l border-white/40 bg-surface/70 backdrop-blur-2xl"
-            initial={{ x: "100%" }}
+            initial={{ x: reducedMotion ? 0 : "100%" }}
             animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            exit={{ x: reducedMotion ? 0 : "100%" }}
+            transition={{ duration: reducedMotion ? 0.05 : 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="flex items-center justify-between border-b border-ink/10 px-7 py-6">
               <h2 className="font-display text-xl font-bold text-ink">
@@ -65,7 +67,9 @@ export default function Bag() {
                 <span className="flex h-12 w-12 items-center justify-center rounded-full bg-accent text-surface">
                   <Check size={22} strokeWidth={2} />
                 </span>
-                <p className="font-display text-lg font-semibold text-ink">Order placed.</p>
+                <p role="status" className="font-display text-lg font-semibold text-ink">
+                  Order placed.
+                </p>
                 <p className="font-sans text-[13px] text-ink-dim">
                   A confirmation is on its way to your inbox. The studio will follow up on
                   delivery.
@@ -95,7 +99,7 @@ export default function Bag() {
                     {items.map((item) => (
                       <li key={`${item.piece.id}-${item.size}`} className="flex gap-4">
                         <div className="h-24 w-20 shrink-0 overflow-hidden rounded-xl bg-surface-soft">
-                          <img
+                          <ShimmerImage
                             src={unsplash(item.piece.image, 200)}
                             alt={item.piece.name}
                             className="h-full w-full object-cover"

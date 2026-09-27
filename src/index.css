@@ -7,7 +7,7 @@
  * pastel-gradient storefront look the brand asked to match.
  */
 @theme {
-  --font-display: "Poppins", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces", "Iowan Old Style", "Georgia", serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 
   --color-canvas-a: #b9c5f2;
@@ -19,10 +19,17 @@
   --color-surface-dim: #ece7f7;
 
   --color-ink: #363b4a;
-  --color-ink-dim: #7c8291;
+  /* was #7c8291 — computed at only 3.18-3.85:1 against the site's light
+     surfaces, below the 4.5:1 minimum for body text (WCAG 1.4.3) */
+  --color-ink-dim: #4f5566;
 
-  --color-accent: #49c1d6;
-  --color-accent-deep: #2fa3b8;
+  /* both darkened from the original #49c1d6/#2fa3b8 — white text on the
+     original --color-accent computed at 2.13:1, and --color-accent-deep as
+     running text on white computed at 2.98:1, both well under the 4.5:1
+     minimum. These now clear 4.5:1+ in both directions (button fills with
+     white text, and as text color on the site's card surfaces) */
+  --color-accent: #178098;
+  --color-accent-deep: #14606f;
   --color-accent-soft: #d9f2f6;
 
   --color-blush: #f5cad8;
@@ -71,9 +78,19 @@
   cursor: none !important;
 }
 
+/* ink, not accent — the original accent-based ring computed at 1.65-2.13:1
+   against the site's light surfaces, well under the 3:1 minimum for
+   non-text UI indicators (WCAG 1.4.11); ink clears 6-11:1 everywhere light */
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-ink);
   outline-offset: 3px;
+}
+
+/* the one dark section on the site — ink's outline would be almost
+   invisible against the spotlight background, so it gets its own
+   light-on-dark ring instead */
+#wardrobe :focus-visible {
+  outline-color: var(--color-surface);
 }
 
 @layer utilities {
@@ -96,6 +113,15 @@
   .card-shell {
     border-radius: 2.25rem;
     box-shadow: 0 24px 60px -20px rgba(78, 66, 110, 0.28);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -150% 0;
+  }
+  100% {
+    background-position: 150% 0;
   }
 }
 

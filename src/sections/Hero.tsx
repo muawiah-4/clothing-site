@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { motion } from "motion/react";
-import { ArrowRight, AtSign, Globe, Send } from "lucide-react";
+import { ArrowRight, AtSign, Send } from "lucide-react";
 import { COLLECTION, unsplash } from "../data/collection";
 import { useExperienceStore } from "../store/experience";
 import { enter } from "../lib/motion";
+import { scrollToSection } from "../lib/scroll";
+import ShimmerImage from "../components/ShimmerImage";
+import ParticleField from "../components/ParticleField";
 
 // a spread across both wardrobes and all three categories, so the very
 // first thing a visitor sees isn't skewed toward one gender
@@ -37,6 +40,8 @@ export default function Hero() {
         <path d="M100 60 Q 500 500 950 120" fill="none" stroke="white" strokeWidth="1.5" />
         <path d="M0 300 Q 420 700 1200 460" fill="none" stroke="white" strokeWidth="1" opacity="0.6" />
       </svg>
+
+      <ParticleField />
 
       <div className="relative grid grid-cols-1 gap-10 px-6 py-16 md:grid-cols-12 md:gap-6 md:px-14 md:py-24">
         <div className="flex flex-col justify-center md:col-span-6">
@@ -85,16 +90,20 @@ export default function Hero() {
             {...enter(reducedMotion, { duration: 0.6, delay: 0.5 })}
             className="mt-12 flex items-center gap-3"
           >
-            {[AtSign, Globe, Send].map((Icon, i) => (
-              <a
-                key={i}
-                href="#"
-                aria-label="Follow Atelier"
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-surface/50 bg-surface/10 text-surface backdrop-blur-md transition-colors hover:bg-surface/80 hover:text-accent-deep"
-              >
-                <Icon size={15} strokeWidth={1.6} />
-              </a>
-            ))}
+            <a
+              href="mailto:studio@atelier.house"
+              aria-label="Email the studio"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-surface/50 bg-surface/10 text-surface backdrop-blur-md transition-colors hover:bg-surface/80 hover:text-accent-deep"
+            >
+              <AtSign size={15} strokeWidth={1.6} />
+            </a>
+            <button
+              onClick={() => scrollToSection("contact")}
+              aria-label="Go to the contact section"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-surface/50 bg-surface/10 text-surface backdrop-blur-md transition-colors hover:bg-surface/80 hover:text-accent-deep"
+            >
+              <Send size={15} strokeWidth={1.6} />
+            </button>
           </motion.div>
         </div>
 
@@ -121,7 +130,7 @@ export default function Hero() {
             aria-label={`View ${piece.name}`}
             className="relative aspect-[3/4] w-[78%] max-w-[360px] overflow-hidden rounded-[1.75rem] bg-surface shadow-[0_30px_60px_-20px_rgba(46,42,82,0.45)] sm:w-[68%]"
           >
-            <img
+            <ShimmerImage
               src={unsplash(piece.image, 700)}
               alt={piece.name}
               className="h-full w-full object-cover"
@@ -150,7 +159,7 @@ export default function Hero() {
               className="flex items-center gap-3 rounded-2xl border border-white/50 bg-surface/55 px-4 py-3 text-left shadow-[0_14px_30px_-16px_rgba(46,42,82,0.4)] backdrop-blur-xl"
             >
               <div className="h-14 w-12 shrink-0 overflow-hidden rounded-lg bg-surface-soft">
-                <img
+                <ShimmerImage
                   src={unsplash(piece.image, 100)}
                   alt=""
                   aria-hidden="true"
@@ -173,7 +182,7 @@ export default function Hero() {
                   aria-label={`Show ${p.name}`}
                   className="hidden h-20 w-14 overflow-hidden rounded-xl opacity-80 shadow-[0_10px_20px_-12px_rgba(46,42,82,0.4)] transition-opacity hover:opacity-100 sm:block"
                 >
-                  <img
+                  <ShimmerImage
                     src={unsplash(p.image, 100)}
                     alt={p.name}
                     className="h-full w-full object-cover"

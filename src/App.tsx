@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useExperienceStore } from "./store/experience";
 import { useDevicePerformance } from "./hooks/useDevicePerformance";
 import { useSmoothScroll } from "./hooks/useSmoothScroll";
+import Preloader from "./components/Preloader";
 import Navbar from "./components/Navbar";
 import Cursor from "./components/Cursor";
 import Companion from "./components/Companion";
@@ -28,20 +29,23 @@ export default function App() {
 
   return (
     <div className="relative">
+      <Preloader />
       <Cursor />
       <Navbar />
       <Companion />
+      <main>
+        <Hero />
+        <BrandStory />
+        <WardrobeReveal />
+        <Collection />
+        <Craft />
+        <Lookbook />
+        <SocialProof />
+        <Contact />
+      </main>
+      <Footer />
       <BuyPanel />
       <Bag />
-      <Hero />
-      <BrandStory />
-      <WardrobeReveal />
-      <Collection />
-      <Craft />
-      <Lookbook />
-      <SocialProof />
-      <Contact />
-      <Footer />
     </div>
   );
 }

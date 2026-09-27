@@ -77,12 +77,8 @@ export default function Footer() {
       <div className="mx-auto mt-14 flex max-w-6xl flex-col gap-3 border-t border-ink/10 pt-6 font-sans text-[11px] uppercase tracking-[0.1em] text-ink-dim sm:flex-row sm:items-center sm:justify-between">
         <span>Atelier © 2026 — All rights reserved</span>
         <div className="flex gap-6">
-          <a href="#" className="transition-colors hover:text-accent-deep">
-            Privacy
-          </a>
-          <a href="#" className="transition-colors hover:text-accent-deep">
-            Terms
-          </a>
+          <span>Privacy</span>
+          <span>Terms</span>
         </div>
       </div>
     </footer>

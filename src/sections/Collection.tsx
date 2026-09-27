@@ -3,6 +3,8 @@ import { motion } from "motion/react";
 import { COLLECTION, unsplash, type CollectionPiece } from "../data/collection";
 import { useExperienceStore, type GenderFilter } from "../store/experience";
 import { fade } from "../lib/motion";
+import ShimmerImage from "../components/ShimmerImage";
+import SplitReveal from "../components/SplitReveal";
 
 const TABS: { id: GenderFilter; label: string }[] = [
   { id: "all", label: "All" },
@@ -33,9 +35,11 @@ export default function Collection() {
             <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.25em] text-accent-deep">
               The Archive, Opened
             </p>
-            <h2 className="mt-4 font-display text-3xl font-bold text-ink sm:text-4xl">
-              Shop the Wardrobe.
-            </h2>
+            <SplitReveal
+              as="h2"
+              text="Shop the Wardrobe."
+              className="mt-4 font-display text-3xl font-bold text-ink sm:text-4xl"
+            />
           </motion.div>
           <p className="max-w-sm font-sans text-[13px] leading-relaxed text-ink-dim">
             Two wardrobes, one philosophy — tailoring, outerwear, and eveningwear cut for men and
@@ -71,13 +75,13 @@ export default function Collection() {
 
         {categories.length > 1 && (
           <div
-            role="tablist"
+            role="group"
             aria-label="Filter by category"
             className="mb-10 flex flex-wrap gap-2 md:mb-12"
           >
             <button
               onClick={() => setActiveCategory("all")}
-              aria-selected={activeCategory === "all"}
+              aria-pressed={activeCategory === "all"}
               className={`rounded-full px-4 py-1.5 font-sans text-[11px] uppercase tracking-[0.08em] transition-colors ${
                 activeCategory === "all" ? "text-accent-deep underline" : "text-ink-dim hover:text-accent-deep"
               }`}
@@ -88,7 +92,7 @@ export default function Collection() {
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                aria-selected={activeCategory === cat}
+                aria-pressed={activeCategory === cat}
                 className={`rounded-full px-4 py-1.5 font-sans text-[11px] uppercase tracking-[0.08em] transition-colors ${
                   activeCategory === cat ? "text-accent-deep underline" : "text-ink-dim hover:text-accent-deep"
                 }`}
@@ -147,7 +151,7 @@ function CollectionCard({
         onClick={() => setSelectedPiece(piece)}
       >
         <div className="aspect-[3/4] overflow-hidden rounded-[1.5rem] bg-surface-soft shadow-[0_16px_34px_-20px_rgba(46,42,82,0.35)]">
-          <img
+          <ShimmerImage
             src={unsplash(piece.image, 700)}
             alt={piece.name}
             loading="lazy"

@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { motion } from "motion/react";
 import { useExperienceStore } from "../store/experience";
 import { fade } from "../lib/motion";
+import SplitReveal from "../components/SplitReveal";
 
 interface Testimonial {
   quote: string;
@@ -59,14 +60,11 @@ export default function SocialProof() {
         >
           In Their Words
         </motion.p>
-        <motion.h2
-          {...fade(reducedMotion, { y: 16, duration: 0.8, delay: 0.1 })}
+        <SplitReveal
+          as="h2"
+          text="The house, worn. Not just by us."
           className="mt-4 max-w-2xl font-display text-3xl font-bold leading-tight text-ink sm:text-4xl"
-        >
-          The house, worn.
-          <br />
-          Not just by us.
-        </motion.h2>
+        />
 
         <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {TESTIMONIALS.map((t, i) => (
@@ -98,7 +96,10 @@ export default function SocialProof() {
           </div>
 
           {subscribed ? (
-            <p className="font-sans text-[13px] font-semibold uppercase tracking-[0.1em] text-accent-deep">
+            <p
+              role="status"
+              className="font-sans text-[13px] font-semibold uppercase tracking-[0.1em] text-accent-deep"
+            >
               You're on the list.
             </p>
           ) : (

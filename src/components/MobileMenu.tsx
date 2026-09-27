@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { X } from "lucide-react";
 import { scrollToSection } from "../lib/scroll";
 import { useFocusTrap } from "../hooks/useFocusTrap";
+import Logo from "./Logo";
 
 const LINKS = [
   { id: "story", label: "House" },
@@ -28,9 +29,7 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
           ref={containerRef}
         >
           <div className="flex items-center justify-between px-6 py-6">
-            <span className="font-display text-lg font-semibold tracking-tight text-ink">
-              Atelier
-            </span>
+            <Logo />
             <button
               onClick={onClose}
               aria-label="Close menu"

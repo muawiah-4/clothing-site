@@ -3,6 +3,7 @@ import { ShoppingBag, Menu } from "lucide-react";
 import { scrollToSection } from "../lib/scroll";
 import { useExperienceStore } from "../store/experience";
 import MobileMenu from "./MobileMenu";
+import Logo from "./Logo";
 
 const LINKS = [
   { id: "story", label: "House" },
@@ -19,11 +20,8 @@ export default function Navbar() {
   return (
     <>
       <header className="sticky top-0 z-50 mx-3 mt-3 flex items-center justify-between rounded-2xl bg-surface/90 px-6 py-4 shadow-[0_10px_30px_-16px_rgba(78,66,110,0.35)] backdrop-blur-md md:mx-6 md:mt-4 md:px-8">
-        <button
-          onClick={() => scrollToSection("top")}
-          className="font-display text-lg font-semibold tracking-tight text-ink"
-        >
-          Atelier
+        <button onClick={() => scrollToSection("top")} aria-label="Atelier — go to top">
+          <Logo />
         </button>
 
         <nav className="hidden items-center gap-8 font-sans text-[13px] font-medium text-ink md:flex">

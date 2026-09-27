@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { scrollToSection } from "../lib/scroll";
+import Logo from "./Logo";
 
 const SITEMAP = [
   { id: "story", label: "House" },
@@ -18,11 +19,8 @@ export default function Footer() {
     <footer className="mx-3 mb-3 mt-3 rounded-[2rem] bg-surface px-6 py-14 md:mx-6 md:mb-6 md:mt-4 md:px-14">
       <div className="mx-auto flex max-w-6xl flex-col gap-12 md:flex-row md:justify-between">
         <div className="max-w-xs">
-          <button
-            onClick={() => scrollToSection("top")}
-            className="font-display text-xl font-bold text-ink"
-          >
-            Atelier
+          <button onClick={() => scrollToSection("top")} aria-label="Atelier — go to top">
+            <Logo />
           </button>
           <p className="mt-4 font-sans text-[13px] leading-relaxed text-ink-dim">
             A small studio. A dozen pieces a season. Considered pieces, made to outlast trend.

@@ -8,6 +8,7 @@ const LINKS = [
   { id: "story", label: "House" },
   { id: "wardrobe", label: "Archive" },
   { id: "craft", label: "Craft" },
+  { id: "lookbook", label: "Lookbook" },
   { id: "contact", label: "Contact" },
 ];
 

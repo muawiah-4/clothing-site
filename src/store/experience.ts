@@ -29,6 +29,7 @@ interface ExperienceState {
 
   bagItems: BagItem[];
   addToBag: (piece: CollectionPiece, size: string) => void;
+  clearBag: () => void;
 
   bagOpen: boolean;
   setBagOpen: (v: boolean) => void;
@@ -63,6 +64,7 @@ export const useExperienceStore = create<ExperienceState>((set) => ({
       }
       return { bagItems: [...s.bagItems, { piece, size, qty: 1 }] };
     }),
+  clearBag: () => set({ bagItems: [] }),
 
   bagOpen: false,
   setBagOpen: (v) => set({ bagOpen: v }),

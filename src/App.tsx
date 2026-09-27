@@ -13,6 +13,8 @@ import BrandStory from "./sections/BrandStory";
 import WardrobeReveal from "./sections/WardrobeReveal";
 import Collection from "./sections/Collection";
 import Craft from "./sections/Craft";
+import Lookbook from "./sections/Lookbook";
+import SocialProof from "./sections/SocialProof";
 import Contact from "./sections/Contact";
 
 export default function App() {
@@ -36,6 +38,8 @@ export default function App() {
       <WardrobeReveal />
       <Collection />
       <Craft />
+      <Lookbook />
+      <SocialProof />
       <Contact />
       <Footer />
     </div>

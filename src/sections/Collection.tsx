@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion } from "motion/react";
 import { COLLECTION, unsplash, type CollectionPiece } from "../data/collection";
 import { useExperienceStore, type GenderFilter } from "../store/experience";
@@ -14,7 +15,13 @@ export default function Collection() {
   const activeGender = useExperienceStore((s) => s.activeGender);
   const setActiveGender = useExperienceStore((s) => s.setActiveGender);
   const reducedMotion = useExperienceStore((s) => s.reducedMotion);
-  const pieces = COLLECTION.filter((p) => activeGender === "all" || p.gender === activeGender);
+  const [activeCategory, setActiveCategory] = useState("all");
+
+  const genderPieces = COLLECTION.filter((p) => activeGender === "all" || p.gender === activeGender);
+  const categories = Array.from(new Set(genderPieces.map((p) => p.category)));
+  const pieces = genderPieces.filter(
+    (p) => activeCategory === "all" || p.category === activeCategory,
+  );
 
   return (
     <section
@@ -48,7 +55,10 @@ export default function Collection() {
               key={tab.id}
               role="tab"
               aria-selected={activeGender === tab.id}
-              onClick={() => setActiveGender(tab.id)}
+              onClick={() => {
+                setActiveGender(tab.id);
+                setActiveCategory("all");
+              }}
               className={`rounded-full border px-5 py-2.5 font-sans text-[12px] font-medium uppercase tracking-[0.1em] backdrop-blur-md transition-colors ${
                 activeGender === tab.id
                   ? "border-accent bg-accent text-surface"
@@ -59,6 +69,36 @@ export default function Collection() {
             </button>
           ))}
         </div>
+
+        {categories.length > 1 && (
+          <div
+            role="tablist"
+            aria-label="Filter by category"
+            className="mb-10 flex flex-wrap gap-2 md:mb-12"
+          >
+            <button
+              onClick={() => setActiveCategory("all")}
+              aria-selected={activeCategory === "all"}
+              className={`rounded-full px-4 py-1.5 font-sans text-[11px] uppercase tracking-[0.08em] transition-colors ${
+                activeCategory === "all" ? "text-accent-deep underline" : "text-ink-dim hover:text-accent-deep"
+              }`}
+            >
+              All categories
+            </button>
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                aria-selected={activeCategory === cat}
+                className={`rounded-full px-4 py-1.5 font-sans text-[11px] uppercase tracking-[0.08em] transition-colors ${
+                  activeCategory === cat ? "text-accent-deep underline" : "text-ink-dim hover:text-accent-deep"
+                }`}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        )}
 
         <motion.div
           layout

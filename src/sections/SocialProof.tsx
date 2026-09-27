@@ -1,0 +1,130 @@
+import { useState, type FormEvent } from "react";
+import { motion } from "motion/react";
+import { useExperienceStore } from "../store/experience";
+import { fade } from "../lib/motion";
+
+interface Testimonial {
+  quote: string;
+  name: string;
+  detail: string;
+}
+
+const TESTIMONIALS: Testimonial[] = [
+  {
+    quote:
+      "The coat still fits the way it did the day I bought it — which is more than I can say for anything else in my closet.",
+    name: "Elena M.",
+    detail: "Nocturne Coat, Paris",
+  },
+  {
+    quote:
+      "I stopped buying seasonally the year I found this atelier. Everything else started to look temporary by comparison.",
+    name: "Sofia R.",
+    detail: "Amsterdam",
+  },
+  {
+    quote:
+      "It is rare to buy something and feel like you actually understand why it costs what it does.",
+    name: "Marcus T.",
+    detail: "Tailored Trousers, London",
+  },
+  {
+    quote:
+      "No returns, no regrets. Every piece has quietly earned its place in my wardrobe.",
+    name: "Camille D.",
+    detail: "Brussels",
+  },
+];
+
+export default function SocialProof() {
+  const reducedMotion = useExperienceStore((s) => s.reducedMotion);
+  const [email, setEmail] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!email.trim()) return;
+    setSubscribed(true);
+  };
+
+  return (
+    <section
+      id="voices"
+      className="scroll-mt-24 mx-3 mt-3 rounded-[2rem] border border-white/40 bg-surface/55 px-6 py-20 shadow-[0_24px_60px_-30px_rgba(46,42,82,0.35)] backdrop-blur-2xl md:mx-6 md:mt-4 md:px-14 md:py-28"
+    >
+      <div className="mx-auto max-w-6xl">
+        <motion.p
+          {...fade(reducedMotion, { y: 12, duration: 0.7 })}
+          className="font-sans text-[12px] font-semibold uppercase tracking-[0.25em] text-accent-deep"
+        >
+          In Their Words
+        </motion.p>
+        <motion.h2
+          {...fade(reducedMotion, { y: 16, duration: 0.8, delay: 0.1 })}
+          className="mt-4 max-w-2xl font-display text-3xl font-bold leading-tight text-ink sm:text-4xl"
+        >
+          The house, worn.
+          <br />
+          Not just by us.
+        </motion.h2>
+
+        <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {TESTIMONIALS.map((t, i) => (
+            <motion.figure
+              key={t.name}
+              {...fade(reducedMotion, { y: 20, duration: 0.7, delay: i * 0.08 })}
+              className="flex h-full flex-col justify-between rounded-2xl border border-white/40 bg-surface/40 px-6 py-6 backdrop-blur-md"
+            >
+              <blockquote className="font-display text-[15px] font-medium leading-snug text-ink">
+                "{t.quote}"
+              </blockquote>
+              <figcaption className="mt-6 font-sans text-[12px] uppercase tracking-[0.1em] text-ink-dim">
+                <span className="font-semibold text-accent-deep">{t.name}</span>
+                {t.detail ? <span className="text-ink-dim"> — {t.detail}</span> : null}
+              </figcaption>
+            </motion.figure>
+          ))}
+        </div>
+
+        <motion.div
+          {...fade(reducedMotion, { y: 16, duration: 0.8, delay: 0.2 })}
+          className="mt-16 flex flex-col items-start gap-6 rounded-2xl border border-white/40 bg-surface/40 px-6 py-8 backdrop-blur-md sm:flex-row sm:items-center sm:justify-between sm:px-10"
+        >
+          <div>
+            <p className="font-display text-lg font-bold text-ink">Join the mailing list.</p>
+            <p className="mt-1 max-w-sm font-sans text-[13px] leading-relaxed text-ink-dim">
+              A quiet note when a new collection is finished. Nothing more, nothing often.
+            </p>
+          </div>
+
+          {subscribed ? (
+            <p className="font-sans text-[13px] font-semibold uppercase tracking-[0.1em] text-accent-deep">
+              You're on the list.
+            </p>
+          ) : (
+            <form
+              onSubmit={handleSubmit}
+              className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row"
+            >
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="your@email.com"
+                aria-label="Email address"
+                className="w-full rounded-full border border-white/50 bg-surface/50 px-5 py-3 font-sans text-[13px] text-ink placeholder-ink-dim/70 backdrop-blur-xl outline-none transition-colors focus:border-accent-deep sm:w-64"
+              />
+              <button
+                type="submit"
+                className="w-full shrink-0 rounded-full bg-accent px-6 py-3 font-sans text-[12px] font-semibold uppercase tracking-[0.15em] text-surface transition-colors hover:bg-accent-deep sm:w-auto"
+              >
+                Sign Up
+              </button>
+            </form>
+          )}
+        </motion.div>
+      </div>
+    </section>
+  );
+}

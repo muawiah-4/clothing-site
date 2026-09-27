@@ -52,13 +52,30 @@ export default function BuyPanel() {
   );
 }
 
+const ADULT_SIZE_GUIDE: [string, string, string][] = [
+  ["XS", "32-34\"", "26-28\""],
+  ["S", "35-37\"", "29-31\""],
+  ["M", "38-40\"", "32-34\""],
+  ["L", "41-43\"", "35-37\""],
+  ["XL", "44-46\"", "38-40\""],
+];
+
+const KIDS_SIZE_GUIDE: [string, string][] = [
+  ["2-3Y", "Height 92-98cm"],
+  ["4-5Y", "Height 104-110cm"],
+  ["6-7Y", "Height 116-122cm"],
+  ["8-9Y", "Height 128-134cm"],
+];
+
 function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void }) {
   const addToBag = useExperienceStore((s) => s.addToBag);
   const setBagOpen = useExperienceStore((s) => s.setBagOpen);
   const [size, setSize] = useState<string | null>(null);
   const [added, setAdded] = useState(false);
   const [needsSize, setNeedsSize] = useState(false);
-  const sizes = piece.gender === "kids" ? ["2-3Y", "4-5Y", "6-7Y", "8-9Y"] : ["XS", "S", "M", "L", "XL"];
+  const [showGuide, setShowGuide] = useState(false);
+  const isKids = piece.gender === "kids";
+  const sizes = isKids ? ["2-3Y", "4-5Y", "6-7Y", "8-9Y"] : ["XS", "S", "M", "L", "XL"];
 
   const requireSize = () => {
     if (!size) {
@@ -84,8 +101,64 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
           </p>
         </div>
 
+        <div className="flex flex-col gap-2 border-y border-ink/10 py-4 font-sans text-[13px] text-ink-dim">
+          <p>
+            <span className="text-ink">Fabric — </span>
+            {piece.fabric}
+          </p>
+          <p>
+            <span className="text-ink">Fit — </span>
+            {piece.fit}
+          </p>
+          <p>
+            <span className="text-ink">Care — </span>
+            {piece.care}
+          </p>
+        </div>
+
         <div>
-          <p className="mb-2 font-sans text-[11px] uppercase tracking-[0.15em] text-ink-dim">Size</p>
+          <div className="mb-2 flex items-center justify-between">
+            <p className="font-sans text-[11px] uppercase tracking-[0.15em] text-ink-dim">Size</p>
+            <button
+              onClick={() => setShowGuide((v) => !v)}
+              className="font-sans text-[11px] uppercase tracking-[0.1em] text-accent-deep underline-offset-2 hover:underline"
+            >
+              {showGuide ? "Hide size guide" : "Size guide"}
+            </button>
+          </div>
+
+          {showGuide && (
+            <div className="mb-3 overflow-hidden rounded-xl border border-white/50 bg-surface/40 backdrop-blur-md">
+              <table className="w-full font-sans text-[12px] text-ink-dim">
+                <thead>
+                  <tr className="border-b border-ink/10 text-ink">
+                    <th className="px-3 py-2 text-left font-medium">Size</th>
+                    <th className="px-3 py-2 text-left font-medium">
+                      {isKids ? "Guide" : "Chest"}
+                    </th>
+                    {!isKids && <th className="px-3 py-2 text-left font-medium">Waist</th>}
+                  </tr>
+                </thead>
+                <tbody>
+                  {isKids
+                    ? KIDS_SIZE_GUIDE.map(([s, height]) => (
+                        <tr key={s} className="border-b border-ink/5 last:border-0">
+                          <td className="px-3 py-2">{s}</td>
+                          <td className="px-3 py-2">{height}</td>
+                        </tr>
+                      ))
+                    : ADULT_SIZE_GUIDE.map(([s, chest, waist]) => (
+                        <tr key={s} className="border-b border-ink/5 last:border-0">
+                          <td className="px-3 py-2">{s}</td>
+                          <td className="px-3 py-2">{chest}</td>
+                          <td className="px-3 py-2">{waist}</td>
+                        </tr>
+                      ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+
           <div className="flex flex-wrap gap-2">
             {sizes.map((s) => (
               <button

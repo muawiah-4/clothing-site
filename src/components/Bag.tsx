@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { X } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { useExperienceStore } from "../store/experience";
 import { unsplash } from "../data/collection";
 import { useFocusTrap } from "../hooks/useFocusTrap";
@@ -13,6 +14,8 @@ export default function Bag() {
   const open = useExperienceStore((s) => s.bagOpen);
   const setOpen = useExperienceStore((s) => s.setBagOpen);
   const items = useExperienceStore((s) => s.bagItems);
+  const clearBag = useExperienceStore((s) => s.clearBag);
+  const [placed, setPlaced] = useState(false);
   const close = () => setOpen(false);
   const containerRef = useFocusTrap(open, close);
 
@@ -57,11 +60,32 @@ export default function Bag() {
               </button>
             </div>
 
-            {items.length === 0 ? (
+            {placed ? (
+              <div className="flex flex-1 flex-col items-center justify-center gap-3 px-7 text-center">
+                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-accent text-surface">
+                  <Check size={22} strokeWidth={2} />
+                </span>
+                <p className="font-display text-lg font-semibold text-ink">Order placed.</p>
+                <p className="font-sans text-[13px] text-ink-dim">
+                  A confirmation is on its way to your inbox. The studio will follow up on
+                  delivery.
+                </p>
+                <button
+                  onClick={() => {
+                    setPlaced(false);
+                    clearBag();
+                    setOpen(false);
+                  }}
+                  className="mt-4 rounded-full bg-accent px-6 py-3 font-sans text-[12px] font-semibold uppercase tracking-[0.15em] text-surface transition-colors hover:bg-accent-deep"
+                >
+                  Continue Browsing
+                </button>
+              </div>
+            ) : items.length === 0 ? (
               <div className="flex flex-1 flex-col items-center justify-center gap-2 px-7 text-center">
                 <p className="font-display text-lg font-semibold text-ink">Your bag is empty.</p>
                 <p className="font-sans text-[13px] text-ink-dim">
-                  Twelve pieces are waiting in the archive.
+                  Fifteen pieces are waiting in the archive.
                 </p>
               </div>
             ) : (
@@ -101,7 +125,10 @@ export default function Bag() {
                       ${total.toLocaleString()}
                     </span>
                   </div>
-                  <button className="w-full rounded-full bg-accent py-4 font-sans text-[12px] font-semibold uppercase tracking-[0.15em] text-surface transition-colors hover:bg-accent-deep">
+                  <button
+                    onClick={() => setPlaced(true)}
+                    className="w-full rounded-full bg-accent py-4 font-sans text-[12px] font-semibold uppercase tracking-[0.15em] text-surface transition-colors hover:bg-accent-deep"
+                  >
                     Checkout
                   </button>
                 </div>

@@ -5,7 +5,9 @@ import { COLLECTION, unsplash } from "../data/collection";
 import { useExperienceStore } from "../store/experience";
 import { enter } from "../lib/motion";
 
-const FEATURED_IDS = ["ivory-tailleur", "grey-hour", "silhouette-iv"];
+// one from each wardrobe, so the very first thing a visitor sees represents
+// men/women/kids evenly rather than skewing toward one category
+const FEATURED_IDS = ["nocturne", "ivory-tailleur", "kids-marigold"];
 const FEATURED = FEATURED_IDS.map((id) => COLLECTION.find((p) => p.id === id)!);
 
 export default function Hero() {

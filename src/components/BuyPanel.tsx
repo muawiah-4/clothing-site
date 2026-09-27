@@ -31,7 +31,7 @@ export default function BuyPanel() {
           />
           <motion.div
             ref={containerRef}
-            className="relative flex h-full w-full max-w-md flex-col overflow-y-auto rounded-l-[2rem] bg-surface"
+            className="relative flex h-full w-full max-w-md flex-col overflow-y-auto rounded-l-[2rem] border-l border-white/40 bg-surface/70 backdrop-blur-2xl"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
@@ -40,7 +40,7 @@ export default function BuyPanel() {
             <button
               onClick={close}
               aria-label="Close panel"
-              className="absolute right-5 top-5 z-10 rounded-full bg-surface p-2 text-ink-dim shadow-md transition-colors hover:text-accent-deep"
+              className="absolute right-5 top-5 z-10 rounded-full border border-white/50 bg-surface/60 p-2 text-ink-dim shadow-md backdrop-blur-md transition-colors hover:text-accent-deep"
             >
               <X size={18} strokeWidth={1.6} />
             </button>

@@ -9,7 +9,7 @@ export default function BrandStory() {
   return (
     <section
       id="story"
-      className="scroll-mt-24 mx-3 mt-3 rounded-[2rem] bg-surface px-6 py-20 md:mx-6 md:mt-4 md:px-14 md:py-28"
+      className="scroll-mt-24 mx-3 mt-3 rounded-[2rem] border border-white/40 bg-surface/55 px-6 py-20 shadow-[0_24px_60px_-30px_rgba(46,42,82,0.35)] backdrop-blur-2xl md:mx-6 md:mt-4 md:px-14 md:py-28"
     >
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-16 md:grid-cols-12 md:gap-8">
         <div className="md:col-span-5">
@@ -54,7 +54,7 @@ export default function BrandStory() {
 
           <motion.blockquote
             {...fade(reducedMotion, { y: 14, duration: 0.8, delay: 0.35 })}
-            className="mt-8 rounded-2xl bg-surface-soft px-6 py-5 font-display text-lg font-medium leading-snug text-ink"
+            className="mt-8 rounded-2xl border border-white/40 bg-surface/40 px-6 py-5 font-display text-lg font-medium leading-snug text-ink backdrop-blur-md"
           >
             "We do not chase trend. We chase the garment that still feels correct in ten years."
           </motion.blockquote>

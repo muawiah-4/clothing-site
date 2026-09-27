@@ -16,7 +16,7 @@ const SOCIAL = [
 
 export default function Footer() {
   return (
-    <footer className="mx-3 mb-3 mt-3 rounded-[2rem] bg-surface px-6 py-14 md:mx-6 md:mb-6 md:mt-4 md:px-14">
+    <footer className="mx-3 mb-3 mt-3 rounded-[2rem] border border-white/40 bg-surface/55 px-6 py-14 shadow-[0_24px_60px_-30px_rgba(46,42,82,0.35)] backdrop-blur-2xl md:mx-6 md:mb-6 md:mt-4 md:px-14">
       <div className="mx-auto flex max-w-6xl flex-col gap-12 md:flex-row md:justify-between">
         <div className="max-w-xs">
           <button onClick={() => scrollToSection("top")} aria-label="Atelier — go to top">

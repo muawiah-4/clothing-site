@@ -135,7 +135,7 @@ export default function WardrobeReveal() {
           <>
             <div className="absolute inset-0 bg-gradient-to-t from-spotlight via-spotlight/30 to-spotlight/55" />
             <span className="absolute inset-0 flex items-center justify-center bg-spotlight/0 opacity-0 transition-opacity duration-300 group-hover:bg-spotlight/20 group-hover:opacity-100">
-              <span className="flex h-24 w-24 items-center justify-center rounded-full border border-surface/60 font-sans text-[11px] uppercase tracking-[0.2em] text-surface">
+              <span className="flex h-24 w-24 items-center justify-center rounded-full border border-white/50 bg-surface/15 font-sans text-[11px] uppercase tracking-[0.2em] text-surface backdrop-blur-md">
                 Open
               </span>
             </span>

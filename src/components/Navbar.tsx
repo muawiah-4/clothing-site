@@ -19,7 +19,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 mx-3 mt-3 flex items-center justify-between rounded-2xl bg-surface/90 px-6 py-4 shadow-[0_10px_30px_-16px_rgba(78,66,110,0.35)] backdrop-blur-md md:mx-6 md:mt-4 md:px-8">
+      <header className="sticky top-0 z-50 mx-3 mt-3 flex items-center justify-between rounded-2xl border border-white/40 bg-surface/45 px-6 py-4 shadow-[0_10px_30px_-16px_rgba(78,66,110,0.35)] backdrop-blur-xl md:mx-6 md:mt-4 md:px-8">
         <button onClick={() => scrollToSection("top")} aria-label="Atelier — go to top">
           <Logo />
         </button>

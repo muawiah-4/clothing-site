@@ -35,8 +35,8 @@ export default function Cursor() {
     };
 
     const tick = () => {
-      ringX += (targetX - ringX) * 0.16;
-      ringY += (targetY - ringY) * 0.16;
+      ringX += (targetX - ringX) * 0.18;
+      ringY += (targetY - ringY) * 0.18;
       place(ringPosRef.current, ringX, ringY);
       raf = requestAnimationFrame(tick);
     };
@@ -51,24 +51,31 @@ export default function Cursor() {
     };
   }, []);
 
-  const scale = cursorVariant === "hover" ? 1.8 : cursorVariant === "view" ? 2.6 : 1;
+  const scale = cursorVariant === "hover" ? 1.5 : cursorVariant === "view" ? 2.4 : 1;
+  const hidden = cursorVariant === "hidden";
 
   return (
     <div className="pointer-events-none fixed inset-0 z-[70] hidden md:block" aria-hidden="true">
+      {/* small solid lead dot, tracks the raw pointer 1:1 */}
       <div
         ref={dotRef}
-        className="fixed left-0 top-0 h-1.5 w-1.5 rounded-full bg-accent-deep transition-opacity duration-200"
-        style={{ opacity: cursorVariant === "hidden" ? 0 : 1 }}
+        className="fixed left-0 top-0 h-2 w-2 rounded-full bg-accent-deep shadow-[0_0_0_3px_rgba(73,193,214,0.18)] transition-opacity duration-200"
+        style={{ opacity: hidden ? 0 : 1 }}
       />
       {/* ringPosRef carries only position (rAF-driven, every frame); the
           scale/opacity live one level down so React's transitions on them
           are never clobbered by the position loop overwriting `transform` */}
       <div ref={ringPosRef} className="fixed left-0 top-0">
         <div
-          className="flex h-11 w-11 items-center justify-center rounded-full border border-accent bg-surface/30 backdrop-blur-[1px] transition-transform duration-300 ease-out"
+          className="flex h-12 w-12 items-center justify-center rounded-full transition-transform duration-300 ease-out"
           style={{
             transform: `translate(-50%, -50%) scale(${scale})`,
-            opacity: cursorVariant === "hidden" ? 0 : 1,
+            opacity: hidden ? 0 : 1,
+            background:
+              "linear-gradient(135deg, rgba(185,197,242,0.35), rgba(203,183,230,0.35), rgba(242,198,216,0.35))",
+            backdropFilter: "blur(6px)",
+            boxShadow:
+              "0 8px 24px -8px rgba(46,42,82,0.35), inset 0 0 0 1px rgba(255,255,255,0.6)",
           }}
         >
           <span

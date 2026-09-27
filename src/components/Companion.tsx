@@ -43,7 +43,7 @@ export default function Companion() {
             exit={{ opacity: 0, y: -10, scale: 0.85, rotate: 6 }}
             whileTap={{ scale: 0.88 }}
             transition={{ type: "spring", stiffness: 260, damping: 20 }}
-            className="pointer-events-auto flex h-14 w-14 items-center justify-center rounded-full bg-surface shadow-[0_16px_30px_-12px_rgba(46,42,82,0.5)] md:h-[72px] md:w-[72px]"
+            className="pointer-events-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/50 bg-surface/50 shadow-[0_16px_30px_-12px_rgba(46,42,82,0.5)] backdrop-blur-xl md:h-[72px] md:w-[72px]"
           >
             <svg viewBox="0 0 34 46" fill="none" aria-hidden="true" className="h-7 w-5 md:h-10 md:w-[30px]">
               {/* kids' hood sits behind the head */}
@@ -81,7 +81,7 @@ export default function Companion() {
           </motion.button>
         </AnimatePresence>
       </motion.div>
-      <span className="rounded-full bg-surface px-3 py-1 font-sans text-[9px] font-medium uppercase tracking-[0.1em] text-ink-dim shadow-[0_10px_20px_-14px_rgba(46,42,82,0.5)]">
+      <span className="rounded-full border border-white/50 bg-surface/50 px-3 py-1 font-sans text-[9px] font-medium uppercase tracking-[0.1em] text-ink-dim shadow-[0_10px_20px_-14px_rgba(46,42,82,0.5)] backdrop-blur-xl">
         {outfit.label}
       </span>
     </div>

@@ -18,7 +18,7 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
     <AnimatePresence>
       {open && (
         <motion.div
-          className="fixed inset-0 z-[90] flex flex-col bg-surface md:hidden"
+          className="fixed inset-0 z-[90] flex flex-col bg-surface/75 backdrop-blur-2xl md:hidden"
           role="dialog"
           aria-modal="true"
           aria-label="Site navigation"
@@ -33,7 +33,7 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
             <button
               onClick={onClose}
               aria-label="Close menu"
-              className="rounded-full bg-surface-soft p-2 text-ink-dim transition-colors hover:text-accent"
+              className="rounded-full border border-white/50 bg-surface/50 p-2 text-ink-dim backdrop-blur-md transition-colors hover:text-accent"
             >
               <X size={18} strokeWidth={1.6} />
             </button>

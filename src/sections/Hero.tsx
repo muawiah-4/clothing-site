@@ -67,7 +67,7 @@ export default function Hero() {
           <motion.div {...enter(reducedMotion, { y: 14, duration: 0.7, delay: 0.3 })} className="mt-9">
             <button
               onClick={() => setSelectedPiece(piece)}
-              className="group inline-flex items-center gap-2 rounded-full bg-surface px-7 py-4 font-sans text-[13px] font-semibold uppercase tracking-[0.1em] text-accent-deep shadow-[0_16px_30px_-14px_rgba(46,42,82,0.5)] transition-transform hover:scale-[1.03]"
+              className="group inline-flex items-center gap-2 rounded-full border border-white/50 bg-surface/50 px-7 py-4 font-sans text-[13px] font-semibold uppercase tracking-[0.1em] text-accent-deep shadow-[0_16px_30px_-14px_rgba(46,42,82,0.5)] backdrop-blur-xl transition-transform hover:scale-[1.03] hover:bg-surface/70"
             >
               Shop This Look
               <ArrowRight
@@ -87,7 +87,7 @@ export default function Hero() {
                 key={i}
                 href="#"
                 aria-label="Follow Atelier"
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-surface/50 text-surface transition-colors hover:bg-surface hover:text-accent-deep"
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-surface/50 bg-surface/10 text-surface backdrop-blur-md transition-colors hover:bg-surface/80 hover:text-accent-deep"
               >
                 <Icon size={15} strokeWidth={1.6} />
               </a>
@@ -142,7 +142,7 @@ export default function Hero() {
           <div className="relative z-10 mt-6 flex items-end gap-3">
             <button
               onClick={() => setSelectedPiece(piece)}
-              className="flex items-center gap-3 rounded-2xl bg-surface px-4 py-3 text-left shadow-[0_14px_30px_-16px_rgba(46,42,82,0.4)]"
+              className="flex items-center gap-3 rounded-2xl border border-white/50 bg-surface/55 px-4 py-3 text-left shadow-[0_14px_30px_-16px_rgba(46,42,82,0.4)] backdrop-blur-xl"
             >
               <div className="h-12 w-10 shrink-0 overflow-hidden rounded-lg bg-surface-soft">
                 <img

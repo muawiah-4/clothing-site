@@ -38,7 +38,7 @@ export default function Bag() {
           />
           <motion.div
             ref={containerRef}
-            className="relative flex h-full w-full max-w-md flex-col rounded-l-[2rem] bg-surface"
+            className="relative flex h-full w-full max-w-md flex-col rounded-l-[2rem] border-l border-white/40 bg-surface/70 backdrop-blur-2xl"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
@@ -51,7 +51,7 @@ export default function Bag() {
               <button
                 onClick={close}
                 aria-label="Close bag"
-                className="rounded-full bg-surface-soft p-2 text-ink-dim transition-colors hover:text-accent-deep"
+                className="rounded-full border border-white/50 bg-surface/60 p-2 text-ink-dim backdrop-blur-md transition-colors hover:text-accent-deep"
               >
                 <X size={16} strokeWidth={1.6} />
               </button>

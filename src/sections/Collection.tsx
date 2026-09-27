@@ -19,7 +19,7 @@ export default function Collection() {
   return (
     <section
       id="collection"
-      className="scroll-mt-24 mx-3 mt-3 rounded-[2rem] bg-surface px-6 py-20 md:mx-6 md:mt-4 md:px-10 md:py-28"
+      className="scroll-mt-24 mx-3 mt-3 rounded-[2rem] border border-white/40 bg-surface/55 px-6 py-20 shadow-[0_24px_60px_-30px_rgba(46,42,82,0.35)] backdrop-blur-2xl md:mx-6 md:mt-4 md:px-10 md:py-28"
     >
       <div className="mx-auto max-w-7xl">
         <div className="mb-10 flex flex-col gap-6 md:mb-14 md:flex-row md:items-end md:justify-between">
@@ -49,10 +49,10 @@ export default function Collection() {
               role="tab"
               aria-selected={activeGender === tab.id}
               onClick={() => setActiveGender(tab.id)}
-              className={`rounded-full border px-5 py-2.5 font-sans text-[12px] font-medium uppercase tracking-[0.1em] transition-colors ${
+              className={`rounded-full border px-5 py-2.5 font-sans text-[12px] font-medium uppercase tracking-[0.1em] backdrop-blur-md transition-colors ${
                 activeGender === tab.id
                   ? "border-accent bg-accent text-surface"
-                  : "border-ink/15 text-ink-dim hover:border-accent/50 hover:text-accent-deep"
+                  : "border-white/50 bg-surface/30 text-ink-dim hover:border-accent/50 hover:text-accent-deep"
               }`}
             >
               {tab.label}

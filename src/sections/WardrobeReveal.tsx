@@ -41,29 +41,6 @@ export default function WardrobeReveal() {
     };
   }, []);
 
-  // lets a visitor who scrolls back up re-trigger the reveal instead of the
-  // wardrobe staying permanently open/disabled for the rest of the session
-  useEffect(() => {
-    if (phase !== "leaving") return;
-    const el = sectionRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) return;
-        setPhase("closed");
-        setWardrobeOpened(false);
-        const video = videoRef.current;
-        if (video) {
-          video.pause();
-          video.currentTime = 0;
-        }
-      },
-      { threshold: 0 },
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [phase, setWardrobeOpened]);
-
   const scheduleSequence = useCallback((toBurstDelay: number) => {
     timers.current.push(window.setTimeout(() => setPhase("bursting"), toBurstDelay));
     timers.current.push(window.setTimeout(() => setPhase("leaving"), toBurstDelay + 1100));
@@ -101,6 +78,44 @@ export default function WardrobeReveal() {
         scheduleSequence(300);
       });
   }, [phase, reducedMotion, scheduleSequence, setWardrobeOpened]);
+
+  // plays automatically the moment the section comes properly into view, and
+  // resets on the way out so scrolling back to it plays the whole sequence
+  // again rather than leaving it permanently open after the first visit
+  const phaseRef = useRef(phase);
+  useEffect(() => {
+    phaseRef.current = phase;
+  }, [phase]);
+  const openRef = useRef(open);
+  useEffect(() => {
+    openRef.current = open;
+  }, [open]);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (phaseRef.current === "closed") openRef.current();
+          return;
+        }
+        if (phaseRef.current === "closed") return;
+        timers.current.forEach((t) => window.clearTimeout(t));
+        timers.current = [];
+        setPhase("closed");
+        setWardrobeOpened(false);
+        const video = videoRef.current;
+        if (video) {
+          video.pause();
+          video.currentTime = 0;
+        }
+      },
+      { threshold: 0.4 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [setWardrobeOpened]);
 
   return (
     <section

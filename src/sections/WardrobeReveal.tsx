@@ -32,6 +32,7 @@ export default function WardrobeReveal() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const timers = useRef<number[]>([]);
   const setWardrobeOpened = useExperienceStore((s) => s.setWardrobeOpened);
+  const setCursorLabel = useExperienceStore((s) => s.setCursorLabel);
   const reducedMotion = useExperienceStore((s) => s.reducedMotion);
 
   useEffect(() => {
@@ -126,6 +127,8 @@ export default function WardrobeReveal() {
       {/* the wardrobe itself is now the full-bleed background, not a small floating card */}
       <button
         onClick={open}
+        onMouseEnter={() => phase === "closed" && setCursorLabel("Open")}
+        onMouseLeave={() => setCursorLabel(null)}
         disabled={phase !== "closed"}
         aria-label="Open the archive wardrobe"
         className="group absolute inset-0 h-full w-full"

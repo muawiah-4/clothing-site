@@ -13,6 +13,7 @@ const FEATURED = FEATURED_IDS.map((id) => COLLECTION.find((p) => p.id === id)!);
 export default function Hero() {
   const reducedMotion = useExperienceStore((s) => s.reducedMotion);
   const setSelectedPiece = useExperienceStore((s) => s.setSelectedPiece);
+  const setCursorLabel = useExperienceStore((s) => s.setCursorLabel);
   const [active, setActive] = useState(0);
   const piece = FEATURED[active];
 
@@ -112,6 +113,8 @@ export default function Hero() {
           <motion.button
             key={piece.id}
             onClick={() => setSelectedPiece(piece)}
+            onMouseEnter={() => setCursorLabel("Shop")}
+            onMouseLeave={() => setCursorLabel(null)}
             initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 20, scale: 0.96 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: reducedMotion ? 0.15 : 0.6, ease: [0.22, 1, 0.36, 1] }}

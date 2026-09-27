@@ -128,7 +128,7 @@ function CollectionCard({
   index: number;
   reducedMotion: boolean;
 }) {
-  const setCursorVariant = useExperienceStore((s) => s.setCursorVariant);
+  const setCursorLabel = useExperienceStore((s) => s.setCursorLabel);
   const setSelectedPiece = useExperienceStore((s) => s.setSelectedPiece);
   const offset = index % 3 === 1 ? "sm:mt-14" : "";
 
@@ -143,8 +143,8 @@ function CollectionCard({
     >
       <button
         className="group block w-full text-left"
-        onMouseEnter={() => setCursorVariant("view")}
-        onMouseLeave={() => setCursorVariant("default")}
+        onMouseEnter={() => setCursorLabel("View")}
+        onMouseLeave={() => setCursorLabel(null)}
         onClick={() => setSelectedPiece(piece)}
       >
         <div className="aspect-[3/4] overflow-hidden rounded-[1.5rem] bg-surface-soft shadow-[0_16px_34px_-20px_rgba(46,42,82,0.35)]">

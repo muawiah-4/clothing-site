@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import type { CollectionPiece, Gender } from "../data/collection";
 
-export type CursorVariant = "default" | "hover" | "view" | "hidden";
 export type GenderFilter = Gender | "all";
 
 export interface BagItem {
@@ -11,8 +10,9 @@ export interface BagItem {
 }
 
 interface ExperienceState {
-  cursorVariant: CursorVariant;
-  setCursorVariant: (v: CursorVariant) => void;
+  /** text shown in the cursor's hover chip, or null for the plain dot */
+  cursorLabel: string | null;
+  setCursorLabel: (v: string | null) => void;
 
   wardrobeOpened: boolean;
   setWardrobeOpened: (v: boolean) => void;
@@ -36,8 +36,8 @@ interface ExperienceState {
 }
 
 export const useExperienceStore = create<ExperienceState>((set) => ({
-  cursorVariant: "default",
-  setCursorVariant: (v) => set({ cursorVariant: v }),
+  cursorLabel: null,
+  setCursorLabel: (v) => set({ cursorLabel: v }),
 
   wardrobeOpened: false,
   setWardrobeOpened: (v) => set({ wardrobeOpened: v }),

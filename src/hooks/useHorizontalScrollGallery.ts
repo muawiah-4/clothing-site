@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import type { RefObject } from "react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 // The ScrollTrigger plugin is already registered once in useSmoothScroll.ts
 // (gsap.registerPlugin(ScrollTrigger)) — that's a one-time, app-wide
-// registration, so it doesn't need to be imported or re-registered here for
-// the `scrollTrigger` tween config below to work.
+// registration, so it doesn't need to be re-registered here for the
+// `scrollTrigger` tween config below to work. It's imported only for refresh().
 
 /**
  * Pins `viewportRef`'s element in place while scrubbing `trackRef`'s element
@@ -53,7 +54,25 @@ export function useHorizontalScrollGallery(
       },
     });
 
+    // Content above the pin can change height after mount (e.g. the Collection
+    // filter adding/removing cards), which leaves the pin's cached start/end
+    // stale. Re-measure whenever <main>'s height actually changes, debounced
+    // so a layout animation settles before ScrollTrigger recomputes.
+    const main = viewport.closest("main") ?? document.body;
+    let lastHeight = main.getBoundingClientRect().height;
+    let refreshTimer = 0;
+    const resizeObserver = new ResizeObserver(() => {
+      const height = main.getBoundingClientRect().height;
+      if (Math.abs(height - lastHeight) < 1) return;
+      lastHeight = height;
+      window.clearTimeout(refreshTimer);
+      refreshTimer = window.setTimeout(() => ScrollTrigger.refresh(), 200);
+    });
+    resizeObserver.observe(main);
+
     return () => {
+      resizeObserver.disconnect();
+      window.clearTimeout(refreshTimer);
       // Kill the ScrollTrigger first (removes the pin-spacer and any inline
       // fixed-position styles it applied) before killing the tween itself,
       // both on unmount and before this effect re-runs (e.g. reducedMotion

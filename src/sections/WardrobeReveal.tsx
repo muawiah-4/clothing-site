@@ -31,27 +31,32 @@ export default function WardrobeReveal() {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const timers = useRef<number[]>([]);
+  // bumped on every open/reset/skip so a video.play() promise that settles
+  // after the sequence was reset (pause() rejects it) can't schedule timers
+  const generation = useRef(0);
   const setWardrobeOpened = useExperienceStore((s) => s.setWardrobeOpened);
   const setCursorLabel = useExperienceStore((s) => s.setCursorLabel);
   const reducedMotion = useExperienceStore((s) => s.reducedMotion);
 
-  useEffect(() => {
-    const timerList = timers.current;
-    return () => {
-      timerList.forEach((t) => window.clearTimeout(t));
-    };
+  const clearTimers = useCallback(() => {
+    timers.current.forEach((t) => window.clearTimeout(t));
+    timers.current = [];
   }, []);
 
+  // read timers.current at cleanup time — the array is replaced on every
+  // reset, so a copy captured at mount would miss later timers
+  useEffect(() => clearTimers, [clearTimers]);
+
+  // never moves the user's scroll position — the collection is reached via
+  // the click-only CTA shown once the burst has played
   const scheduleSequence = useCallback((toBurstDelay: number) => {
     timers.current.push(window.setTimeout(() => setPhase("bursting"), toBurstDelay));
     timers.current.push(window.setTimeout(() => setPhase("leaving"), toBurstDelay + 1100));
-    timers.current.push(
-      window.setTimeout(() => scrollToSection("collection"), toBurstDelay + 1300),
-    );
   }, []);
 
   const open = useCallback(() => {
     if (phase !== "closed") return;
+    const gen = ++generation.current;
     setPhase("playing");
     setWardrobeOpened(true);
     setScatter(computeScatter(window.innerWidth, window.innerHeight));
@@ -68,11 +73,13 @@ export default function WardrobeReveal() {
     video
       .play()
       .then(() => {
+        if (gen !== generation.current) return;
         const duration = Number.isFinite(video.duration) && video.duration > 0 ? video.duration : 6;
         // garments emerge roughly when the doors are fully open in the source clip
         scheduleSequence(duration * 550);
       })
       .catch(() => {
+        if (gen !== generation.current) return;
         // autoplay blocked — skip the door-opening shot but still complete
         // the full sequence so the click never dead-ends
         setPhase("bursting");
@@ -104,8 +111,8 @@ export default function WardrobeReveal() {
           return;
         }
         if (phaseRef.current === "closed") return;
-        timers.current.forEach((t) => window.clearTimeout(t));
-        timers.current = [];
+        generation.current += 1;
+        clearTimers();
         setPhase("closed");
         setWardrobeOpened(false);
         const video = videoRef.current;
@@ -118,16 +125,15 @@ export default function WardrobeReveal() {
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [reducedMotion, setWardrobeOpened]);
+  }, [reducedMotion, setWardrobeOpened, clearTimers]);
 
   const skip = useCallback(() => {
-    timers.current.forEach((t) => window.clearTimeout(t));
-    timers.current = [];
+    generation.current += 1;
+    clearTimers();
     const video = videoRef.current;
     if (video) video.pause();
     setPhase("leaving");
-    scrollToSection("collection");
-  }, []);
+  }, [clearTimers]);
 
   return (
     <section
@@ -195,6 +201,15 @@ export default function WardrobeReveal() {
           className="absolute right-5 top-5 z-30 rounded-full border border-white/40 bg-spotlight/60 px-4 py-2 font-sans text-[11px] uppercase tracking-[0.15em] text-surface backdrop-blur-md transition-colors hover:bg-spotlight/85"
         >
           Skip
+        </button>
+      )}
+
+      {phase === "leaving" && (
+        <button
+          onClick={() => scrollToSection("collection")}
+          className="absolute bottom-8 left-1/2 z-30 -translate-x-1/2 rounded-full border border-white/40 bg-spotlight/60 px-6 py-3 font-sans text-[11px] uppercase tracking-[0.15em] text-surface backdrop-blur-md transition-colors hover:bg-spotlight/85"
+        >
+          Shop the collection
         </button>
       )}
 

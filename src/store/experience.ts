@@ -42,7 +42,12 @@ export const useExperienceStore = create<ExperienceState>((set) => ({
   wardrobeOpened: false,
   setWardrobeOpened: (v) => set({ wardrobeOpened: v }),
 
-  reducedMotion: false,
+  // read synchronously so the very first render (e.g. the Preloader) already
+  // knows — useDevicePerformance only keeps it in sync afterwards
+  reducedMotion:
+    typeof window !== "undefined" && typeof window.matchMedia === "function"
+      ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      : false,
   setReducedMotion: (v) => set({ reducedMotion: v }),
 
   activeGender: "all",

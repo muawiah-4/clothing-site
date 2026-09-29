@@ -12,14 +12,19 @@ export default function Preloader() {
   const reducedMotion = useExperienceStore((s) => s.reducedMotion);
   const [progress, setProgress] = useState(0);
   const [done, setDone] = useState(() => reducedMotion);
+  const finished = done || reducedMotion;
 
   useEffect(() => {
-    if (reducedMotion) return;
+    // reduced-motion can flip on after mount (or mid-sequence) — `finished`
+    // below then drops the curtain and the effect under this one unlocks scroll.
+    // Once done, never re-lock (e.g. the preference flipping back off later).
+    if (reducedMotion || done) return;
 
     document.body.style.overflow = "hidden";
     const duration = 1300;
     const start = performance.now();
     let raf = 0;
+    let timeout = 0;
 
     const tick = (now: number) => {
       const t = Math.min(1, (now - start) / duration);
@@ -27,21 +32,24 @@ export default function Preloader() {
       if (t < 1) {
         raf = requestAnimationFrame(tick);
       } else {
-        window.setTimeout(() => setDone(true), 200);
+        timeout = window.setTimeout(() => setDone(true), 200);
       }
     };
     raf = requestAnimationFrame(tick);
 
-    return () => cancelAnimationFrame(raf);
-  }, [reducedMotion]);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(timeout);
+    };
+  }, [reducedMotion, done]);
 
   useEffect(() => {
-    if (done) document.body.style.overflow = "";
-  }, [done]);
+    if (finished) document.body.style.overflow = "";
+  }, [finished]);
 
   return (
     <AnimatePresence>
-      {!done && (
+      {!finished && (
         <motion.div
           className="fixed inset-0 z-[999] flex flex-col items-center justify-center gap-5 bg-spotlight"
           exit={{ clipPath: "inset(0 0 100% 0)" }}

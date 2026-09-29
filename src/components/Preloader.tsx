@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useExperienceStore } from "../store/experience";
+import { lockScroll, unlockScroll } from "../lib/scroll";
 
 /**
  * A brief, deliberate first moment before the site is handed over — a dark
@@ -21,6 +22,7 @@ export default function Preloader() {
     if (reducedMotion || done) return;
 
     document.body.style.overflow = "hidden";
+    lockScroll();
     const duration = 1300;
     const start = performance.now();
     let raf = 0;
@@ -40,6 +42,7 @@ export default function Preloader() {
     return () => {
       cancelAnimationFrame(raf);
       window.clearTimeout(timeout);
+      unlockScroll();
     };
   }, [reducedMotion, done]);
 

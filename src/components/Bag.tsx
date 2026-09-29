@@ -94,7 +94,7 @@ export default function Bag() {
               </div>
             ) : (
               <>
-                <div className="flex-1 overflow-y-auto px-7 py-6">
+                <div data-lenis-prevent className="flex-1 overflow-y-auto px-7 py-6">
                   <ul className="flex flex-col gap-6">
                     {items.map((item) => (
                       <li key={`${item.piece.id}-${item.size}`} className="flex gap-4">

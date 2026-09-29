@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { lockScroll, unlockScroll } from "../lib/scroll";
 
 const FOCUSABLE = 'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
 
@@ -41,10 +42,12 @@ export function useFocusTrap(open: boolean, onClose: () => void) {
 
     window.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
+    lockScroll();
 
     return () => {
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
+      unlockScroll();
       (triggerRef.current as HTMLElement | null)?.focus?.();
     };
   }, [open, onClose]);

@@ -33,6 +33,7 @@ export default function BuyPanel() {
           />
           <motion.div
             ref={containerRef}
+            data-lenis-prevent
             className="relative flex h-full w-full max-w-md flex-col overflow-y-auto rounded-l-[2rem] border-l border-white/40 bg-surface/70 backdrop-blur-2xl"
             initial={{ x: reducedMotion ? 0 : "100%" }}
             animate={{ x: 0 }}

@@ -12,6 +12,13 @@ const FOCUSABLE = 'a[href], button:not([disabled]), textarea, input, select, [ta
 export function useFocusTrap(open: boolean, onClose: () => void) {
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<Element | null>(null);
+  // callers pass inline close fns (a new identity every render) — keep the
+  // latest one in a ref so the trap only re-runs when `open` changes, instead
+  // of re-focusing the first element and re-locking scroll on every render
+  const onCloseRef = useRef(onClose);
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
 
   useEffect(() => {
     if (!open) return;
@@ -23,7 +30,7 @@ export function useFocusTrap(open: boolean, onClose: () => void) {
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        onClose();
+        onCloseRef.current();
         return;
       }
       if (e.key !== "Tab" || !container) return;
@@ -50,7 +57,7 @@ export function useFocusTrap(open: boolean, onClose: () => void) {
       unlockScroll();
       (triggerRef.current as HTMLElement | null)?.focus?.();
     };
-  }, [open, onClose]);
+  }, [open]);
 
   return containerRef;
 }

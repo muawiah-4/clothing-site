@@ -24,7 +24,10 @@ export default function Bag() {
   const total = items.reduce((sum, i) => sum + i.piece.price * i.qty, 0);
 
   return (
-    <AnimatePresence>
+    // reset the confirmation only once the panel has fully left, whichever
+    // way it was closed (X, Esc, backdrop, Continue Browsing), so the next
+    // open shows the bag rather than a stale "Order placed"
+    <AnimatePresence onExitComplete={() => setPlaced(false)}>
       {open && (
         <motion.div
           className="fixed inset-0 z-[85] flex items-stretch justify-end"
@@ -75,11 +78,7 @@ export default function Bag() {
                   delivery.
                 </p>
                 <button
-                  onClick={() => {
-                    setPlaced(false);
-                    clearBag();
-                    setOpen(false);
-                  }}
+                  onClick={close}
                   className="mt-4 rounded-full bg-accent px-6 py-3 font-sans text-[12px] font-semibold uppercase tracking-[0.15em] text-surface transition-colors hover:bg-accent-deep"
                 >
                   Continue Browsing
@@ -130,7 +129,10 @@ export default function Bag() {
                     </span>
                   </div>
                   <button
-                    onClick={() => setPlaced(true)}
+                    onClick={() => {
+                      clearBag();
+                      setPlaced(true);
+                    }}
                     className="w-full rounded-full bg-accent py-4 font-sans text-[12px] font-semibold uppercase tracking-[0.15em] text-surface transition-colors hover:bg-accent-deep"
                   >
                     Checkout

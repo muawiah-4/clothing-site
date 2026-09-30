@@ -41,7 +41,7 @@ export default function Bag() {
   return (
     // reset the confirmation only once the panel has fully left, whichever
     // way it was closed (X, Esc, backdrop, Continue Browsing), so the next
-    // open shows the bag rather than a stale "Order placed"
+    // open shows the bag rather than a stale "Demo order placed"
     <AnimatePresence onExitComplete={() => setPlaced(false)}>
       {open && (
         <motion.div
@@ -90,11 +90,11 @@ export default function Bag() {
                   tabIndex={-1}
                   className="font-display text-lg font-semibold text-ink"
                 >
-                  Order placed.
+                  Demo order placed.
                 </h3>
-                <p className="font-sans text-[13px] text-ink-dim">
-                  A confirmation is on its way to your inbox. The studio will follow up on
-                  delivery.
+                <p className="max-w-xs font-sans text-[13px] text-ink-dim">
+                  This is a demo storefront: no payment was taken, no order was sent, and
+                  nothing will ship. Your bag has been cleared.
                 </p>
                 <button
                   onClick={close}
@@ -193,10 +193,20 @@ export default function Bag() {
                       clearBag();
                       setPlaced(true);
                     }}
+                    aria-describedby="bag-demo-note"
                     className="w-full rounded-full bg-accent py-4 font-sans text-[12px] font-semibold uppercase tracking-[0.15em] text-surface transition-colors hover:bg-accent-deep"
                   >
-                    Checkout
+                    Place demo order
                   </button>
+                  {/* the checkout collects no payment or delivery details and
+                      sends nothing anywhere; say so before the click, not only
+                      after it (CWE-451: don't imply a real purchase) */}
+                  <p
+                    id="bag-demo-note"
+                    className="text-center font-sans text-[11px] leading-relaxed text-ink-dim"
+                  >
+                    Demo storefront: no payment is taken and no order is sent.
+                  </p>
                 </div>
               </>
             )}

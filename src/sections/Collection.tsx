@@ -5,6 +5,7 @@ import { useExperienceStore, type GenderFilter } from "../store/experience";
 import { fade } from "../lib/motion";
 import ShimmerImage from "../components/ShimmerImage";
 import SplitReveal from "../components/SplitReveal";
+import FilterPills from "../components/FilterPills";
 import { formatPrice } from "../lib/format";
 
 const TABS: { id: GenderFilter; label: string }[] = [
@@ -48,60 +49,30 @@ export default function Collection() {
           </p>
         </div>
 
-        {/* wardrobe tabs — also drives the companion's outfit down in the corner */}
-        <div
-          role="tablist"
-          aria-label="Filter by wardrobe"
-          className="mb-12 flex flex-wrap gap-2 border-b border-ink/10 pb-6 md:mb-16"
-        >
-          {TABS.map((tab) => (
-            <button
-              key={tab.id}
-              role="tab"
-              aria-selected={activeGender === tab.id}
-              onClick={() => {
-                setActiveGender(tab.id);
-                setActiveCategory("all");
-              }}
-              className={`rounded-full border px-5 py-2.5 font-sans text-[12px] font-medium uppercase tracking-[0.1em] backdrop-blur-md transition-colors ${
-                activeGender === tab.id
-                  ? "border-accent bg-accent text-surface"
-                  : "border-white/50 bg-surface/30 text-ink-dim hover:border-accent/50 hover:text-accent-deep"
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
+        {/* wardrobe filter — also drives the companion's outfit down in the corner */}
+        <FilterPills
+          label="Filter by wardrobe"
+          options={TABS}
+          value={activeGender}
+          onChange={(id) => {
+            setActiveGender(id);
+            setActiveCategory("all");
+          }}
+          className="mb-8 border-b border-ink/10 pb-6 md:mb-10"
+        />
 
         {categories.length > 1 && (
-          <div
-            role="group"
-            aria-label="Filter by category"
-            className="mb-10 flex flex-wrap gap-2 md:mb-12"
-          >
-            <button
-              onClick={() => setActiveCategory("all")}
-              aria-pressed={activeCategory === "all"}
-              className={`rounded-full px-4 py-1.5 font-sans text-[11px] uppercase tracking-[0.08em] transition-colors ${
-                activeCategory === "all" ? "text-accent-deep underline" : "text-ink-dim hover:text-accent-deep"
-              }`}
-            >
-              All categories
-            </button>
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                aria-pressed={activeCategory === cat}
-                className={`rounded-full px-4 py-1.5 font-sans text-[11px] uppercase tracking-[0.08em] transition-colors ${
-                  activeCategory === cat ? "text-accent-deep underline" : "text-ink-dim hover:text-accent-deep"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
+          <FilterPills
+            label="Filter by category"
+            size="sm"
+            options={[
+              { id: "all", label: "All categories" },
+              ...categories.map((cat) => ({ id: cat, label: cat })),
+            ]}
+            value={activeCategory}
+            onChange={setActiveCategory}
+            className="mb-10 md:mb-12"
+          />
         )}
 
         {/* md:pb-40 keeps the last row's prices clear of the fixed Companion

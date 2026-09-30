@@ -151,6 +151,7 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
             </div>
           )}
 
+          {/* h-11/min-w-11: 44px touch targets (the chips were ~32px tall) */}
           <div className="flex flex-wrap gap-2">
             {sizes.map((s) => (
               <button
@@ -162,7 +163,7 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
                   // "Added to Bag" described the previous size, not this one
                   setAdded(false);
                 }}
-                className={`min-w-[2.6rem] rounded-xl border px-3 py-2 font-sans text-[12px] transition-colors ${
+                className={`inline-flex h-11 min-w-11 items-center justify-center rounded-xl border px-3 font-sans text-[12px] transition-colors ${
                   s === size
                     ? "border-accent bg-accent text-surface"
                     : "border-ink/15 text-ink-dim hover:border-accent/50 hover:text-accent-deep"

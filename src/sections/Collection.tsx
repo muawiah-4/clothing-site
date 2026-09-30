@@ -128,16 +128,19 @@ function CollectionCard({
       transition={{ duration: reducedMotion ? 0.15 : 0.5, ease: [0.22, 1, 0.36, 1] }}
       className={offset}
     >
-      <button
-        className="group block w-full text-left"
-        onMouseEnter={() => setCursorLabel("View")}
-        onMouseLeave={() => setCursorLabel(null)}
-        onClick={() => setSelectedPiece(piece)}
-      >
+      {/* The heading can't live inside the button: <button> only allows
+          phrasing content, and its children are presentational to assistive
+          tech, so an h3 in there never reaches the heading outline. Instead
+          the h3 holds the button, and the button's ::after is stretched over
+          the whole card so the image and price stay clickable. The focus
+          ring is drawn around the card rather than just the name (the
+          button's own ring needs `!` to beat the unlayered global
+          :focus-visible rule in index.css). */}
+      <div className="group relative rounded-[1.5rem] outline-offset-4 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-ink has-[:focus-visible]:outline-solid">
         <div className="aspect-[3/4] overflow-hidden rounded-[1.5rem] bg-surface-soft shadow-[0_16px_34px_-20px_rgba(46,42,82,0.35)]">
           <ShimmerImage
             src={unsplash(piece.image, 700)}
-            alt={piece.name}
+            alt=""
             loading="lazy"
             className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
           />
@@ -150,13 +153,23 @@ function CollectionCard({
             <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-ink-dim">
               {piece.index} — {piece.category}
             </p>
-            <p className="mt-1 font-display text-base font-semibold text-ink">{piece.name}</p>
+            <h3 className="mt-1 font-display text-base font-semibold text-ink">
+              <button
+                type="button"
+                className="text-left after:absolute after:inset-0 after:rounded-[1.5rem] after:content-[''] focus-visible:outline-none!"
+                onMouseEnter={() => setCursorLabel("View")}
+                onMouseLeave={() => setCursorLabel(null)}
+                onClick={() => setSelectedPiece(piece)}
+              >
+                {piece.name}
+              </button>
+            </h3>
           </div>
           <p className="shrink-0 font-sans text-[13px] font-medium text-accent-deep">
             {formatPrice(piece.price)}
           </p>
         </div>
-      </button>
+      </div>
     </motion.div>
   );
 }

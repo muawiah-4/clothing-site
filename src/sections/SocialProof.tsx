@@ -89,7 +89,7 @@ export default function SocialProof() {
           className="mt-16 flex flex-col items-start gap-6 rounded-2xl border border-white/40 bg-surface/40 px-6 py-8 backdrop-blur-md sm:flex-row sm:items-center sm:justify-between sm:px-10"
         >
           <div>
-            <p className="font-display text-lg font-bold text-ink">Join the mailing list.</p>
+            <h3 className="font-display text-lg font-bold text-ink">Join the mailing list.</h3>
             <p className="mt-1 max-w-sm font-sans text-[13px] leading-relaxed text-ink-dim">
               A quiet note when a new collection is finished. Nothing more, nothing often.
             </p>

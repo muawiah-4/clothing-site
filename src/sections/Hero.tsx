@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { m } from "motion/react";
 import { ArrowRight, AtSign, Send } from "lucide-react";
-import { COLLECTION, unsplash, type CollectionPiece } from "../data/collection";
+import { COLLECTION, unsplash, unsplashSrcSet, type CollectionPiece } from "../data/collection";
 import { useExperienceStore } from "../store/experience";
 import { enter } from "../lib/motion";
 import { scrollToSection } from "../lib/scroll";
@@ -19,12 +19,25 @@ const FEATURED_FOUND = FEATURED_IDS.map((id) => COLLECTION.find((p) => p.id === 
 );
 const FEATURED = FEATURED_FOUND.length > 0 ? FEATURED_FOUND : COLLECTION.slice(0, 3);
 
+// The first featured photo is the page's LCP element. index.html preloads
+// exactly these URLs — keep HERO_WIDTHS / HERO_SIZES / the default src in
+// sync with the <link rel="preload"> there if you change them or FEATURED[0].
+const HERO_WIDTHS = [360, 540, 720, 1080];
+const HERO_SIZES = "(min-width: 640px) 360px, 78vw";
+
 export default function Hero() {
   const reducedMotion = useExperienceStore((s) => s.reducedMotion);
   const setSelectedPiece = useExperienceStore((s) => s.setSelectedPiece);
   const setCursorLabel = useExperienceStore((s) => s.setCursorLabel);
   const [active, setActive] = useState(0);
+  // the very first photo is the LCP element: it must not start at opacity 0
+  // (that delays LCP until the fade), so only later swaps fade in
+  const [swapped, setSwapped] = useState(false);
   const piece = FEATURED[active];
+  const show = (i: number) => {
+    setSwapped(true);
+    setActive(i);
+  };
 
   if (!piece) return null;
 
@@ -132,15 +145,30 @@ export default function Hero() {
             onClick={() => setSelectedPiece(piece)}
             onMouseEnter={() => setCursorLabel("Shop")}
             onMouseLeave={() => setCursorLabel(null)}
-            initial={reducedMotion ? { opacity: 0 } : { opacity: 0, y: 20, scale: 0.96 }}
+            initial={
+              swapped
+                ? reducedMotion
+                  ? { opacity: 0 }
+                  : { opacity: 0, y: 20, scale: 0.96 }
+                : reducedMotion
+                  ? false
+                  : { y: 20, scale: 0.96 }
+            }
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: reducedMotion ? 0.15 : 0.6, ease: [0.22, 1, 0.36, 1] }}
             aria-label={`View ${piece.name}`}
             className="relative aspect-[3/4] w-[78%] max-w-[360px] overflow-hidden rounded-[1.75rem] bg-surface shadow-[0_30px_60px_-20px_rgba(46,42,82,0.45)] sm:w-[68%]"
           >
             <ShimmerImage
-              src={unsplash(piece.image, 700)}
+              src={unsplash(piece.image, 720)}
+              srcSet={unsplashSrcSet(piece.image, HERO_WIDTHS)}
+              sizes={HERO_SIZES}
+              width={720}
+              height={960}
               alt={piece.name}
+              loading="eager"
+              fetchPriority={swapped ? "auto" : "high"}
+              fadeIn={swapped}
               className="h-full w-full object-cover"
             />
           </m.button>
@@ -150,7 +178,7 @@ export default function Hero() {
             {FEATURED.map((p, i) => (
               <button
                 key={p.id}
-                onClick={() => setActive(i)}
+                onClick={() => show(i)}
                 aria-label={`Show ${p.name}`}
                 aria-current={active === i}
                 className={`h-2.5 rounded-full transition-all ${
@@ -186,7 +214,7 @@ export default function Hero() {
               i === active ? null : (
                 <button
                   key={p.id}
-                  onClick={() => setActive(i)}
+                  onClick={() => show(i)}
                   aria-label={`Show ${p.name}`}
                   className="hidden h-20 w-14 overflow-hidden rounded-xl opacity-80 shadow-[0_10px_20px_-12px_rgba(46,42,82,0.4)] transition-opacity hover:opacity-100 sm:block"
                 >

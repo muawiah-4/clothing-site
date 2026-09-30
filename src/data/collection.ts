@@ -176,3 +176,8 @@ export const CRAFT_IMAGES = [
 export function unsplash(id: string, width: number): string {
   return `${id}?w=${width}&q=80&auto=format&fit=crop`;
 }
+
+/** `srcset` for an Unsplash photo at each of `widths` (Unsplash resizes via `w=`). */
+export function unsplashSrcSet(id: string, widths: number[]): string {
+  return widths.map((w) => `${unsplash(id, w)} ${w}w`).join(", ");
+}

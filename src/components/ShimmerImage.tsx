@@ -3,6 +3,11 @@ import { useState, type ImgHTMLAttributes } from "react";
 interface ShimmerImageProps extends ImgHTMLAttributes<HTMLImageElement> {
   src: string;
   alt: string;
+  /**
+   * Fade the photo in once it has loaded (default). Pass false for the LCP
+   * image: a fade from opacity 0 delays when the browser counts it as painted.
+   */
+  fadeIn?: boolean;
 }
 
 type Status = "loading" | "loaded" | "error";
@@ -26,6 +31,7 @@ export default function ShimmerImage({
   // every ShimmerImage today is third-party (images.unsplash.com); don't
   // tell the CDN which page the visitor is on. Overridable per use.
   referrerPolicy = "no-referrer",
+  fadeIn = true,
   ...rest
 }: ShimmerImageProps) {
   // status is tracked per src, so a new src starts from "loading" again
@@ -75,7 +81,11 @@ export default function ShimmerImage({
           setState({ src, status: "error" });
           onError?.(e);
         }}
-        className={`${className} transition-opacity duration-500 ${status === "loaded" ? "opacity-100" : "opacity-0"}`}
+        className={
+          fadeIn
+            ? `${className} transition-opacity duration-500 ${status === "loaded" ? "opacity-100" : "opacity-0"}`
+            : className
+        }
       />
     </div>
   );

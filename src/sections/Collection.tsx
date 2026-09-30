@@ -1,12 +1,16 @@
 import { useState, type Ref } from "react";
 import { AnimatePresence, LazyMotion, domMax, m } from "motion/react";
-import { COLLECTION, unsplash, type CollectionPiece } from "../data/collection";
+import { COLLECTION, unsplash, unsplashSrcSet, type CollectionPiece } from "../data/collection";
 import { useExperienceStore, type GenderFilter } from "../store/experience";
 import { fade } from "../lib/motion";
 import ShimmerImage from "../components/ShimmerImage";
 import SplitReveal from "../components/SplitReveal";
 import FilterPills from "../components/FilterPills";
 import { formatPrice } from "../lib/format";
+
+// 2 columns below sm, 3 from sm up, inside a max-w-7xl container
+const CARD_WIDTHS = [300, 400, 600, 800];
+const CARD_SIZES = "(min-width: 1440px) 400px, (min-width: 640px) 30vw, 46vw";
 
 const TABS: { id: GenderFilter; label: string }[] = [
   { id: "all", label: "All" },
@@ -144,7 +148,11 @@ function CollectionCard({
       <div className="group relative rounded-[1.5rem] outline-offset-4 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-ink has-[:focus-visible]:outline-solid">
         <div className="aspect-[3/4] overflow-hidden rounded-[1.5rem] bg-surface-soft shadow-[0_16px_34px_-20px_rgba(46,42,82,0.35)]">
           <ShimmerImage
-            src={unsplash(piece.image, 700)}
+            src={unsplash(piece.image, 600)}
+            srcSet={unsplashSrcSet(piece.image, CARD_WIDTHS)}
+            sizes={CARD_SIZES}
+            width={600}
+            height={800}
             alt=""
             loading="lazy"
             className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"

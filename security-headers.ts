@@ -15,18 +15,14 @@ const PROD_DIRECTIVES: Directives = {
   "default-src": ["'self'"],
   // no inline scripts anywhere in the built app
   "script-src": ["'self'"],
-  // Google Fonts serves the @font-face stylesheet; the font files come from gstatic.
+  // Fonts are self-hosted (@fontsource-variable), so styles are 'self' only.
   // The hash is sha256 of the EMPTY string: Motion's <AnimatePresence
   // mode="popLayout"> (Collection filters) appends an empty <style> element and
   // fills it via CSSOM insertRule(). Allowing exactly-empty inline <style> keeps
   // that working without 'unsafe-inline' — any <style> with content is still
   // blocked, and CSSOM calls need script, which is 'self' only.
-  "style-src": [
-    "'self'",
-    "https://fonts.googleapis.com",
-    "'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='",
-  ],
-  "font-src": ["https://fonts.gstatic.com"],
+  "style-src": ["'self'", "'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='"],
+  "font-src": ["'self'"],
   // product photography is hotlinked from Unsplash; data: covers inline SVG/CSS images
   "img-src": ["'self'", "data:", "https://images.unsplash.com"],
   "media-src": ["'self'"],
@@ -47,7 +43,7 @@ const PROD_DIRECTIVES: Directives = {
 const DEV_DIRECTIVES: Directives = {
   ...PROD_DIRECTIVES,
   "script-src": ["'self'", "'unsafe-inline'"],
-  "style-src": ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+  "style-src": ["'self'", "'unsafe-inline'"],
   "connect-src": ["'self'", "ws://localhost:*", "ws://127.0.0.1:*"],
 };
 

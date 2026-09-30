@@ -10,9 +10,9 @@ no backend, no accounts, no database and no API.
   and after the click.
 - **No data collection.** The newsletter field is validated in the browser and then
   discarded. It is never sent, stored or rendered back into the page.
-- **Third parties.** Fonts are loaded from Google Fonts (`fonts.googleapis.com`,
-  `fonts.gstatic.com`) and product photos are hotlinked from `images.unsplash.com`.
-  These requests are sent with no referrer.
+- **Third parties.** Product photos are hotlinked from `images.unsplash.com`, sent
+  with no referrer. Fonts (Fraunces, Inter) are self-hosted from `@fontsource-variable`
+  packages and served from the site's own origin.
 - **No secrets.** The app needs no API keys or environment secrets. `.gitignore` excludes
   `.env*` (except `.env.example`) and key/certificate files anyway.
 
@@ -21,7 +21,7 @@ no backend, no accounts, no database and no API.
 `security-headers.ts` is the single source of truth. The production policy is:
 
 ```
-default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='; font-src https://fonts.gstatic.com; img-src 'self' data: https://images.unsplash.com; media-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'
+default-src 'self'; script-src 'self'; style-src 'self' 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='; font-src 'self'; img-src 'self' data: https://images.unsplash.com; media-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'
 ```
 
 There is no `'unsafe-inline'` and no `'unsafe-eval'`. The one hash is the SHA-256 of the

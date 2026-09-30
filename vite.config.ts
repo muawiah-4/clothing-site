@@ -41,8 +41,35 @@ function securityHeaders(): Plugin {
   }
 }
 
+/**
+ * Build-only: preload the display font (Fraunces, latin subset) so the hero
+ * headline doesn't wait for the CSS to be parsed before the font is fetched.
+ * The file name is content-hashed, so it's looked up in the output bundle.
+ */
+function preloadDisplayFont(): Plugin {
+  const FONT = /fraunces-latin-opsz-normal-[\w-]+\.woff2$/
+  return {
+    name: 'atelier:preload-display-font',
+    apply: 'build',
+    transformIndexHtml: {
+      order: 'post',
+      handler(_html, ctx) {
+        const file = Object.keys(ctx.bundle ?? {}).find((name) => FONT.test(name))
+        if (!file) throw new Error('preloadDisplayFont: Fraunces latin woff2 not found in the bundle')
+        return [
+          {
+            tag: 'link',
+            attrs: { rel: 'preload', href: `/${file}`, as: 'font', type: 'font/woff2', crossorigin: '' },
+            injectTo: 'head',
+          },
+        ]
+      },
+    },
+  }
+}
+
 export default defineConfig({
-  plugins: [react(), tailwindcss(), securityHeaders()],
+  plugins: [react(), tailwindcss(), securityHeaders(), preloadDisplayFont()],
   resolve: {
     alias: {
       '@': path.resolve(import.meta.dirname, './src'),

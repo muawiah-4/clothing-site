@@ -1,14 +1,48 @@
 @import "tailwindcss";
 
 /*
+ * Metric-matched fallbacks: until the self-hosted woff2 arrives (font-display:
+ * swap), text renders in a local font scaled to the web font's average glyph
+ * width and vertical metrics, so the swap doesn't reflow lines (CLS).
+ * Values from @capsizecss/metrics (xWidthAvg ratio for size-adjust; the web
+ * font's ascent/descent divided by that ratio for the overrides).
+ */
+@font-face {
+  font-family: "Fraunces Fallback";
+  src: local("Georgia");
+  size-adjust: 105.2%;
+  ascent-override: 92.96%;
+  descent-override: 24.24%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Fraunces Fallback";
+  src: local("Times New Roman");
+  size-adjust: 115.45%;
+  ascent-override: 84.71%;
+  descent-override: 22.09%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Inter Fallback";
+  src: local("Arial"), local("Arimo");
+  size-adjust: 107.12%;
+  ascent-override: 90.44%;
+  descent-override: 22.52%;
+  line-gap-override: 0%;
+}
+
+/*
  * Light, playful e-commerce palette: a blue → violet → pink diagonal
  * gradient canvas with white/soft-lavender rounded "cards" floating on top —
  * replacing the earlier dark ink/walnut/brass showroom identity with the
  * pastel-gradient storefront look the brand asked to match.
  */
 @theme {
-  --font-display: "Fraunces", "Iowan Old Style", "Georgia", serif;
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Fraunces Variable", "Fraunces Fallback", "Iowan Old Style", "Georgia", serif;
+  --font-sans: "Inter Variable", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
 
   --color-canvas-a: #b9c5f2;
   --color-canvas-b: #cbb7e6;

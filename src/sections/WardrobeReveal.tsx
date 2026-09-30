@@ -1,10 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import { m, AnimatePresence } from "motion/react";
 import { COLLECTION, unsplash } from "../data/collection";
 import { scrollToSection } from "../lib/scroll";
 import { useExperienceStore } from "../store/experience";
 
 type Phase = "closed" | "playing" | "bursting" | "leaving";
+
+// intrinsic size of public/media/wardrobe-poster.webp (reserves its box)
+const POSTER_WIDTH = 1600;
+const POSTER_HEIGHT = 900;
 
 const BURST_ITEMS = COLLECTION.slice(0, 7);
 
@@ -36,6 +41,10 @@ export default function WardrobeReveal() {
   const generation = useRef(0);
   const setCursorLabel = useExperienceStore((s) => s.setCursorLabel);
   const reducedMotion = useExperienceStore((s) => s.reducedMotion);
+  // the clip's <source> is only attached once the section is within half a
+  // screen of the viewport, so visitors who never get this far never download
+  // it. Reduced motion never plays it (the burst runs without the clip).
+  const [videoAttached, setVideoAttached] = useState(false);
 
   const clearTimers = useCallback(() => {
     timers.current.forEach((t) => window.clearTimeout(t));
@@ -67,6 +76,11 @@ export default function WardrobeReveal() {
       return;
     }
 
+    // opened before the proximity observer attached the sources (a jump
+    // straight here, or a click): attach synchronously so play() has a source
+    if (video.networkState === HTMLMediaElement.NETWORK_EMPTY) {
+      flushSync(() => setVideoAttached(true));
+    }
     video.currentTime = 0;
     video
       .play()
@@ -96,6 +110,19 @@ export default function WardrobeReveal() {
   useEffect(() => {
     openRef.current = open;
   }, [open]);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el || reducedMotion || videoAttached) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setVideoAttached(true);
+      },
+      { rootMargin: "50% 0px" },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [reducedMotion, videoAttached]);
 
   useEffect(() => {
     const el = sectionRef.current;
@@ -148,20 +175,28 @@ export default function WardrobeReveal() {
         className="group absolute inset-0 h-full w-full"
       >
         <img
-          src="/media/wardrobe-poster.png"
+          src="/media/wardrobe-poster.webp"
           alt="A closed walnut wardrobe with brass hardware"
+          width={POSTER_WIDTH}
+          height={POSTER_HEIGHT}
+          loading="lazy"
+          decoding="async"
           className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
           style={{ opacity: phase === "closed" ? 1 : 0 }}
         />
+        {/* preload stays "none" until the sources are attached near the
+            viewport; then "auto" buffers it ahead of the autoplay */}
         <video
           ref={videoRef}
-          src="/media/wardrobe-reveal.mp4"
           muted
           playsInline
-          preload="auto"
+          preload={videoAttached ? "auto" : "none"}
           className="absolute inset-0 h-full w-full object-cover"
           style={{ opacity: phase === "closed" ? 0 : 1, transition: "opacity 0.4s ease" }}
-        />
+        >
+          {/* 1280x720 H.264, no audio, moov first (fast start), ~0.7MB */}
+          {videoAttached && <source src="/media/wardrobe-reveal-720.mp4" type="video/mp4" />}
+        </video>
 
         {phase === "closed" && (
           <>

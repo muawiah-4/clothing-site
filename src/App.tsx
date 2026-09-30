@@ -1,9 +1,15 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, startTransition, Suspense, useEffect, useState } from "react";
 import { LazyMotion, domAnimation } from "motion/react";
 import { useExperienceStore } from "./store/experience";
 import { useDevicePerformance } from "./hooks/useDevicePerformance";
 import { useSmoothScroll } from "./hooks/useSmoothScroll";
-import { overlayLoaders, PLACEHOLDER_ATTR, preloadOverlays, sectionLoaders } from "./lib/lazySections";
+import {
+  overlayLoaders,
+  PLACEHOLDER_ATTR,
+  preloadOverlays,
+  preloadSections,
+  sectionLoaders,
+} from "./lib/lazySections";
 import { scrollToSection } from "./lib/scroll";
 import Preloader from "./components/Preloader";
 import Navbar from "./components/Navbar";
@@ -26,12 +32,25 @@ const Bag = lazy(overlayLoaders.bag);
 const CARD = "mx-3 mt-3 rounded-[2rem] border border-white/40 bg-surface/55 md:mx-6 md:mt-4";
 
 /**
- * Stand-in for a lazy section while its chunk downloads: same shell and
+ * Stand-in for a lazy section until it mounts: same shell and
  * roughly the same height (measured at phone / tablet / desktop widths), so
  * nothing below jumps and there is no blank gap if the visitor scrolls fast.
  */
 function Placeholder({ className }: { className: string }) {
   return <div {...{ [PLACEHOLDER_ATTR]: "" }} aria-hidden="true" className={className} />;
+}
+
+function SectionPlaceholders() {
+  return (
+    <>
+      <Placeholder className="card-shell mx-3 mt-3 h-[86vh] bg-spotlight md:mx-6 md:mt-4" />
+      <Placeholder className={`${CARD} min-h-[2600px] lg:min-h-[3600px]`} />
+      <Placeholder className={`${CARD} min-h-[2100px] md:min-h-[900px]`} />
+      <Placeholder className={`${CARD} min-h-[1100px]`} />
+      <Placeholder className={`${CARD} min-h-[1400px] md:min-h-[990px] lg:min-h-[770px]`} />
+      <Placeholder className={`${CARD} min-h-[70vh]`} />
+    </>
+  );
 }
 
 function whenIdle(cb: () => void): () => void {
@@ -60,6 +79,19 @@ export default function App() {
     document.title = "Atelier — Form in Material";
   }, []);
 
+  // Below-the-fold sections mount after the first frame has painted, in a
+  // transition so React renders them in small, interruptible slices instead
+  // of one long task competing with the hero's first paint. Their chunks
+  // start downloading right away.
+  const [mountRest, setMountRest] = useState(false);
+  useEffect(() => {
+    void preloadSections();
+    const raf = requestAnimationFrame(() => {
+      startTransition(() => setMountRest(true));
+    });
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
   // warm the overlay chunks once the page is idle so the first open is instant
   useEffect(() => whenIdle(() => void preloadOverlays()), []);
 
@@ -80,30 +112,20 @@ export default function App() {
         <main>
           <Hero />
           <BrandStory />
-          <Suspense
-            fallback={<Placeholder className="card-shell mx-3 mt-3 h-[86vh] bg-spotlight md:mx-6 md:mt-4" />}
-          >
-            <WardrobeReveal />
-          </Suspense>
-          <Suspense fallback={<Placeholder className={`${CARD} min-h-[2600px] lg:min-h-[3600px]`} />}>
-            <Collection />
-          </Suspense>
-          <Suspense fallback={<Placeholder className={`${CARD} min-h-[2100px] md:min-h-[900px]`} />}>
-            <Craft />
-          </Suspense>
-          <Suspense fallback={<Placeholder className={`${CARD} min-h-[1100px]`} />}>
-            <Lookbook />
-          </Suspense>
-          <Suspense
-            fallback={
-              <Placeholder className={`${CARD} min-h-[1400px] md:min-h-[990px] lg:min-h-[770px]`} />
-            }
-          >
-            <SocialProof />
-          </Suspense>
-          <Suspense fallback={<Placeholder className={`${CARD} min-h-[70vh]`} />}>
-            <Contact />
-          </Suspense>
+          {/* one boundary: the six sections swap in with a single commit (one
+              layout pass, one round of scroll/pin re-measuring) */}
+          {mountRest ? (
+            <Suspense fallback={<SectionPlaceholders />}>
+              <WardrobeReveal />
+              <Collection />
+              <Craft />
+              <Lookbook />
+              <SocialProof />
+              <Contact />
+            </Suspense>
+          ) : (
+            <SectionPlaceholders />
+          )}
         </main>
         <Footer />
         {/* separate boundaries: one overlay's first load must not hide the other */}

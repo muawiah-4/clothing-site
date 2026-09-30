@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, m } from "motion/react";
 import { useExperienceStore, type GenderFilter } from "../store/experience";
+
+const MD_UP = "(min-width: 48rem)";
 
 const OUTFITS: Record<GenderFilter, { garment: string; skin: string; label: string; accent: string }> = {
   all: { garment: "#8a90a8", skin: "#f0c9a0", label: "Browsing", accent: "#49c1d6" },
@@ -20,11 +22,20 @@ export default function Companion() {
   const reducedMotion = useExperienceStore((s) => s.reducedMotion);
   const outfit = OUTFITS[activeGender];
   const [greetCount, setGreetCount] = useState(0);
+  // the badge is display:none below md, but Motion would still tick the
+  // infinite float every frame — only run it where it's visible
+  const [visible, setVisible] = useState(() => window.matchMedia(MD_UP).matches);
+  useEffect(() => {
+    const media = window.matchMedia(MD_UP);
+    const onChange = (e: MediaQueryListEvent) => setVisible(e.matches);
+    media.addEventListener("change", onChange);
+    return () => media.removeEventListener("change", onChange);
+  }, []);
 
   return (
     <div className="pointer-events-none fixed bottom-8 right-8 z-[65] hidden flex-col items-end gap-2.5 md:flex">
       <m.div
-        animate={reducedMotion ? undefined : { y: [0, -8, 0] }}
+        animate={reducedMotion || !visible ? undefined : { y: [0, -8, 0] }}
         transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
       >
         <AnimatePresence mode="wait">

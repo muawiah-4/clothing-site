@@ -13,7 +13,8 @@ import { setLenisInstance } from "../lib/scroll";
  */
 export function useSmoothScroll(enabled: boolean, reducedMotion: boolean) {
   useEffect(() => {
-    if (!enabled) return;
+    // reduced motion: no smoothing layer at all, the browser's own scroll
+    if (!enabled || reducedMotion) return;
 
     let cancelled = false;
     let teardown: (() => void) | null = null;
@@ -24,9 +25,8 @@ export function useSmoothScroll(enabled: boolean, reducedMotion: boolean) {
         gsap.registerPlugin(ScrollTrigger);
 
         const lenis = new Lenis({
-          duration: reducedMotion ? 0.4 : 1.1,
+          duration: 1.1,
           easing: (t: number) => 1 - Math.pow(1 - t, 3),
-          smoothWheel: !reducedMotion,
           touchMultiplier: 1.3,
         });
         setLenisInstance(lenis);

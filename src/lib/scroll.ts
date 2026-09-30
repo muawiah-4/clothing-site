@@ -60,6 +60,9 @@ export function scrollToSection(id: string, duration = 1.6) {
   if (lenis) {
     lenis.scrollTo(el, { duration, easing: (t) => 1 - Math.pow(1 - t, 4) });
   } else {
-    el.scrollIntoView({ behavior: "smooth" });
+    // no Lenis (reduced motion, or it hasn't loaded yet): native scroll,
+    // instant when the visitor asked for reduced motion
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
   }
 }

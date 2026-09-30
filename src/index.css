@@ -85,9 +85,21 @@
     height: 100%;
   }
 
+  /* the page canvas: a viewport-sized fixed layer rather than
+     background-attachment: fixed on <html>, which forces a full repaint of
+     the background on every scroll frame (and is ignored on iOS). The plain
+     colour on <html> covers overscroll bounce. */
   html {
+    background-color: var(--color-canvas-b);
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
     background: linear-gradient(135deg, var(--color-canvas-a), var(--color-canvas-b) 55%, var(--color-canvas-c));
-    background-attachment: fixed;
   }
 
   body {
@@ -117,6 +129,35 @@
   .has-custom-cursor,
   .has-custom-cursor * {
     cursor: none !important;
+  }
+}
+
+/* Below md, backdrop blur is the most expensive thing on the page to
+   composite on phones (every blurred surface re-samples what scrolls under
+   it each frame). Drop it there; the surfaces over scrolling content (nav,
+   menu, panels) switch to near-solid fills in their own classes instead. */
+@media (max-width: 47.99rem) {
+  [class*="backdrop-blur"] {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
+
+/* Lookbook gallery where it isn't pinned (inverse of PIN_QUERY in
+   useHorizontalScrollGallery.ts): a native horizontal scroll-snap row. */
+@media (max-width: 47.99rem), (pointer: coarse) {
+  .lookbook-row {
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .lookbook-row::-webkit-scrollbar {
+    display: none;
+  }
+  .lookbook-row figure {
+    scroll-snap-align: start;
   }
 }
 

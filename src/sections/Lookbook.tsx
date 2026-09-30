@@ -130,7 +130,8 @@ function LookbookHorizontalGallery({ reducedMotion }: { reducedMotion: boolean }
   return (
     <div
       ref={viewportRef}
-      className="relative mt-16 h-[58vh] max-h-[620px] min-h-[420px] overflow-hidden rounded-[1.75rem] sm:h-[62vh] md:h-[66vh]"
+      data-lookbook-row
+      className="lookbook-row relative mt-16 h-[58vh] max-h-[620px] min-h-[420px] overflow-hidden rounded-[1.75rem] sm:h-[62vh] md:h-[66vh]"
     >
       <div ref={trackRef} className="flex h-full w-fit items-start gap-6 will-change-transform md:gap-8">
         {PLATES.map((plate) => (

@@ -52,7 +52,7 @@ export default function Bag() {
         >
           <m.button
             aria-label="Close bag"
-            className="absolute inset-0 bg-ink/30 backdrop-blur-md"
+            className="absolute inset-0 bg-ink/30 max-md:bg-ink/40 backdrop-blur-md"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -61,7 +61,7 @@ export default function Bag() {
           />
           <m.div
             ref={containerRef}
-            className="relative flex h-full w-full max-w-md flex-col rounded-l-[2rem] border-l border-white/40 bg-surface/70 backdrop-blur-2xl"
+            className="relative flex h-full w-full max-w-md flex-col rounded-l-[2rem] border-l border-white/40 bg-surface/70 max-md:bg-surface/95 backdrop-blur-2xl"
             initial={{ x: reducedMotion ? 0 : "100%" }}
             animate={{ x: 0 }}
             exit={{ x: reducedMotion ? 0 : "100%" }}

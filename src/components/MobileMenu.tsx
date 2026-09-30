@@ -22,7 +22,7 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
     <AnimatePresence>
       {open && (
         <m.div
-          className="fixed inset-0 z-[90] flex flex-col bg-surface/75 backdrop-blur-2xl md:hidden"
+          className="fixed inset-0 z-[90] flex flex-col bg-surface/75 max-md:bg-surface/95 backdrop-blur-2xl md:hidden"
           role="dialog"
           aria-modal="true"
           aria-label="Site navigation"

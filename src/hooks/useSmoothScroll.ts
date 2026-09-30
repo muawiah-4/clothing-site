@@ -39,7 +39,17 @@ export function useSmoothScroll(enabled: boolean, reducedMotion: boolean) {
         gsap.ticker.add(tick);
         gsap.ticker.lagSmoothing(0);
 
+        // Lenis caches the scroll limit and re-measures from a ResizeObserver
+        // on <html>, which never fires here (html is height:100%). Lazy
+        // sections, font swaps and the Lookbook pin-spacer all grow the page
+        // after Lenis starts, so watch the app's own (natural-height) wrapper
+        // instead — otherwise scrollTo() clamps to a stale, too-short limit.
+        const content = document.getElementById("root")?.firstElementChild ?? document.body;
+        const resizeObserver = new ResizeObserver(() => lenis.resize());
+        resizeObserver.observe(content);
+
         teardown = () => {
+          resizeObserver.disconnect();
           gsap.ticker.remove(tick);
           setLenisInstance(null);
           lenis.destroy();

@@ -67,11 +67,15 @@ const ADULT_SIZE_GUIDE: [string, string, string][] = [
 function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void }) {
   const addToBag = useExperienceStore((s) => s.addToBag);
   const setBagOpen = useExperienceStore((s) => s.setBagOpen);
+  const bagItems = useExperienceStore((s) => s.bagItems);
   const [size, setSize] = useState<string | null>(null);
   const [added, setAdded] = useState(false);
   const [needsSize, setNeedsSize] = useState(false);
   const [showGuide, setShowGuide] = useState(false);
   const sizes = ["XS", "S", "M", "L", "XL"];
+  // included in the announcement so adding the same size again still changes
+  // the live region's text (an unchanged string isn't re-announced)
+  const inBag = bagItems.find((i) => i.piece.id === piece.id && i.size === size)?.qty ?? 0;
 
   const requireSize = () => {
     if (!size) {
@@ -191,6 +195,11 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
           >
             {added ? "Added to Bag" : "Add to Bag"}
           </button>
+          {/* announces the add for screen readers — the button's own label
+              change isn't reliably read out while it keeps focus */}
+          <p role="status" className="sr-only">
+            {added && size ? `Added ${piece.name}, size ${size}. ${inBag} in your bag.` : ""}
+          </p>
           {added && (
             <button
               onClick={() => {

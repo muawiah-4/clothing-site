@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Check, Minus, Plus, X } from "lucide-react";
 import { useExperienceStore } from "../store/experience";
@@ -24,6 +24,15 @@ export default function Bag() {
   const [placed, setPlaced] = useState(false);
   const close = () => setOpen(false);
   const containerRef = useFocusTrap(open, close);
+  const placedHeadingRef = useRef<HTMLHeadingElement>(null);
+
+  // Checkout unmounts the button that had focus when the bag swaps to the
+  // confirmation view, which drops focus to <body>. Move it to the
+  // confirmation heading so keyboard and screen-reader users land on (and
+  // hear) the result instead of losing their place.
+  useEffect(() => {
+    if (placed) placedHeadingRef.current?.focus();
+  }, [placed]);
 
   const total = items.reduce((sum, i) => sum + i.piece.price * i.qty, 0);
   // units, not lines — matches the Navbar badge
@@ -76,9 +85,13 @@ export default function Bag() {
                 <span className="flex h-12 w-12 items-center justify-center rounded-full bg-accent text-surface">
                   <Check size={22} strokeWidth={2} />
                 </span>
-                <p role="status" className="font-display text-lg font-semibold text-ink">
+                <h3
+                  ref={placedHeadingRef}
+                  tabIndex={-1}
+                  className="font-display text-lg font-semibold text-ink"
+                >
                   Order placed.
-                </p>
+                </h3>
                 <p className="font-sans text-[13px] text-ink-dim">
                   A confirmation is on its way to your inbox. The studio will follow up on
                   delivery.

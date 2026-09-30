@@ -243,6 +243,7 @@ export default function WardrobeReveal() {
                 <img
                   src={unsplash(item.image, 300)}
                   alt={item.name}
+                  referrerPolicy="no-referrer"
                   className="h-full w-full object-cover"
                 />
               </motion.div>

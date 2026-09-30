@@ -23,6 +23,9 @@ export default function ShimmerImage({
   onLoad,
   onError,
   decoding = "async",
+  // every ShimmerImage today is third-party (images.unsplash.com); don't
+  // tell the CDN which page the visitor is on. Overridable per use.
+  referrerPolicy = "no-referrer",
   ...rest
 }: ShimmerImageProps) {
   // status is tracked per src, so a new src starts from "loading" again
@@ -63,6 +66,7 @@ export default function ShimmerImage({
         src={src}
         alt={alt}
         decoding={decoding}
+        referrerPolicy={referrerPolicy}
         onLoad={(e) => {
           setState({ src, status: "loaded" });
           onLoad?.(e);

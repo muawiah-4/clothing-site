@@ -114,7 +114,7 @@ export default function SocialProof() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="your@email.com"
                 aria-label="Email address"
-                className="w-full rounded-full border border-white/50 bg-surface/50 px-5 py-3 font-sans text-[13px] text-ink placeholder-ink-dim/70 backdrop-blur-xl outline-none transition-colors focus:border-accent-deep sm:w-64"
+                className="w-full rounded-full border border-white/50 bg-surface/50 px-5 py-3 font-sans text-[13px] text-ink backdrop-blur-xl transition-colors placeholder:text-ink-dim focus:border-accent-deep sm:w-64"
               />
               <button
                 type="submit"

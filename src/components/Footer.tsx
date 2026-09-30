@@ -77,10 +77,11 @@ export default function Footer() {
 
       <div className="mx-auto mt-14 flex max-w-6xl flex-col gap-3 border-t border-ink/10 pt-6 font-sans text-[11px] uppercase tracking-[0.1em] text-ink-dim sm:flex-row sm:items-center sm:justify-between">
         <span>Atelier © 2026 — All rights reserved</span>
-        <div className="flex gap-6">
-          <span>Privacy</span>
-          <span>Terms</span>
-        </div>
+        {/* no privacy or terms pages exist yet, so these stay plain text
+            rather than links to nowhere. One run of normal-case text (instead
+            of two spaced-out uppercase items) keeps them from reading as a
+            pair of links */}
+        <span className="normal-case tracking-normal">Privacy · Terms</span>
       </div>
     </footer>
   );

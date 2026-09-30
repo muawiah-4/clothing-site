@@ -40,9 +40,12 @@ export default function Contact() {
             <p className="mt-2">By appointment · 8th Arrondissement, Paris</p>
           </div>
 
+          {/* was a button with no handler; now a real mailto: to the studio
+              address shown alongside it */}
           <MagneticButton
+            href="mailto:studio@atelier.house?subject=Appointment%20request"
             strength={0.15}
-            className="w-full rounded-full border border-white/50 bg-surface/50 px-10 py-5 font-sans text-[12px] font-semibold uppercase tracking-[0.15em] text-accent-deep shadow-[0_16px_30px_-16px_rgba(46,42,82,0.4)] backdrop-blur-xl transition-transform hover:scale-[1.03] hover:bg-surface/70 sm:w-fit"
+            className="inline-flex w-full justify-center rounded-full border border-white/50 bg-surface/50 px-10 py-5 font-sans text-[12px] font-semibold uppercase tracking-[0.15em] text-accent-deep shadow-[0_16px_30px_-16px_rgba(46,42,82,0.4)] backdrop-blur-xl transition-transform hover:scale-[1.03] hover:bg-surface/70 sm:w-fit"
           >
             Book an Appointment
           </MagneticButton>

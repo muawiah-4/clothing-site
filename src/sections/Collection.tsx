@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { motion } from "motion/react";
+import { useState, type Ref } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import { COLLECTION, unsplash, type CollectionPiece } from "../data/collection";
 import { useExperienceStore, type GenderFilter } from "../store/experience";
 import { fade } from "../lib/motion";
@@ -108,9 +108,14 @@ export default function Collection() {
           layout
           className="grid grid-cols-2 gap-x-4 gap-y-14 sm:grid-cols-3 md:gap-x-6 md:gap-y-20"
         >
-          {pieces.map((piece, i) => (
-            <CollectionCard key={piece.id} piece={piece} index={i} reducedMotion={reducedMotion} />
-          ))}
+          {/* without AnimatePresence the cards' exit animation never ran —
+              filtered-out cards just vanished. popLayout pairs with `layout`
+              so the remaining cards reflow while the leaving ones fade. */}
+          <AnimatePresence mode="popLayout">
+            {pieces.map((piece, i) => (
+              <CollectionCard key={piece.id} piece={piece} index={i} reducedMotion={reducedMotion} />
+            ))}
+          </AnimatePresence>
         </motion.div>
 
         {pieces.length === 0 && (
@@ -127,10 +132,13 @@ function CollectionCard({
   piece,
   index,
   reducedMotion,
+  ref,
 }: {
   piece: CollectionPiece;
   index: number;
   reducedMotion: boolean;
+  // popLayout measures each exiting child through its ref (React 19: ref is a plain prop)
+  ref?: Ref<HTMLDivElement>;
 }) {
   const setCursorLabel = useExperienceStore((s) => s.setCursorLabel);
   const setSelectedPiece = useExperienceStore((s) => s.setSelectedPiece);
@@ -138,6 +146,7 @@ function CollectionCard({
 
   return (
     <motion.div
+      ref={ref}
       layout
       initial={{ opacity: 0, y: reducedMotion ? 0 : 30 }}
       animate={{ opacity: 1, y: 0 }}

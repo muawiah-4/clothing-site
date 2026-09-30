@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useExperienceStore } from "../store/experience";
 
 interface Particle {
@@ -18,9 +18,15 @@ interface Particle {
 export default function ParticleField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reducedMotion = useExperienceStore((s) => s.reducedMotion);
+  // touch devices can't push the particles around, so the effect is pure
+  // battery cost there — skip it entirely
+  const [coarsePointer] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches,
+  );
+  const disabled = reducedMotion || coarsePointer;
 
   useEffect(() => {
-    if (reducedMotion) return;
+    if (disabled) return;
     const canvas = canvasRef.current;
     const parent = canvas?.parentElement;
     if (!canvas || !parent) return;
@@ -33,6 +39,7 @@ export default function ParticleField() {
     let pointerX = -9999;
     let pointerY = -9999;
     let raf = 0;
+    let inView = true;
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
@@ -68,6 +75,7 @@ export default function ParticleField() {
     };
 
     const tick = () => {
+      raf = 0;
       ctx.clearRect(0, 0, width, height);
       for (const p of particles) {
         const dx = p.x - pointerX;
@@ -94,21 +102,39 @@ export default function ParticleField() {
       raf = requestAnimationFrame(tick);
     };
 
+    // only animate while the Hero is on screen and the tab is visible
+    const sync = () => {
+      const shouldRun = inView && !document.hidden;
+      if (shouldRun && !raf) raf = requestAnimationFrame(tick);
+      if (!shouldRun && raf) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      }
+    };
+    const observer = new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      sync();
+    });
+
     seed();
-    raf = requestAnimationFrame(tick);
+    sync();
+    observer.observe(parent);
+    document.addEventListener("visibilitychange", sync);
     parent.addEventListener("pointermove", onPointerMove);
     parent.addEventListener("pointerleave", onPointerLeave);
     window.addEventListener("resize", seed);
 
     return () => {
       cancelAnimationFrame(raf);
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", sync);
       parent.removeEventListener("pointermove", onPointerMove);
       parent.removeEventListener("pointerleave", onPointerLeave);
       window.removeEventListener("resize", seed);
     };
-  }, [reducedMotion]);
+  }, [disabled]);
 
-  if (reducedMotion) return null;
+  if (disabled) return null;
 
   return (
     <canvas

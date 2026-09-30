@@ -31,23 +31,31 @@ export default function Cursor() {
     place(dotRef.current, startX, startY);
     place(chipPosRef.current, startX, startY);
 
-    const onMove = (e: PointerEvent) => {
-      targetX = e.clientX;
-      targetY = e.clientY;
-      place(dotRef.current, targetX, targetY);
-    };
-
     const tick = () => {
       // the chip trails slightly — precise enough to feel attached to the
       // pointer, soft enough that the label doesn't jitter while reading
       chipX += (targetX - chipX) * 0.28;
       chipY += (targetY - chipY) * 0.28;
+      // once the chip has caught up, snap and stop — pointermove restarts it
+      if (Math.abs(targetX - chipX) < 0.1 && Math.abs(targetY - chipY) < 0.1) {
+        chipX = targetX;
+        chipY = targetY;
+        place(chipPosRef.current, chipX, chipY);
+        raf = 0;
+        return;
+      }
       place(chipPosRef.current, chipX, chipY);
       raf = requestAnimationFrame(tick);
     };
 
+    const onMove = (e: PointerEvent) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+      place(dotRef.current, targetX, targetY);
+      if (!raf) raf = requestAnimationFrame(tick);
+    };
+
     window.addEventListener("pointermove", onMove);
-    raf = requestAnimationFrame(tick);
 
     return () => {
       window.removeEventListener("pointermove", onMove);

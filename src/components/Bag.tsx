@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, m } from "motion/react";
 import { Check, Minus, Plus, X } from "lucide-react";
 import { useExperienceStore } from "../store/experience";
 import { unsplash } from "../data/collection";
@@ -44,13 +44,13 @@ export default function Bag() {
     // open shows the bag rather than a stale "Demo order placed"
     <AnimatePresence onExitComplete={() => setPlaced(false)}>
       {open && (
-        <motion.div
+        <m.div
           className="fixed inset-0 z-[85] flex items-stretch justify-end"
           role="dialog"
           aria-modal="true"
           aria-label="Your bag"
         >
-          <motion.button
+          <m.button
             aria-label="Close bag"
             className="absolute inset-0 bg-ink/30 backdrop-blur-md"
             initial={{ opacity: 0 }}
@@ -59,7 +59,7 @@ export default function Bag() {
             transition={{ duration: reducedMotion ? 0.05 : 0.3 }}
             onClick={close}
           />
-          <motion.div
+          <m.div
             ref={containerRef}
             className="relative flex h-full w-full max-w-md flex-col rounded-l-[2rem] border-l border-white/40 bg-surface/70 backdrop-blur-2xl"
             initial={{ x: reducedMotion ? 0 : "100%" }}
@@ -210,8 +210,8 @@ export default function Bag() {
                 </div>
               </>
             )}
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

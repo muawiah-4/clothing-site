@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { motion } from "motion/react";
+import { m } from "motion/react";
 import { unsplash } from "../data/collection";
 import { useExperienceStore } from "../store/experience";
 import { fade } from "../lib/motion";
@@ -90,7 +90,7 @@ function LookbookGrid({ reducedMotion }: { reducedMotion: boolean }) {
   return (
     <div className="mt-16 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:auto-rows-[13rem] lg:grid-cols-4 lg:grid-flow-dense lg:gap-6">
       {PLATES.map((plate, i) => (
-        <motion.figure
+        <m.figure
           key={plate.look}
           {...fade(reducedMotion, { y: 24, duration: 0.7, delay: Math.min(i * 0.08, 0.4) })}
           className={`group flex flex-col ${plate.frame}`}
@@ -108,7 +108,7 @@ function LookbookGrid({ reducedMotion }: { reducedMotion: boolean }) {
           <figcaption className="mt-3 font-sans text-[13px] leading-snug text-ink-dim">
             <span className="font-semibold text-ink">{plate.look}</span> — {plate.line}
           </figcaption>
-        </motion.figure>
+        </m.figure>
       ))}
     </div>
   );
@@ -164,24 +164,24 @@ export default function Lookbook() {
       className="scroll-mt-24 mx-3 mt-3 rounded-[2rem] border border-white/40 bg-surface/55 px-6 py-20 shadow-[0_24px_60px_-30px_rgba(46,42,82,0.35)] backdrop-blur-2xl md:mx-6 md:mt-4 md:px-14 md:py-28"
     >
       <div className="mx-auto max-w-6xl">
-        <motion.p
+        <m.p
           {...fade(reducedMotion, { y: 12, duration: 0.7 })}
           className="font-sans text-[12px] font-semibold uppercase tracking-[0.25em] text-accent-deep"
         >
           The Lookbook
-        </motion.p>
+        </m.p>
         <SplitReveal
           as="h2"
           text="Styled by the studio."
           className="mt-4 max-w-2xl font-display text-3xl font-bold leading-tight text-ink sm:text-4xl"
         />
-        <motion.p
+        <m.p
           {...fade(reducedMotion, { y: 12, duration: 0.7, delay: 0.18 })}
           className="mt-6 max-w-xl font-sans text-[15px] leading-relaxed text-ink-dim"
         >
           Eight frames pulled from the studio's own archive — the fittings, the stills, the quiet
           ten minutes before a shoot goes to print. Not lookbook copy. The actual room.
-        </motion.p>
+        </m.p>
 
         {reducedMotion ? (
           <LookbookGrid reducedMotion={reducedMotion} />

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { m, AnimatePresence } from "motion/react";
 import { COLLECTION, unsplash } from "../data/collection";
 import { scrollToSection } from "../lib/scroll";
 import { useExperienceStore } from "../store/experience";
@@ -212,14 +212,14 @@ export default function WardrobeReveal() {
 
       <AnimatePresence>
         {(phase === "bursting" || phase === "leaving") && (
-          <motion.div
+          <m.div
             className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center"
             aria-hidden="true"
             exit={{ opacity: 0 }}
             transition={{ duration: 0.6 }}
           >
             {BURST_ITEMS.map((item, i) => (
-              <motion.div
+              <m.div
                 key={item.id}
                 initial={
                   reducedMotion
@@ -246,9 +246,9 @@ export default function WardrobeReveal() {
                   referrerPolicy="no-referrer"
                   className="h-full w-full object-cover"
                 />
-              </motion.div>
+              </m.div>
             ))}
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </section>

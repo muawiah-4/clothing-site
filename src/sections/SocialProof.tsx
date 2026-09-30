@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { motion } from "motion/react";
+import { m } from "motion/react";
 import { useExperienceStore } from "../store/experience";
 import { fade } from "../lib/motion";
 import SplitReveal from "../components/SplitReveal";
@@ -68,12 +68,12 @@ export default function SocialProof() {
       className="scroll-mt-24 mx-3 mt-3 rounded-[2rem] border border-white/40 bg-surface/55 px-6 py-20 shadow-[0_24px_60px_-30px_rgba(46,42,82,0.35)] backdrop-blur-2xl md:mx-6 md:mt-4 md:px-14 md:py-28"
     >
       <div className="mx-auto max-w-6xl">
-        <motion.p
+        <m.p
           {...fade(reducedMotion, { y: 12, duration: 0.7 })}
           className="font-sans text-[12px] font-semibold uppercase tracking-[0.25em] text-accent-deep"
         >
           In Their Words
-        </motion.p>
+        </m.p>
         <SplitReveal
           as="h2"
           text="The house, worn. Not just by us."
@@ -82,7 +82,7 @@ export default function SocialProof() {
 
         <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {TESTIMONIALS.map((t, i) => (
-            <motion.figure
+            <m.figure
               key={t.name}
               {...fade(reducedMotion, { y: 20, duration: 0.7, delay: i * 0.08 })}
               className="flex h-full flex-col justify-between rounded-2xl border border-white/40 bg-surface/40 px-6 py-6 backdrop-blur-md"
@@ -94,11 +94,11 @@ export default function SocialProof() {
                 <span className="font-semibold text-accent-deep">{t.name}</span>
                 {t.detail ? <span className="text-ink-dim"> — {t.detail}</span> : null}
               </figcaption>
-            </motion.figure>
+            </m.figure>
           ))}
         </div>
 
-        <motion.div
+        <m.div
           {...fade(reducedMotion, { y: 16, duration: 0.8, delay: 0.2 })}
           className="mt-16 flex flex-col items-start gap-6 rounded-2xl border border-white/40 bg-surface/40 px-6 py-8 backdrop-blur-md sm:flex-row sm:items-center sm:justify-between sm:px-10"
         >
@@ -155,7 +155,7 @@ export default function SocialProof() {
               )}
             </form>
           )}
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

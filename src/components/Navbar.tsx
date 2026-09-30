@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { ShoppingBag, Menu } from "lucide-react";
 import { scrollToSection } from "../lib/scroll";
 import { useExperienceStore } from "../store/experience";
-import MobileMenu from "./MobileMenu";
+import { overlayLoaders } from "../lib/lazySections";
 import Logo from "./Logo";
+
+const MobileMenu = lazy(overlayLoaders.mobileMenu);
 
 const LINKS = [
   { id: "collection", label: "Shop" },
@@ -16,6 +18,10 @@ const LINKS = [
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  // the menu chunk is fetched on first open (or earlier, when the page idles)
+  // and then stays mounted so its exit animation can run
+  const [menuUsed, setMenuUsed] = useState(false);
+  if (menuOpen && !menuUsed) setMenuUsed(true);
   const bagCount = useExperienceStore((s) => s.bagItems.reduce((n, i) => n + i.qty, 0));
   const setBagOpen = useExperienceStore((s) => s.setBagOpen);
 
@@ -63,7 +69,9 @@ export default function Navbar() {
         </div>
       </header>
 
-      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
+      <Suspense fallback={null}>
+        {menuUsed && <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />}
+      </Suspense>
     </>
   );
 }

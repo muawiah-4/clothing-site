@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion } from "motion/react";
+import { m } from "motion/react";
 import { ArrowRight, AtSign, Send } from "lucide-react";
 import { COLLECTION, unsplash, type CollectionPiece } from "../data/collection";
 import { useExperienceStore } from "../store/experience";
@@ -53,14 +53,14 @@ export default function Hero() {
 
       <div className="relative grid grid-cols-1 gap-10 px-6 py-16 md:grid-cols-12 md:gap-6 md:px-14 md:py-24">
         <div className="flex flex-col justify-center md:col-span-6">
-          <motion.p
+          <m.p
             {...enter(reducedMotion, { y: 10, duration: 0.7 })}
             className="font-sans text-[12px] font-semibold uppercase tracking-[0.3em] text-accent-deep"
           >
             The Current Edit
-          </motion.p>
+          </m.p>
 
-          <motion.h1
+          <m.h1
             {...enter(reducedMotion, { y: 24, duration: 0.8, delay: 0.1 })}
             className="mt-5 font-display leading-[1.05] text-ink"
           >
@@ -70,17 +70,17 @@ export default function Hero() {
             <span className="block text-4xl font-extrabold sm:text-5xl md:text-6xl">
               made to outlast trend.
             </span>
-          </motion.h1>
+          </m.h1>
 
-          <motion.p
+          <m.p
             {...enter(reducedMotion, { y: 14, duration: 0.7, delay: 0.2 })}
             className="mt-6 max-w-md font-sans text-[15px] leading-relaxed text-ink/90"
           >
             A dozen pieces a season, cut for men and women alike. Every silhouette earns its
             place before it earns a home.
-          </motion.p>
+          </m.p>
 
-          <motion.div {...enter(reducedMotion, { y: 14, duration: 0.7, delay: 0.3 })} className="mt-9">
+          <m.div {...enter(reducedMotion, { y: 14, duration: 0.7, delay: 0.3 })} className="mt-9">
             <button
               onClick={() => setSelectedPiece(piece)}
               className="group inline-flex items-center gap-2 rounded-full border border-white/50 bg-surface/50 px-7 py-4 font-sans text-[13px] font-semibold uppercase tracking-[0.1em] text-accent-deep shadow-[0_16px_30px_-14px_rgba(46,42,82,0.5)] backdrop-blur-xl transition-transform hover:scale-[1.03] hover:bg-surface/70"
@@ -92,9 +92,9 @@ export default function Hero() {
                 className="transition-transform group-hover:translate-x-1"
               />
             </button>
-          </motion.div>
+          </m.div>
 
-          <motion.div
+          <m.div
             {...enter(reducedMotion, { duration: 0.6, delay: 0.5 })}
             className="mt-12 flex items-center gap-3"
           >
@@ -112,7 +112,7 @@ export default function Hero() {
             >
               <Send size={15} strokeWidth={1.6} />
             </button>
-          </motion.div>
+          </m.div>
         </div>
 
         <div className="relative flex flex-col items-center justify-center md:col-span-6">
@@ -127,7 +127,7 @@ export default function Hero() {
             }}
           />
 
-          <motion.button
+          <m.button
             key={piece.id}
             onClick={() => setSelectedPiece(piece)}
             onMouseEnter={() => setCursorLabel("Shop")}
@@ -143,7 +143,7 @@ export default function Hero() {
               alt={piece.name}
               className="h-full w-full object-cover"
             />
-          </motion.button>
+          </m.button>
 
           {/* dot pagination */}
           <div className="relative z-10 mt-6 flex items-center gap-2">

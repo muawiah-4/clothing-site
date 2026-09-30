@@ -3,10 +3,9 @@ import type { RefObject } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-// The ScrollTrigger plugin is already registered once in useSmoothScroll.ts
-// (gsap.registerPlugin(ScrollTrigger)) — that's a one-time, app-wide
-// registration, so it doesn't need to be re-registered here for the
-// `scrollTrigger` tween config below to work. It's imported only for refresh().
+// useSmoothScroll registers ScrollTrigger too, but it loads GSAP lazily and
+// may not have run yet when the Lookbook mounts — registering is idempotent.
+gsap.registerPlugin(ScrollTrigger);
 
 /**
  * Pins `viewportRef`'s element in place while scrubbing `trackRef`'s element

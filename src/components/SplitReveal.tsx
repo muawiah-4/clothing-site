@@ -1,5 +1,5 @@
 import { useRef, type ElementType } from "react";
-import { motion, useScroll, useTransform, type MotionValue } from "motion/react";
+import { m, useScroll, useTransform, type MotionValue } from "motion/react";
 import { useExperienceStore } from "../store/experience";
 
 function Word({
@@ -19,9 +19,9 @@ function Word({
   const y = useTransform(progress, [start, end], [16, 0]);
 
   return (
-    <motion.span style={{ opacity, y, display: "inline-block" }} className="mr-[0.28em] last:mr-0">
+    <m.span style={{ opacity, y, display: "inline-block" }} className="mr-[0.28em] last:mr-0">
       {word}
-    </motion.span>
+    </m.span>
   );
 }
 

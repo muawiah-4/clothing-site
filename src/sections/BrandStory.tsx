@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { m } from "motion/react";
 import { PORTRAIT_IMAGE, unsplash } from "../data/collection";
 import { useExperienceStore } from "../store/experience";
 import { fade } from "../lib/motion";
@@ -15,7 +15,7 @@ export default function BrandStory() {
     >
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-16 md:grid-cols-12 md:gap-8">
         <div className="md:col-span-5">
-          <motion.div
+          <m.div
             {...fade(reducedMotion, { y: 20, duration: 0.9 })}
             className="aspect-[3/4] overflow-hidden rounded-[1.75rem]"
           >
@@ -24,16 +24,16 @@ export default function BrandStory() {
               alt="Studio portrait"
               className="h-full w-full object-cover"
             />
-          </motion.div>
+          </m.div>
         </div>
 
         <div className="md:col-span-6 md:col-start-7">
-          <motion.p
+          <m.p
             {...fade(reducedMotion, { y: 16, duration: 0.7 })}
             className="font-sans text-[12px] font-semibold uppercase tracking-[0.25em] text-accent-deep"
           >
             The House
-          </motion.p>
+          </m.p>
 
           <SplitReveal
             as="h2"
@@ -42,25 +42,25 @@ export default function BrandStory() {
           />
 
           <div className="mt-8 flex flex-col gap-5 font-sans text-[15px] leading-relaxed text-ink-dim">
-            <motion.p {...fade(reducedMotion, { y: 12, duration: 0.7, delay: 0.2 })}>
+            <m.p {...fade(reducedMotion, { y: 12, duration: 0.7, delay: 0.2 })}>
               We work from a small studio, not a factory floor. Every collection is small by
               intention — a dozen pieces, each one argued over, unpicked, and re-cut until the
               proportion holds.
-            </motion.p>
-            <motion.p {...fade(reducedMotion, { y: 12, duration: 0.7, delay: 0.3 })}>
+            </m.p>
+            <m.p {...fade(reducedMotion, { y: 12, duration: 0.7, delay: 0.3 })}>
               Materials are chosen before silhouettes are drawn — the cloth tells us what it wants
               to become. What we build is meant to be worn for a decade, not a season.
-            </motion.p>
+            </m.p>
           </div>
 
-          <motion.blockquote
+          <m.blockquote
             {...fade(reducedMotion, { y: 14, duration: 0.8, delay: 0.35 })}
             className="mt-8 rounded-2xl border border-white/40 bg-surface/40 px-6 py-5 font-display text-lg font-medium leading-snug text-ink backdrop-blur-md"
           >
             "We do not chase trend. We chase the garment that still feels correct in ten years."
-          </motion.blockquote>
+          </m.blockquote>
 
-          <motion.div
+          <m.div
             {...fade(reducedMotion, { y: 12, duration: 0.7, delay: 0.45 })}
             className="mt-10 grid grid-cols-3 gap-6 border-t border-ink/10 pt-8"
           >
@@ -78,7 +78,7 @@ export default function BrandStory() {
                 </p>
               </div>
             ))}
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </section>

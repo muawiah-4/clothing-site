@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, m } from "motion/react";
 import { useExperienceStore, type GenderFilter } from "../store/experience";
 
 const OUTFITS: Record<GenderFilter, { garment: string; skin: string; label: string; accent: string }> = {
@@ -23,12 +23,12 @@ export default function Companion() {
 
   return (
     <div className="pointer-events-none fixed bottom-8 right-8 z-[65] hidden flex-col items-end gap-2.5 md:flex">
-      <motion.div
+      <m.div
         animate={reducedMotion ? undefined : { y: [0, -8, 0] }}
         transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
       >
         <AnimatePresence mode="wait">
-          <motion.button
+          <m.button
             key={activeGender}
             type="button"
             onClick={() => setGreetCount((g) => g + 1)}
@@ -48,7 +48,7 @@ export default function Companion() {
             <svg viewBox="0 0 34 46" fill="none" aria-hidden="true" className="h-10 w-[30px]">
               <circle cx="17" cy="8" r="6.4" fill={outfit.skin} />
               {/* garment body — this is the piece that swaps per wardrobe */}
-              <motion.path
+              <m.path
                 key={outfit.garment}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -70,9 +70,9 @@ export default function Companion() {
               <rect x="11" y="37" width="4.4" height="8.4" rx="1.6" fill="#3a3f4b" />
               <rect x="18.6" y="37" width="4.4" height="8.4" rx="1.6" fill="#3a3f4b" />
             </svg>
-          </motion.button>
+          </m.button>
         </AnimatePresence>
-      </motion.div>
+      </m.div>
       <span className="rounded-full border border-white/50 bg-surface/50 px-3 py-1 font-sans text-[9px] font-medium uppercase tracking-[0.1em] text-ink-dim shadow-[0_10px_20px_-14px_rgba(46,42,82,0.5)] backdrop-blur-xl">
         {outfit.label}
       </span>

@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, m } from "motion/react";
 import { X } from "lucide-react";
 import { scrollToSection } from "../lib/scroll";
 import { useFocusTrap } from "../hooks/useFocusTrap";
@@ -21,7 +21,7 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
   return (
     <AnimatePresence>
       {open && (
-        <motion.div
+        <m.div
           className="fixed inset-0 z-[90] flex flex-col bg-surface/75 backdrop-blur-2xl md:hidden"
           role="dialog"
           aria-modal="true"
@@ -45,7 +45,7 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
 
           <nav className="flex flex-1 flex-col items-start justify-center gap-2 px-8">
             {LINKS.map((link, i) => (
-              <motion.button
+              <m.button
                 key={link.id}
                 initial={{ opacity: 0, y: reducedMotion ? 0 : 14 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -61,10 +61,10 @@ export default function MobileMenu({ open, onClose }: { open: boolean; onClose: 
                 className="py-3 font-display text-4xl font-semibold text-ink transition-colors hover:text-accent"
               >
                 {link.label}
-              </motion.button>
+              </m.button>
             ))}
           </nav>
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { m } from "motion/react";
 import { CRAFT_IMAGES, unsplash } from "../data/collection";
 import { useExperienceStore } from "../store/experience";
 import { fade } from "../lib/motion";
@@ -35,12 +35,12 @@ export default function Craft() {
       className="scroll-mt-24 mx-3 mt-3 rounded-[2rem] border border-white/40 bg-surface-soft/55 px-6 py-20 shadow-[0_24px_60px_-30px_rgba(46,42,82,0.35)] backdrop-blur-2xl md:mx-6 md:mt-4 md:px-14 md:py-28"
     >
       <div className="mx-auto max-w-6xl">
-        <motion.p
+        <m.p
           {...fade(reducedMotion, { y: 12, duration: 0.7 })}
           className="font-sans text-[12px] font-semibold uppercase tracking-[0.25em] text-accent-deep"
         >
           Process
-        </motion.p>
+        </m.p>
         <SplitReveal
           as="h2"
           text="Three steps. No shortcuts."
@@ -49,14 +49,14 @@ export default function Craft() {
 
         <div className="mt-16 grid grid-cols-1 gap-16 md:grid-cols-3 md:gap-8">
           {STEPS.map((step, i) => (
-            <motion.div
+            <m.div
               key={step.num}
               {...fade(reducedMotion, { y: 24, duration: 0.7, delay: i * 0.1 })}
             >
               {/* surface-dim + ShimmerImage: the bare motion.img flashed a
                   white box until the photo arrived */}
               <div className="aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-surface-dim">
-                <motion.div
+                <m.div
                   initial={
                     reducedMotion
                       ? { opacity: 0 }
@@ -81,7 +81,7 @@ export default function Craft() {
                     loading="lazy"
                     className="h-full w-full object-cover"
                   />
-                </motion.div>
+                </m.div>
               </div>
               <p className="mt-6 font-display text-xl font-bold text-accent-deep">{step.num}</p>
               <h3 className="mt-1 font-sans text-[13px] font-semibold uppercase tracking-[0.15em] text-ink">
@@ -90,7 +90,7 @@ export default function Craft() {
               <p className="mt-3 font-sans text-[14px] leading-relaxed text-ink-dim">
                 {step.copy}
               </p>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>

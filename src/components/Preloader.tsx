@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, m } from "motion/react";
 import { useExperienceStore } from "../store/experience";
 import { lockScroll, unlockScroll } from "../lib/scroll";
 
@@ -79,13 +79,13 @@ export default function Preloader() {
   return (
     <AnimatePresence>
       {!finished && (
-        <motion.div
+        <m.div
           className="fixed inset-0 z-[999] flex flex-col items-center justify-center gap-5 bg-spotlight"
           exit={{ clipPath: "inset(0 0 100% 0)" }}
           transition={{ duration: EXIT_S, ease: [0.76, 0, 0.24, 1] }}
           aria-hidden="true"
         >
-          <motion.svg
+          <m.svg
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
@@ -105,12 +105,12 @@ export default function Preloader() {
               d="M24 11 34 37h-5.2l-2-5.4H21.2l-2 5.4H14L24 11Zm0 8.6-3 8.2h6l-3-8.2Z"
               fill="#ffffff"
             />
-          </motion.svg>
+          </m.svg>
           <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.35em] text-surface/70">
             Atelier
           </p>
           <p className="font-display text-3xl font-semibold text-surface">{progress}%</p>
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

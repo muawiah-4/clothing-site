@@ -1,4 +1,5 @@
 import type Lenis from "lenis";
+import { sectionsMounted, whenSectionsMounted } from "./lazySections";
 
 let lenisInstance: Lenis | null = null;
 // how many overlays (preloader, modals) currently hold the page still — Lenis
@@ -36,13 +37,25 @@ export function getLenisInstance(): Lenis | null {
 }
 
 export function scrollToSection(id: string, duration = 1.6) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  const lenis = lenisInstance;
   if (lockCount > 0) {
     pendingScroll = { id, duration };
     return;
   }
+  // below-the-fold sections are lazy chunks: until they have all mounted the
+  // target may be missing or sit above placeholders whose height is only an
+  // estimate, so wait for the final layout before measuring
+  if (!sectionsMounted()) {
+    pendingScroll = { id, duration };
+    void whenSectionsMounted().then(() => {
+      if (pendingScroll?.id !== id || lockCount > 0) return;
+      pendingScroll = null;
+      scrollToSection(id, duration);
+    });
+    return;
+  }
+  const el = document.getElementById(id);
+  if (!el) return;
+  const lenis = lenisInstance;
   pendingScroll = null;
   if (lenis) {
     lenis.scrollTo(el, { duration, easing: (t) => 1 - Math.pow(1 - t, 4) });

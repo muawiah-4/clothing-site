@@ -1,5 +1,5 @@
 import { useState, type Ref } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, LazyMotion, domMax, m } from "motion/react";
 import { COLLECTION, unsplash, type CollectionPiece } from "../data/collection";
 import { useExperienceStore, type GenderFilter } from "../store/experience";
 import { fade } from "../lib/motion";
@@ -26,79 +26,84 @@ export default function Collection() {
     (p) => activeCategory === "all" || p.category === activeCategory,
   );
 
+  // `layout` + popLayout need Motion's projection engine (domMax). Loading it
+  // here keeps it in this lazy chunk instead of the entry bundle, where the
+  // app-wide LazyMotion only carries domAnimation.
   return (
-    <section
-      id="collection"
-      className="scroll-mt-24 mx-3 mt-3 rounded-[2rem] border border-white/40 bg-surface/55 px-6 py-20 shadow-[0_24px_60px_-30px_rgba(46,42,82,0.35)] backdrop-blur-2xl md:mx-6 md:mt-4 md:px-10 md:py-28"
-    >
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-10 flex flex-col gap-6 md:mb-14 md:flex-row md:items-end md:justify-between">
-          <motion.div {...fade(reducedMotion, { y: 16, duration: 0.7 })}>
-            <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.25em] text-accent-deep">
-              The Archive, Opened
+    <LazyMotion features={domMax}>
+      <section
+        id="collection"
+        className="scroll-mt-24 mx-3 mt-3 rounded-[2rem] border border-white/40 bg-surface/55 px-6 py-20 shadow-[0_24px_60px_-30px_rgba(46,42,82,0.35)] backdrop-blur-2xl md:mx-6 md:mt-4 md:px-10 md:py-28"
+      >
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-10 flex flex-col gap-6 md:mb-14 md:flex-row md:items-end md:justify-between">
+            <m.div {...fade(reducedMotion, { y: 16, duration: 0.7 })}>
+              <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.25em] text-accent-deep">
+                The Archive, Opened
+              </p>
+              <SplitReveal
+                as="h2"
+                text="Shop the Wardrobe."
+                className="mt-4 font-display text-3xl font-bold text-ink sm:text-4xl"
+              />
+            </m.div>
+            <p className="max-w-sm font-sans text-[13px] leading-relaxed text-ink-dim">
+              Two wardrobes, one philosophy — tailoring, outerwear, and eveningwear cut for men and
+              women alike.
             </p>
-            <SplitReveal
-              as="h2"
-              text="Shop the Wardrobe."
-              className="mt-4 font-display text-3xl font-bold text-ink sm:text-4xl"
-            />
-          </motion.div>
-          <p className="max-w-sm font-sans text-[13px] leading-relaxed text-ink-dim">
-            Two wardrobes, one philosophy — tailoring, outerwear, and eveningwear cut for men and
-            women alike.
-          </p>
-        </div>
+          </div>
 
-        {/* wardrobe filter — also drives the companion's outfit down in the corner */}
-        <FilterPills
-          label="Filter by wardrobe"
-          options={TABS}
-          value={activeGender}
-          onChange={(id) => {
-            setActiveGender(id);
-            setActiveCategory("all");
-          }}
-          className="mb-8 border-b border-ink/10 pb-6 md:mb-10"
-        />
-
-        {categories.length > 1 && (
+          {/* wardrobe filter — also drives the companion's outfit down in the corner */}
           <FilterPills
-            label="Filter by category"
-            size="sm"
-            options={[
-              { id: "all", label: "All categories" },
-              ...categories.map((cat) => ({ id: cat, label: cat })),
-            ]}
-            value={activeCategory}
-            onChange={setActiveCategory}
-            className="mb-10 md:mb-12"
+            label="Filter by wardrobe"
+            options={TABS}
+            value={activeGender}
+            onChange={(id) => {
+              setActiveGender(id);
+              setActiveCategory("all");
+            }}
+            className="mb-8 border-b border-ink/10 pb-6 md:mb-10"
           />
-        )}
 
-        {/* md:pb-40 keeps the last row's prices clear of the fixed Companion
-            badge (72px button + label, 32px from the viewport bottom) when
-            the grid is scrolled to its end on desktop */}
-        <motion.div
-          layout
-          className="grid grid-cols-2 gap-x-4 gap-y-14 sm:grid-cols-3 md:gap-x-6 md:gap-y-20 md:pb-40"
-        >
-          {/* without AnimatePresence the cards' exit animation never ran —
-              filtered-out cards just vanished. popLayout pairs with `layout`
-              so the remaining cards reflow while the leaving ones fade. */}
-          <AnimatePresence mode="popLayout">
-            {pieces.map((piece, i) => (
-              <CollectionCard key={piece.id} piece={piece} index={i} reducedMotion={reducedMotion} />
-            ))}
-          </AnimatePresence>
-        </motion.div>
+          {categories.length > 1 && (
+            <FilterPills
+              label="Filter by category"
+              size="sm"
+              options={[
+                { id: "all", label: "All categories" },
+                ...categories.map((cat) => ({ id: cat, label: cat })),
+              ]}
+              value={activeCategory}
+              onChange={setActiveCategory}
+              className="mb-10 md:mb-12"
+            />
+          )}
 
-        {pieces.length === 0 && (
-          <p className="py-16 text-center font-sans text-[13px] text-ink-dim">
-            Nothing in this wardrobe yet — check back for the next drop.
-          </p>
-        )}
-      </div>
-    </section>
+          {/* md:pb-40 keeps the last row's prices clear of the fixed Companion
+              badge (72px button + label, 32px from the viewport bottom) when
+              the grid is scrolled to its end on desktop */}
+          <m.div
+            layout
+            className="grid grid-cols-2 gap-x-4 gap-y-14 sm:grid-cols-3 md:gap-x-6 md:gap-y-20 md:pb-40"
+          >
+            {/* without AnimatePresence the cards' exit animation never ran —
+                filtered-out cards just vanished. popLayout pairs with `layout`
+                so the remaining cards reflow while the leaving ones fade. */}
+            <AnimatePresence mode="popLayout">
+              {pieces.map((piece, i) => (
+                <CollectionCard key={piece.id} piece={piece} index={i} reducedMotion={reducedMotion} />
+              ))}
+            </AnimatePresence>
+          </m.div>
+
+          {pieces.length === 0 && (
+            <p className="py-16 text-center font-sans text-[13px] text-ink-dim">
+              Nothing in this wardrobe yet — check back for the next drop.
+            </p>
+          )}
+        </div>
+      </section>
+    </LazyMotion>
   );
 }
 
@@ -119,7 +124,7 @@ function CollectionCard({
   const offset = index % 3 === 1 ? "sm:mt-14" : "";
 
   return (
-    <motion.div
+    <m.div
       ref={ref}
       layout
       initial={{ opacity: 0, y: reducedMotion ? 0 : 30 }}
@@ -170,6 +175,6 @@ function CollectionCard({
           </p>
         </div>
       </div>
-    </motion.div>
+    </m.div>
   );
 }

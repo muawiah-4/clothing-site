@@ -3,6 +3,7 @@ import { CRAFT_IMAGES, unsplash } from "../data/collection";
 import { useExperienceStore } from "../store/experience";
 import { fade } from "../lib/motion";
 import SplitReveal from "../components/SplitReveal";
+import ShimmerImage from "../components/ShimmerImage";
 
 const STEPS = [
   {
@@ -52,11 +53,10 @@ export default function Craft() {
               key={step.num}
               {...fade(reducedMotion, { y: 24, duration: 0.7, delay: i * 0.1 })}
             >
-              <div className="aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-surface">
-                <motion.img
-                  src={unsplash(CRAFT_IMAGES[i], 700)}
-                  alt={step.alt}
-                  loading="lazy"
+              {/* surface-dim + ShimmerImage: the bare motion.img flashed a
+                  white box until the photo arrived */}
+              <div className="aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-surface-dim">
+                <motion.div
                   initial={
                     reducedMotion
                       ? { opacity: 0 }
@@ -73,8 +73,15 @@ export default function Craft() {
                     delay: reducedMotion ? 0 : 0.15 + i * 0.12,
                     ease: [0.65, 0, 0.35, 1],
                   }}
-                  className="h-full w-full object-cover"
-                />
+                  className="h-full w-full"
+                >
+                  <ShimmerImage
+                    src={unsplash(CRAFT_IMAGES[i], 700)}
+                    alt={step.alt}
+                    loading="lazy"
+                    className="h-full w-full object-cover"
+                  />
+                </motion.div>
               </div>
               <p className="mt-6 font-display text-xl font-bold text-accent-deep">{step.num}</p>
               <h3 className="mt-1 font-sans text-[13px] font-semibold uppercase tracking-[0.15em] text-ink">

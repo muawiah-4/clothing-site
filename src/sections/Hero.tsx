@@ -55,7 +55,7 @@ export default function Hero() {
         <div className="flex flex-col justify-center md:col-span-6">
           <motion.p
             {...enter(reducedMotion, { y: 10, duration: 0.7 })}
-            className="font-sans text-[12px] font-semibold uppercase tracking-[0.3em] text-surface/80"
+            className="font-sans text-[12px] font-semibold uppercase tracking-[0.3em] text-accent-deep"
           >
             The Current Edit
           </motion.p>
@@ -74,7 +74,7 @@ export default function Hero() {
 
           <motion.p
             {...enter(reducedMotion, { y: 14, duration: 0.7, delay: 0.2 })}
-            className="mt-6 max-w-md font-sans text-[15px] leading-relaxed text-ink/70"
+            className="mt-6 max-w-md font-sans text-[15px] leading-relaxed text-ink/90"
           >
             A dozen pieces a season, cut for men and women alike. Every silhouette earns its
             place before it earns a home.
@@ -101,14 +101,14 @@ export default function Hero() {
             <a
               href="mailto:studio@atelier.house"
               aria-label="Email the studio"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-surface/50 bg-surface/10 text-surface backdrop-blur-md transition-colors hover:bg-surface/80 hover:text-accent-deep"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/60 bg-surface/60 text-ink backdrop-blur-md transition-colors hover:bg-surface/85 hover:text-accent-deep"
             >
               <AtSign size={15} strokeWidth={1.6} />
             </a>
             <button
               onClick={() => scrollToSection("contact")}
               aria-label="Go to the contact section"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-surface/50 bg-surface/10 text-surface backdrop-blur-md transition-colors hover:bg-surface/80 hover:text-accent-deep"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-white/60 bg-surface/60 text-ink backdrop-blur-md transition-colors hover:bg-surface/85 hover:text-accent-deep"
             >
               <Send size={15} strokeWidth={1.6} />
             </button>
@@ -154,7 +154,7 @@ export default function Hero() {
                 aria-label={`Show ${p.name}`}
                 aria-current={active === i}
                 className={`h-2.5 rounded-full transition-all ${
-                  active === i ? "w-6 bg-accent" : "w-2.5 bg-surface/70 hover:bg-surface"
+                  active === i ? "w-6 bg-accent-deep" : "w-2.5 bg-ink/70 hover:bg-ink"
                 }`}
               />
             ))}

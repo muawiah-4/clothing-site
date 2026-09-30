@@ -41,7 +41,7 @@ export default function BrandStory() {
             className="mt-4 font-display text-3xl font-bold leading-tight text-ink sm:text-4xl"
           />
 
-          <div className="mt-8 flex flex-col gap-5 font-sans text-[15px] leading-relaxed text-ink/70">
+          <div className="mt-8 flex flex-col gap-5 font-sans text-[15px] leading-relaxed text-ink-dim">
             <motion.p {...fade(reducedMotion, { y: 12, duration: 0.7, delay: 0.2 })}>
               We work from a small studio, not a factory floor. Every collection is small by
               intention — a dozen pieces, each one argued over, unpicked, and re-cut until the

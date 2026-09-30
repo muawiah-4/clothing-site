@@ -181,7 +181,7 @@ export default function WardrobeReveal() {
         className="pointer-events-none relative z-10 flex h-full flex-col items-center justify-center px-6 text-center transition-opacity duration-500"
         style={{ opacity: phase === "closed" ? 1 : 0 }}
       >
-        <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.3em] text-accent">
+        <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.3em] text-accent-soft">
           The Archive
         </p>
         <h2 className="mt-4 font-display text-4xl font-bold text-surface sm:text-5xl md:text-6xl">

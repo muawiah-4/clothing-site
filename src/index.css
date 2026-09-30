@@ -27,9 +27,12 @@
      original --color-accent computed at 2.13:1, and --color-accent-deep as
      running text on white computed at 2.98:1, both well under the 4.5:1
      minimum. These now clear 4.5:1+ in both directions (button fills with
-     white text, and as text color on the site's card surfaces) */
+     white text, and as text color on the site's card surfaces).
+     accent-deep was darkened again (#14606f -> #10525f) so it also clears
+     4.5:1 as text directly on the bare gradient (the Hero eyebrow):
+     #14606f computed at 3.91:1 against --color-canvas-b, #10525f at 4.78:1 */
   --color-accent: #178098;
-  --color-accent-deep: #14606f;
+  --color-accent-deep: #10525f;
   --color-accent-soft: #d9f2f6;
 
   --color-blush: #f5cad8;

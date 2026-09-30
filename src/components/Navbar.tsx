@@ -31,7 +31,7 @@ export default function Navbar() {
             <button
               key={link.id}
               onClick={() => scrollToSection(link.id)}
-              className="group relative pb-1 transition-colors hover:text-accent"
+              className="group relative pb-1 transition-colors hover:text-accent-deep"
             >
               {link.label}
               <span className="absolute -bottom-[1px] left-0 h-[2px] w-0 rounded-full bg-accent transition-all duration-300 group-hover:w-full" />

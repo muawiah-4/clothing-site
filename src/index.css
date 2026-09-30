@@ -73,9 +73,14 @@
   }
 }
 
-.has-custom-cursor,
-.has-custom-cursor * {
-  cursor: none !important;
+/* same condition as the custom cursor's `md:block` — below it the custom
+   cursor is hidden, so the native one must stay visible (e.g. narrow
+   desktop windows) */
+@media (min-width: 48rem) {
+  .has-custom-cursor,
+  .has-custom-cursor * {
+    cursor: none !important;
+  }
 }
 
 /* ink, not accent — the original accent-based ring computed at 1.65-2.13:1

@@ -5,6 +5,7 @@ import { useExperienceStore } from "../store/experience";
 import { unsplash, type CollectionPiece } from "../data/collection";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import ShimmerImage from "./ShimmerImage";
+import { formatPrice } from "../lib/format";
 
 export default function BuyPanel() {
   const piece = useExperienceStore((s) => s.selectedPiece);
@@ -92,7 +93,7 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
           </p>
           <h3 className="mt-2 font-display text-2xl font-bold text-ink">{piece.name}</h3>
           <p className="mt-1 font-sans text-[15px] font-medium text-accent-deep">
-            ${piece.price.toLocaleString()}
+            {formatPrice(piece.price)}
           </p>
         </div>
 

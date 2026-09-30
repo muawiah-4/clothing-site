@@ -5,6 +5,7 @@ import { useExperienceStore, type GenderFilter } from "../store/experience";
 import { fade } from "../lib/motion";
 import ShimmerImage from "../components/ShimmerImage";
 import SplitReveal from "../components/SplitReveal";
+import { formatPrice } from "../lib/format";
 
 const TABS: { id: GenderFilter; label: string }[] = [
   { id: "all", label: "All" },
@@ -166,7 +167,7 @@ function CollectionCard({
             <p className="mt-1 font-display text-base font-semibold text-ink">{piece.name}</p>
           </div>
           <p className="font-sans text-[13px] font-medium text-accent-deep">
-            ${piece.price.toLocaleString()}
+            {formatPrice(piece.price)}
           </p>
         </div>
       </button>

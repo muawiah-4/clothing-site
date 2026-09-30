@@ -7,6 +7,7 @@ import { enter } from "../lib/motion";
 import { scrollToSection } from "../lib/scroll";
 import ShimmerImage from "../components/ShimmerImage";
 import ParticleField from "../components/ParticleField";
+import { formatPrice } from "../lib/format";
 
 // a spread across both wardrobes and all three categories, so the very
 // first thing a visitor sees isn't skewed toward one gender
@@ -176,7 +177,7 @@ export default function Hero() {
               <div>
                 <p className="font-sans text-[12px] font-semibold text-ink">{piece.name}</p>
                 <p className="font-sans text-[12px] text-accent-deep">
-                  ${piece.price.toLocaleString()}
+                  {formatPrice(piece.price)}
                 </p>
               </div>
             </button>

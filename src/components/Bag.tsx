@@ -6,6 +6,7 @@ import { unsplash } from "../data/collection";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import { scrollToSection } from "../lib/scroll";
 import ShimmerImage from "./ShimmerImage";
+import { formatPrice } from "../lib/format";
 
 /**
  * The "Add to Bag" payoff — previously the bag count lived only in the
@@ -160,7 +161,7 @@ export default function Bag() {
                             </button>
                           </div>
                           <p className="font-sans text-[13px] font-medium text-accent-deep">
-                            ${(item.piece.price * item.qty).toLocaleString()}
+                            {formatPrice(item.piece.price * item.qty)}
                           </p>
                         </div>
                       </li>
@@ -171,7 +172,7 @@ export default function Bag() {
                   <div className="flex items-baseline justify-between font-sans text-[13px] uppercase tracking-[0.1em] text-ink-dim">
                     <span>Subtotal</span>
                     <span className="font-display text-lg font-bold normal-case tracking-normal text-ink">
-                      ${total.toLocaleString()}
+                      {formatPrice(total)}
                     </span>
                   </div>
                   <button

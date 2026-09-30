@@ -104,9 +104,12 @@ export default function Collection() {
           </div>
         )}
 
+        {/* md:pb-40 keeps the last row's prices clear of the fixed Companion
+            badge (72px button + label, 32px from the viewport bottom) when
+            the grid is scrolled to its end on desktop */}
         <motion.div
           layout
-          className="grid grid-cols-2 gap-x-4 gap-y-14 sm:grid-cols-3 md:gap-x-6 md:gap-y-20"
+          className="grid grid-cols-2 gap-x-4 gap-y-14 sm:grid-cols-3 md:gap-x-6 md:gap-y-20 md:pb-40"
         >
           {/* without AnimatePresence the cards' exit animation never ran —
               filtered-out cards just vanished. popLayout pairs with `layout`

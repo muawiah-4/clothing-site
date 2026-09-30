@@ -11,8 +11,9 @@ const OUTFITS: Record<GenderFilter, { garment: string; skin: string; label: stri
 /**
  * A small companion that follows the shopper down the page and changes
  * outfit to match whichever wardrobe (men / women) is active. Lives
- * bottom-right, visible on mobile too. Tapping it is a small, tasteful
- * easter egg.
+ * bottom-right on md+ only: on phones the fixed badge sat on top of the
+ * collection's prices and product images, and it is purely decorative, so
+ * it is hidden below md. Tapping it is a small, tasteful easter egg.
  */
 export default function Companion() {
   const activeGender = useExperienceStore((s) => s.activeGender);
@@ -21,7 +22,7 @@ export default function Companion() {
   const [greetCount, setGreetCount] = useState(0);
 
   return (
-    <div className="pointer-events-none fixed bottom-6 right-6 z-[65] flex flex-col items-end gap-2 md:bottom-8 md:right-8 md:gap-2.5">
+    <div className="pointer-events-none fixed bottom-8 right-8 z-[65] hidden flex-col items-end gap-2.5 md:flex">
       <motion.div
         animate={reducedMotion ? undefined : { y: [0, -8, 0] }}
         transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
@@ -42,9 +43,9 @@ export default function Companion() {
             exit={{ opacity: 0, y: -10, scale: 0.85, rotate: 6 }}
             whileTap={{ scale: 0.88 }}
             transition={{ type: "spring", stiffness: 260, damping: 20 }}
-            className="pointer-events-auto flex h-14 w-14 items-center justify-center rounded-full border border-white/50 bg-surface/50 shadow-[0_16px_30px_-12px_rgba(46,42,82,0.5)] backdrop-blur-xl md:h-[72px] md:w-[72px]"
+            className="pointer-events-auto flex h-[72px] w-[72px] items-center justify-center rounded-full border border-white/50 bg-surface/50 shadow-[0_16px_30px_-12px_rgba(46,42,82,0.5)] backdrop-blur-xl"
           >
-            <svg viewBox="0 0 34 46" fill="none" aria-hidden="true" className="h-7 w-5 md:h-10 md:w-[30px]">
+            <svg viewBox="0 0 34 46" fill="none" aria-hidden="true" className="h-10 w-[30px]">
               <circle cx="17" cy="8" r="6.4" fill={outfit.skin} />
               {/* garment body — this is the piece that swaps per wardrobe */}
               <motion.path

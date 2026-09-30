@@ -142,14 +142,17 @@ function CollectionCard({
             className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
           />
         </div>
-        <div className="mt-4 flex items-baseline justify-between border-t border-ink/10 pt-3">
-          <div>
+        {/* stacked below sm: at 2 columns (~150px cards on a 390px phone) the
+            meta line and price didn't fit side by side and the meta wrapped
+            under the price */}
+        <div className="mt-4 flex flex-col gap-1 border-t border-ink/10 pt-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-3">
+          <div className="min-w-0">
             <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-ink-dim">
               {piece.index} — {piece.category}
             </p>
             <p className="mt-1 font-display text-base font-semibold text-ink">{piece.name}</p>
           </div>
-          <p className="font-sans text-[13px] font-medium text-accent-deep">
+          <p className="shrink-0 font-sans text-[13px] font-medium text-accent-deep">
             {formatPrice(piece.price)}
           </p>
         </div>

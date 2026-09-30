@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { motion } from "motion/react";
 import { ArrowRight, AtSign, Send } from "lucide-react";
-import { COLLECTION, unsplash } from "../data/collection";
+import { COLLECTION, unsplash, type CollectionPiece } from "../data/collection";
 import { useExperienceStore } from "../store/experience";
 import { enter } from "../lib/motion";
 import { scrollToSection } from "../lib/scroll";
@@ -11,7 +11,12 @@ import ParticleField from "../components/ParticleField";
 // a spread across both wardrobes and all three categories, so the very
 // first thing a visitor sees isn't skewed toward one gender
 const FEATURED_IDS = ["nocturne", "ivory-tailleur", "midnight-sequin"];
-const FEATURED = FEATURED_IDS.map((id) => COLLECTION.find((p) => p.id === id)!);
+// ids that no longer exist in the collection are dropped rather than crashing
+// the page; if none survive, fall back to the first pieces in the archive
+const FEATURED_FOUND = FEATURED_IDS.map((id) => COLLECTION.find((p) => p.id === id)).filter(
+  (p): p is CollectionPiece => p !== undefined,
+);
+const FEATURED = FEATURED_FOUND.length > 0 ? FEATURED_FOUND : COLLECTION.slice(0, 3);
 
 export default function Hero() {
   const reducedMotion = useExperienceStore((s) => s.reducedMotion);
@@ -19,6 +24,8 @@ export default function Hero() {
   const setCursorLabel = useExperienceStore((s) => s.setCursorLabel);
   const [active, setActive] = useState(0);
   const piece = FEATURED[active];
+
+  if (!piece) return null;
 
   return (
     <section

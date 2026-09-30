@@ -3,6 +3,7 @@ import { scrollToSection } from "../lib/scroll";
 import Logo from "./Logo";
 
 const SITEMAP = [
+  { id: "collection", label: "Shop" },
   { id: "story", label: "House" },
   { id: "wardrobe", label: "Archive" },
   { id: "craft", label: "Craft" },

@@ -6,6 +6,7 @@ import { useExperienceStore } from "../store/experience";
 import Logo from "./Logo";
 
 const LINKS = [
+  { id: "collection", label: "Shop" },
   { id: "story", label: "House" },
   { id: "wardrobe", label: "Archive" },
   { id: "craft", label: "Craft" },

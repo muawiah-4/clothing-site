@@ -6,6 +6,7 @@ import MobileMenu from "./MobileMenu";
 import Logo from "./Logo";
 
 const LINKS = [
+  { id: "collection", label: "Shop" },
   { id: "story", label: "House" },
   { id: "wardrobe", label: "Archive" },
   { id: "craft", label: "Craft" },

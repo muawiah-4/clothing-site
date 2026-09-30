@@ -158,6 +158,8 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
                 onClick={() => {
                   setSize(s);
                   setNeedsSize(false);
+                  // "Added to Bag" described the previous size, not this one
+                  setAdded(false);
                 }}
                 className={`min-w-[2.6rem] rounded-xl border px-3 py-2 font-sans text-[12px] transition-colors ${
                   s === size
@@ -187,6 +189,17 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
           >
             {added ? "Added to Bag" : "Add to Bag"}
           </button>
+          {added && (
+            <button
+              onClick={() => {
+                onDone();
+                setBagOpen(true);
+              }}
+              className="w-full rounded-full border border-accent/40 py-4 font-sans text-[12px] font-semibold uppercase tracking-[0.15em] text-accent-deep transition-colors hover:border-accent hover:bg-accent/10"
+            >
+              View bag
+            </button>
+          )}
           <button
             onClick={() => {
               if (!requireSize() || !size) return;

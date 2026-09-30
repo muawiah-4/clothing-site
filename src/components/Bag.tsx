@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Check, X } from "lucide-react";
+import { Check, Minus, Plus, X } from "lucide-react";
 import { useExperienceStore } from "../store/experience";
 import { unsplash } from "../data/collection";
 import { useFocusTrap } from "../hooks/useFocusTrap";
+import { scrollToSection } from "../lib/scroll";
 import ShimmerImage from "./ShimmerImage";
 
 /**
@@ -16,12 +17,16 @@ export default function Bag() {
   const setOpen = useExperienceStore((s) => s.setBagOpen);
   const items = useExperienceStore((s) => s.bagItems);
   const clearBag = useExperienceStore((s) => s.clearBag);
+  const setQty = useExperienceStore((s) => s.setQty);
+  const removeFromBag = useExperienceStore((s) => s.removeFromBag);
   const reducedMotion = useExperienceStore((s) => s.reducedMotion);
   const [placed, setPlaced] = useState(false);
   const close = () => setOpen(false);
   const containerRef = useFocusTrap(open, close);
 
   const total = items.reduce((sum, i) => sum + i.piece.price * i.qty, 0);
+  // units, not lines — matches the Navbar badge
+  const count = items.reduce((n, i) => n + i.qty, 0);
 
   return (
     // reset the confirmation only once the panel has fully left, whichever
@@ -54,7 +59,7 @@ export default function Bag() {
           >
             <div className="flex items-center justify-between border-b border-ink/10 px-7 py-6">
               <h2 className="font-display text-xl font-bold text-ink">
-                Your Bag {items.length > 0 && `(${items.length})`}
+                Your Bag {count > 0 && `(${count})`}
               </h2>
               <button
                 onClick={close}
@@ -90,6 +95,16 @@ export default function Bag() {
                 <p className="font-sans text-[13px] text-ink-dim">
                   Twelve pieces are waiting in the archive.
                 </p>
+                <button
+                  onClick={() => {
+                    close();
+                    // deferred by lib/scroll until the bag releases its scroll lock
+                    scrollToSection("collection");
+                  }}
+                  className="mt-4 rounded-full bg-accent px-6 py-3 font-sans text-[12px] font-semibold uppercase tracking-[0.15em] text-surface transition-colors hover:bg-accent-deep"
+                >
+                  Shop the collection
+                </button>
               </div>
             ) : (
               <>
@@ -110,8 +125,39 @@ export default function Bag() {
                               {item.piece.name}
                             </p>
                             <p className="mt-1 font-sans text-[11px] uppercase tracking-[0.1em] text-ink-dim">
-                              Size {item.size} {item.qty > 1 && `· Qty ${item.qty}`}
+                              Size {item.size}
                             </p>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <div className="flex items-center rounded-full border border-ink/15">
+                              <button
+                                onClick={() => setQty(item.piece.id, item.size, item.qty - 1)}
+                                aria-label={`Decrease quantity of ${item.piece.name}, size ${item.size}`}
+                                className="p-1.5 text-ink-dim transition-colors hover:text-accent-deep"
+                              >
+                                <Minus size={12} strokeWidth={1.8} />
+                              </button>
+                              <span
+                                aria-live="polite"
+                                className="min-w-[1.5rem] text-center font-sans text-[12px] text-ink"
+                              >
+                                {item.qty}
+                              </span>
+                              <button
+                                onClick={() => setQty(item.piece.id, item.size, item.qty + 1)}
+                                aria-label={`Increase quantity of ${item.piece.name}, size ${item.size}`}
+                                className="p-1.5 text-ink-dim transition-colors hover:text-accent-deep"
+                              >
+                                <Plus size={12} strokeWidth={1.8} />
+                              </button>
+                            </div>
+                            <button
+                              onClick={() => removeFromBag(item.piece.id, item.size)}
+                              aria-label={`Remove ${item.piece.name}, size ${item.size}`}
+                              className="font-sans text-[11px] uppercase tracking-[0.1em] text-ink-dim underline-offset-2 transition-colors hover:text-accent-deep hover:underline"
+                            >
+                              Remove
+                            </button>
                           </div>
                           <p className="font-sans text-[13px] font-medium text-accent-deep">
                             ${(item.piece.price * item.qty).toLocaleString()}

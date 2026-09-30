@@ -29,6 +29,9 @@ interface ExperienceState {
 
   bagItems: BagItem[];
   addToBag: (piece: CollectionPiece, size: string) => void;
+  removeFromBag: (pieceId: string, size: string) => void;
+  /** sets a line's quantity; 0 or less removes the line */
+  setQty: (pieceId: string, size: string, qty: number) => void;
   clearBag: () => void;
 
   bagOpen: boolean;
@@ -69,6 +72,19 @@ export const useExperienceStore = create<ExperienceState>((set) => ({
       }
       return { bagItems: [...s.bagItems, { piece, size, qty: 1 }] };
     }),
+  removeFromBag: (pieceId, size) =>
+    set((s) => ({
+      bagItems: s.bagItems.filter((i) => !(i.piece.id === pieceId && i.size === size)),
+    })),
+  setQty: (pieceId, size, qty) =>
+    set((s) => ({
+      bagItems:
+        qty <= 0
+          ? s.bagItems.filter((i) => !(i.piece.id === pieceId && i.size === size))
+          : s.bagItems.map((i) =>
+              i.piece.id === pieceId && i.size === size ? { ...i, qty } : i,
+            ),
+    })),
   clearBag: () => set({ bagItems: [] }),
 
   bagOpen: false,

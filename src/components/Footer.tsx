@@ -58,7 +58,7 @@ export default function Footer() {
                   <a
                     href={s.href}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                     className="group flex items-center gap-1 font-sans text-[13px] text-ink-dim transition-colors hover:text-accent-deep"
                   >
                     {s.label}

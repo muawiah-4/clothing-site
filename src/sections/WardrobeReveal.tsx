@@ -34,7 +34,6 @@ export default function WardrobeReveal() {
   // bumped on every open/reset/skip so a video.play() promise that settles
   // after the sequence was reset (pause() rejects it) can't schedule timers
   const generation = useRef(0);
-  const setWardrobeOpened = useExperienceStore((s) => s.setWardrobeOpened);
   const setCursorLabel = useExperienceStore((s) => s.setCursorLabel);
   const reducedMotion = useExperienceStore((s) => s.reducedMotion);
 
@@ -58,7 +57,6 @@ export default function WardrobeReveal() {
     if (phase !== "closed") return;
     const gen = ++generation.current;
     setPhase("playing");
-    setWardrobeOpened(true);
     setScatter(computeScatter(window.innerWidth, window.innerHeight));
 
     const video = videoRef.current;
@@ -85,7 +83,7 @@ export default function WardrobeReveal() {
         setPhase("bursting");
         scheduleSequence(300);
       });
-  }, [phase, reducedMotion, scheduleSequence, setWardrobeOpened]);
+  }, [phase, reducedMotion, scheduleSequence]);
 
   // plays automatically the moment the section comes properly into view, and
   // resets on the way out so scrolling back to it plays the whole sequence
@@ -114,7 +112,6 @@ export default function WardrobeReveal() {
         generation.current += 1;
         clearTimers();
         setPhase("closed");
-        setWardrobeOpened(false);
         const video = videoRef.current;
         if (video) {
           video.pause();
@@ -125,7 +122,7 @@ export default function WardrobeReveal() {
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [reducedMotion, setWardrobeOpened, clearTimers]);
+  }, [reducedMotion, clearTimers]);
 
   const skip = useCallback(() => {
     generation.current += 1;

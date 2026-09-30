@@ -14,9 +14,6 @@ interface ExperienceState {
   cursorLabel: string | null;
   setCursorLabel: (v: string | null) => void;
 
-  wardrobeOpened: boolean;
-  setWardrobeOpened: (v: boolean) => void;
-
   reducedMotion: boolean;
   setReducedMotion: (v: boolean) => void;
 
@@ -41,9 +38,6 @@ interface ExperienceState {
 export const useExperienceStore = create<ExperienceState>((set) => ({
   cursorLabel: null,
   setCursorLabel: (v) => set({ cursorLabel: v }),
-
-  wardrobeOpened: false,
-  setWardrobeOpened: (v) => set({ wardrobeOpened: v }),
 
   // read synchronously so the very first render (e.g. the Preloader) already
   // knows — useDevicePerformance only keeps it in sync afterwards

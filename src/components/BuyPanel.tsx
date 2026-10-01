@@ -6,6 +6,9 @@ import { unsplash, type CollectionPiece } from "../data/collection";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import ShimmerImage from "./ShimmerImage";
 import { formatPrice } from "../lib/format";
+import { useStock } from "../hooks/useStock";
+
+const LOW_STOCK = 3;
 
 export default function BuyPanel() {
   const piece = useExperienceStore((s) => s.selectedPiece);
@@ -73,6 +76,9 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
   const [needsSize, setNeedsSize] = useState(false);
   const [showGuide, setShowGuide] = useState(false);
   const sizes = ["XS", "S", "M", "L", "XL"];
+  // null (loading, or no API on a static deploy) means "don't know" — leave the size enabled
+  const { left } = useStock();
+  const sizeLeft = size ? left(piece.id, size) : null;
   // included in the announcement so adding the same size again still changes
   // the live region's text (an unchanged string isn't re-announced)
   const inBag = bagItems.find((i) => i.piece.id === piece.id && i.size === size)?.qty ?? 0;
@@ -157,26 +163,36 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
 
           {/* h-11/min-w-11: 44px touch targets (the chips were ~32px tall) */}
           <div className="flex flex-wrap gap-2">
-            {sizes.map((s) => (
-              <button
-                key={s}
-                aria-pressed={s === size}
-                onClick={() => {
-                  setSize(s);
-                  setNeedsSize(false);
-                  // "Added to Bag" described the previous size, not this one
-                  setAdded(false);
-                }}
-                className={`inline-flex h-11 min-w-11 items-center justify-center rounded-xl border px-3 font-sans text-[12px] transition-colors ${
-                  s === size
-                    ? "border-accent bg-accent text-surface"
-                    : "border-ink/15 text-ink-dim hover:border-accent/50 hover:text-accent-deep"
-                }`}
-              >
-                {s}
-              </button>
-            ))}
+            {sizes.map((s) => {
+              const soldOut = left(piece.id, s) === 0;
+              return (
+                <button
+                  key={s}
+                  aria-pressed={s === size}
+                  disabled={soldOut}
+                  aria-label={soldOut ? `${s}, sold out` : undefined}
+                  onClick={() => {
+                    setSize(s);
+                    setNeedsSize(false);
+                    // "Added to Bag" described the previous size, not this one
+                    setAdded(false);
+                  }}
+                  className={`inline-flex h-11 min-w-11 items-center justify-center rounded-xl border px-3 font-sans text-[12px] transition-colors ${
+                    s === size
+                      ? "border-accent bg-accent text-surface"
+                      : soldOut
+                        ? "cursor-not-allowed border-ink/10 text-ink-dim/50 line-through"
+                        : "border-ink/15 text-ink-dim hover:border-accent/50 hover:text-accent-deep"
+                  }`}
+                >
+                  {s}
+                </button>
+              );
+            })}
           </div>
+          {size && sizeLeft !== null && sizeLeft > 0 && sizeLeft <= LOW_STOCK && (
+            <p className="mt-2 font-sans text-[12px] text-accent-deep">Only {sizeLeft} left in {size}.</p>
+          )}
           {needsSize && (
             <p role="alert" className="mt-2 font-sans text-[12px] text-accent-deep">
               Please select a size first.

@@ -175,6 +175,7 @@ export default function Hero() {
               loading="eager"
               fetchPriority={swapped ? "auto" : "high"}
               fadeIn={swapped}
+              style={{ objectPosition: piece.objectPosition }}
               className="h-full w-full object-cover"
             />
           </m.button>

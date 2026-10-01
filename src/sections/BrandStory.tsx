@@ -22,7 +22,7 @@ export default function BrandStory() {
             <ShimmerImage
               src={unsplash(PORTRAIT_IMAGE, 900)}
               alt="Studio portrait"
-              className="h-full w-full object-cover"
+              className="grade-editorial h-full w-full object-cover"
             />
           </m.div>
         </div>

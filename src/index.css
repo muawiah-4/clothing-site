@@ -192,6 +192,13 @@
     font-family: var(--font-display);
   }
 
+  /* one consistent grade for editorial frames (House, Craft, Lookbook):
+     a warm-neutral monochrome, so mixed sources read as one shoot.
+     Product photography stays in colour. */
+  .grade-editorial {
+    filter: grayscale(1) sepia(0.14) contrast(1.05) brightness(1.02);
+  }
+
   .text-balance {
     text-wrap: balance;
   }

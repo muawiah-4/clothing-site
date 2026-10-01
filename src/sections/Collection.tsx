@@ -146,7 +146,7 @@ function CollectionCard({
           button's own ring needs `!` to beat the unlayered global
           :focus-visible rule in index.css). */}
       <div className="group relative rounded-[1.5rem] outline-offset-4 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-ink has-[:focus-visible]:outline-solid">
-        <div className="aspect-[3/4] overflow-hidden rounded-[1.5rem] bg-surface-soft shadow-[0_16px_34px_-20px_rgba(46,42,82,0.35)]">
+        <div className="aspect-[3/4] overflow-hidden rounded-[1.5rem] bg-surface-dim shadow-[0_16px_34px_-20px_rgba(46,42,82,0.35)]">
           <ShimmerImage
             src={unsplash(piece.image, 600)}
             srcSet={unsplashSrcSet(piece.image, CARD_WIDTHS)}
@@ -155,6 +155,7 @@ function CollectionCard({
             height={800}
             alt=""
             loading="lazy"
+            style={{ objectPosition: piece.objectPosition }}
             className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
           />
         </div>

@@ -102,7 +102,7 @@ function LookbookGrid({ reducedMotion }: { reducedMotion: boolean }) {
               src={unsplash(plate.src, 900)}
               alt={plate.alt}
               loading="lazy"
-              className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+              className="grade-editorial h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
             />
           </div>
           <figcaption className="mt-3 font-sans text-[13px] leading-snug text-ink-dim">
@@ -143,7 +143,7 @@ function LookbookHorizontalGallery({ reducedMotion }: { reducedMotion: boolean }
                 src={unsplash(plate.src, 900)}
                 alt={plate.alt}
                 loading="lazy"
-                className="h-full w-full object-cover"
+                className="grade-editorial h-full w-full object-cover"
               />
             </div>
             <figcaption className="mt-3 max-w-[70vw] font-sans text-[13px] leading-snug text-ink-dim sm:max-w-none">

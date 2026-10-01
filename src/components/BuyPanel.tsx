@@ -88,7 +88,12 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
   return (
     <>
       <div className="aspect-[3/4] w-full overflow-hidden rounded-b-[1.5rem] bg-surface-soft">
-        <ShimmerImage src={unsplash(piece.image, 700)} alt={piece.name} className="h-full w-full object-cover" />
+        <ShimmerImage
+          src={unsplash(piece.image, 700)}
+          alt={piece.name}
+          style={{ objectPosition: piece.objectPosition }}
+          className="h-full w-full object-cover"
+        />
       </div>
       <div className="flex flex-1 flex-col gap-6 px-7 py-8">
         <div>

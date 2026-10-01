@@ -130,6 +130,7 @@ export default function Bag() {
                           <ShimmerImage
                             src={unsplash(item.piece.image, 200)}
                             alt={item.piece.name}
+                            style={{ objectPosition: item.piece.objectPosition }}
                             className="h-full w-full object-cover"
                           />
                         </div>

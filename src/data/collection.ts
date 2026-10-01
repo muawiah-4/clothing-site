@@ -10,6 +10,8 @@ export interface CollectionPiece {
   index: string;
   price: number;
   image: string;
+  /** CSS object-position for the 3:4 card crop, tuned so the garment, not the face, holds the frame */
+  objectPosition: string;
   fabric: string;
   fit: string;
   care: string;
@@ -24,7 +26,8 @@ export const COLLECTION: CollectionPiece[] = [
     gender: "men",
     index: "01",
     price: 1980,
-    image: `${U}1608548936842-6765019f1c13`,
+    image: `${U}1553143820-6bb68bc34679`,
+    objectPosition: "50% 55%",
     fabric: "Brushed wool-cashmere blend",
     fit: "Relaxed through the shoulder, tapered at the hem",
     care: "Dry clean only",
@@ -37,6 +40,7 @@ export const COLLECTION: CollectionPiece[] = [
     index: "02",
     price: 2150,
     image: `${U}1585820122150-3a0909e77e20`,
+    objectPosition: "50% 50%",
     fabric: "Double-faced Italian wool",
     fit: "Structured shoulder, knee-length",
     care: "Dry clean only",
@@ -48,7 +52,8 @@ export const COLLECTION: CollectionPiece[] = [
     gender: "men",
     index: "03",
     price: 1240,
-    image: `${U}1578758837674-93ed0ab5fbab`,
+    image: `${U}1507679799987-c73779587ccf`,
+    objectPosition: "50% 40%",
     fabric: "Super 120s wool",
     fit: "Slim through the waist, full-canvas construction",
     care: "Dry clean, press with a cloth",
@@ -61,6 +66,7 @@ export const COLLECTION: CollectionPiece[] = [
     index: "04",
     price: 1380,
     image: `${U}1546572797-e8c933a75a1f`,
+    objectPosition: "50% 60%",
     fabric: "Brushed flannel wool",
     fit: "Classic straight, single-button",
     care: "Dry clean, press with a cloth",
@@ -73,6 +79,7 @@ export const COLLECTION: CollectionPiece[] = [
     index: "05",
     price: 2450,
     image: `${U}1755537131223-7c1b667696fd`,
+    objectPosition: "50% 45%",
     fabric: "Silk-faced wool jacquard",
     fit: "Shawl collar, fitted through the torso",
     care: "Dry clean only",
@@ -85,6 +92,7 @@ export const COLLECTION: CollectionPiece[] = [
     index: "06",
     price: 2680,
     image: `${U}1522968439036-e6338d0ed84f`,
+    objectPosition: "50% 50%",
     fabric: "Barathea wool, satin lapel",
     fit: "Peak lapel, fitted",
     care: "Dry clean only",
@@ -99,6 +107,7 @@ export const COLLECTION: CollectionPiece[] = [
     index: "07",
     price: 1080,
     image: `${U}1613915617430-8ab0fd7c6baf`,
+    objectPosition: "50% 45%",
     fabric: "Wool-mohair blend",
     fit: "Sharp shoulder, cropped at the hip",
     care: "Dry clean only",
@@ -111,6 +120,7 @@ export const COLLECTION: CollectionPiece[] = [
     index: "08",
     price: 2450,
     image: `${U}1664076458686-3449062080ac`,
+    objectPosition: "50% 55%",
     fabric: "100% silk charmeuse",
     fit: "Bias-cut, floor length",
     care: "Dry clean only",
@@ -123,6 +133,7 @@ export const COLLECTION: CollectionPiece[] = [
     index: "09",
     price: 1320,
     image: `${U}1659522761084-79196b64abe4`,
+    objectPosition: "50% 50%",
     fabric: "Wool crepe",
     fit: "Structured, nipped waist",
     care: "Dry clean only",
@@ -135,6 +146,7 @@ export const COLLECTION: CollectionPiece[] = [
     index: "10",
     price: 2680,
     image: `${U}1551113006-731674fbb3ff`,
+    objectPosition: "50% 70%",
     fabric: "Hand-embroidered sequin mesh",
     fit: "Fitted through the hip, fluted hem",
     care: "Dry clean only",
@@ -147,20 +159,22 @@ export const COLLECTION: CollectionPiece[] = [
     index: "11",
     price: 2190,
     image: `${U}1762843352680-21a700cb56ac`,
+    objectPosition: "50% 50%",
     fabric: "Shearling, leather trim",
     fit: "Oversized, dropped shoulder",
     care: "Specialist leather clean only",
   },
   {
-    id: "cobalt-drape",
-    name: "Cobalt Drape",
+    id: "aubergine-drape",
+    name: "Aubergine Drape",
     category: "Eveningwear",
     gender: "women",
     index: "12",
     price: 1860,
-    image: `${U}1765490106170-4322b6cc96fe`,
-    fabric: "Silk-viscose georgette",
-    fit: "Draped, relaxed through the body",
+    image: `${U}1566174053879-31528523f8ae`,
+    objectPosition: "50% 65%",
+    fabric: "Silk crêpe-back satin",
+    fit: "Off the shoulder, draped through the bodice",
     care: "Dry clean only",
   },
 ];
@@ -169,8 +183,8 @@ export const PORTRAIT_IMAGE = `${U}1567425601834-0768cf9f3c78`;
 
 export const CRAFT_IMAGES = [
   `${U}1680835099030-9c7532f744f1`,
-  `${U}1721578006568-17901600cff3`,
-  `${U}1661609859761-8b21d320049f`,
+  `${U}1528459105426-b9548367069b`,
+  `${U}1584184924103-e310d9dc82fc`,
 ];
 
 export function unsplash(id: string, width: number): string {

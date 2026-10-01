@@ -10,19 +10,22 @@ const STEPS = [
     num: "I",
     title: "Pattern",
     copy: "Each silhouette is drafted by hand before it is ever cut, held against a form until the proportion earns its place.",
-    alt: "Dress forms and draped pattern pieces in the studio workroom",
+    alt: "Dress forms with chalk-marked toiles in the workroom",
+    position: "35% 50%",
   },
   {
     num: "II",
     title: "Cloth",
     copy: "We choose material before design — the weight and drape of a fabric decides what it is allowed to become.",
-    alt: "Two tailors working fabric together at a cutting table",
+    alt: "Close detail of a tightly woven wool cloth",
+    position: "50% 50%",
   },
   {
     num: "III",
     title: "Hand",
     copy: "Every seam is finished by the same small team that drafted it. Nothing leaves the studio unseen.",
-    alt: "Close detail of hand-finished stitching in progress",
+    alt: "A tailor's hands laying out cut wool pieces on the cutting table",
+    position: "50% 60%",
   },
 ];
 
@@ -79,7 +82,8 @@ export default function Craft() {
                     src={unsplash(CRAFT_IMAGES[i], 700)}
                     alt={step.alt}
                     loading="lazy"
-                    className="h-full w-full object-cover"
+                    style={{ objectPosition: step.position }}
+                    className="grade-editorial h-full w-full object-cover"
                   />
                 </m.div>
               </div>

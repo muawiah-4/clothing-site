@@ -74,7 +74,7 @@ export default function Hero() {
         <div className="flex flex-col justify-center md:col-span-6">
           <m.p
             {...enter(reducedMotion, { y: 10, duration: 0.7 })}
-            className="font-sans text-[12px] font-semibold uppercase tracking-[0.3em] text-accent-deep"
+            className="font-sans text-label-xs font-semibold uppercase text-accent-deep"
           >
             The Current Edit
           </m.p>
@@ -93,7 +93,7 @@ export default function Hero() {
 
           <m.p
             {...enter(reducedMotion, { y: 14, duration: 0.7, delay: 0.2 })}
-            className="mt-6 max-w-md font-sans text-[15px] leading-relaxed text-ink/90"
+            className="mt-6 max-w-md font-sans text-base leading-relaxed text-ink/90"
           >
             A dozen pieces a season, cut for men and women alike. Every silhouette earns its
             place before it earns a home.
@@ -102,7 +102,7 @@ export default function Hero() {
           <m.div {...enter(reducedMotion, { y: 14, duration: 0.7, delay: 0.3 })} className="mt-9">
             <button
               onClick={() => setSelectedPiece(piece)}
-              className="group inline-flex items-center gap-2 rounded-full border border-white/50 bg-surface/50 px-7 py-4 font-sans text-[13px] font-semibold uppercase tracking-[0.1em] text-accent-deep shadow-[0_16px_30px_-14px_rgba(46,42,82,0.5)] backdrop-blur-xl transition-transform hover:scale-[1.03] hover:bg-surface/70"
+              className="group inline-flex items-center gap-2 rounded-full border border-white/50 bg-surface/50 px-7 py-4 font-sans text-label-sm font-semibold uppercase text-accent-deep shadow-float backdrop-blur-xl transition-transform hover:scale-[1.03] hover:bg-surface/70"
             >
               Shop This Look
               <ArrowRight
@@ -163,7 +163,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: reducedMotion ? 0.15 : 0.6, ease: [0.22, 1, 0.36, 1] }}
             aria-label={`View ${piece.name}`}
-            className="relative aspect-[3/4] w-[78%] max-w-[360px] overflow-hidden rounded-[1.75rem] bg-surface shadow-[0_30px_60px_-20px_rgba(46,42,82,0.45)] sm:w-[68%]"
+            className="relative aspect-[3/4] w-[78%] max-w-[360px] overflow-hidden rounded-card bg-surface shadow-float sm:w-[68%]"
           >
             <ShimmerImage
               src={unsplash(piece.image, 720)}
@@ -199,7 +199,7 @@ export default function Hero() {
           <div className="relative z-10 mt-6 flex items-end gap-3">
             <button
               onClick={() => setSelectedPiece(piece)}
-              className="flex items-center gap-3 rounded-2xl border border-white/50 bg-surface/55 px-4 py-3 text-left shadow-[0_14px_30px_-16px_rgba(46,42,82,0.4)] backdrop-blur-xl"
+              className="flex items-center gap-3 rounded-soft border border-white/50 bg-surface/55 px-4 py-3 text-left shadow-card backdrop-blur-xl"
             >
               <div className="h-14 w-12 shrink-0 overflow-hidden rounded-lg bg-surface-soft">
                 <ShimmerImage
@@ -210,8 +210,8 @@ export default function Hero() {
                 />
               </div>
               <div>
-                <p className="font-sans text-[12px] font-semibold text-ink">{piece.name}</p>
-                <p className="font-sans text-[12px] text-accent-deep">
+                <p className="font-sans text-body-sm font-semibold text-ink">{piece.name}</p>
+                <p className="font-sans text-body-sm text-accent-deep">
                   {formatPrice(piece.price)}
                 </p>
               </div>
@@ -223,7 +223,7 @@ export default function Hero() {
                   key={p.id}
                   onClick={() => show(i)}
                   aria-label={`Show ${p.name}`}
-                  className="hidden h-20 w-14 overflow-hidden rounded-xl opacity-80 shadow-[0_10px_20px_-12px_rgba(46,42,82,0.4)] transition-opacity hover:opacity-100 sm:block"
+                  className="hidden h-20 w-14 overflow-hidden rounded-xl opacity-80 shadow-card transition-opacity hover:opacity-100 sm:block"
                 >
                   <ShimmerImage
                     src={unsplash(p.image, 100)}

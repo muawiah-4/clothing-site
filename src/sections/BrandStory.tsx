@@ -17,7 +17,7 @@ export default function BrandStory() {
         <div className="md:col-span-5">
           <m.div
             {...fade(reducedMotion, { y: 20, duration: 0.9 })}
-            className="aspect-[3/4] overflow-hidden rounded-[1.75rem]"
+            className="aspect-[3/4] overflow-hidden rounded-card"
           >
             <ShimmerImage
               src={unsplash(PORTRAIT_IMAGE, 900)}
@@ -30,7 +30,7 @@ export default function BrandStory() {
         <div className="md:col-span-6 md:col-start-7">
           <m.p
             {...fade(reducedMotion, { y: 16, duration: 0.7 })}
-            className="font-sans text-[12px] font-semibold uppercase tracking-[0.25em] text-accent-deep"
+            className="font-sans text-label-xs font-semibold uppercase text-accent-deep"
           >
             The House
           </m.p>
@@ -41,7 +41,7 @@ export default function BrandStory() {
             className="mt-4 font-display text-3xl font-bold leading-tight text-ink sm:text-4xl"
           />
 
-          <div className="mt-8 flex flex-col gap-5 font-sans text-[15px] leading-relaxed text-ink-dim">
+          <div className="mt-8 flex flex-col gap-5 font-sans text-base leading-relaxed text-ink-dim">
             <m.p {...fade(reducedMotion, { y: 12, duration: 0.7, delay: 0.2 })}>
               We work from a small studio, not a factory floor. Every collection is small by
               intention — a dozen pieces, each one argued over, unpicked, and re-cut until the
@@ -55,7 +55,7 @@ export default function BrandStory() {
 
           <m.blockquote
             {...fade(reducedMotion, { y: 14, duration: 0.8, delay: 0.35 })}
-            className="mt-8 rounded-2xl border border-white/40 bg-surface/40 px-6 py-5 font-display text-lg font-medium leading-snug text-ink backdrop-blur-md"
+            className="mt-8 rounded-soft border border-white/40 bg-surface/40 px-6 py-5 font-display text-lg font-medium leading-snug text-ink backdrop-blur-md"
           >
             "We do not chase trend. We chase the garment that still feels correct in ten years."
           </m.blockquote>
@@ -73,7 +73,7 @@ export default function BrandStory() {
                 <p className="font-display text-xl font-bold text-accent-deep sm:text-2xl">
                   {stat}
                 </p>
-                <p className="mt-1 font-sans text-[11px] uppercase tracking-[0.1em] text-ink-dim">
+                <p className="mt-1 font-sans text-label-xs uppercase text-ink-dim">
                   {label}
                 </p>
               </div>

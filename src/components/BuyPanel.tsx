@@ -35,7 +35,7 @@ export default function BuyPanel() {
           <m.div
             ref={containerRef}
             data-lenis-prevent
-            className="relative flex h-full w-full max-w-md flex-col overflow-y-auto rounded-l-[2rem] border-l border-white/40 bg-surface/70 max-md:bg-surface/95 backdrop-blur-2xl"
+            className="relative flex h-full w-full max-w-md flex-col overflow-y-auto rounded-l-shell border-l border-white/40 bg-surface/70 max-md:bg-surface/95 backdrop-blur-2xl"
             initial={{ x: reducedMotion ? 0 : "100%" }}
             animate={{ x: 0 }}
             exit={{ x: reducedMotion ? 0 : "100%" }}
@@ -87,7 +87,7 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
 
   return (
     <>
-      <div className="aspect-[3/4] w-full overflow-hidden rounded-b-[1.5rem] bg-surface-soft">
+      <div className="aspect-[3/4] w-full overflow-hidden rounded-b-card bg-surface-soft">
         <ShimmerImage
           src={unsplash(piece.image, 700)}
           alt={piece.name}
@@ -97,16 +97,16 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
       </div>
       <div className="flex flex-1 flex-col gap-6 px-7 py-8">
         <div>
-          <p className="font-sans text-[11px] uppercase tracking-[0.2em] text-ink-dim">
+          <p className="font-sans text-label-xs uppercase text-ink-dim">
             {piece.index} — {piece.category} · {piece.gender}
           </p>
           <h3 className="mt-2 font-display text-2xl font-bold text-ink">{piece.name}</h3>
-          <p className="mt-1 font-sans text-[15px] font-medium text-accent-deep">
+          <p className="mt-1 font-sans text-base font-medium text-accent-deep">
             {formatPrice(piece.price)}
           </p>
         </div>
 
-        <div className="flex flex-col gap-2 border-y border-ink/10 py-4 font-sans text-[13px] text-ink-dim">
+        <div className="flex flex-col gap-2 border-y border-ink/10 py-4 font-sans text-body-sm text-ink-dim">
           <p>
             <span className="text-ink">Fabric — </span>
             {piece.fabric}
@@ -123,12 +123,12 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
 
         <div>
           <div className="mb-2 flex items-center justify-between">
-            <p className="font-sans text-[11px] uppercase tracking-[0.15em] text-ink-dim">Size</p>
+            <p className="font-sans text-label-xs uppercase text-ink-dim">Size</p>
             <button
               onClick={() => setShowGuide((v) => !v)}
               aria-expanded={showGuide}
               aria-controls="size-guide-table"
-              className="font-sans text-[11px] uppercase tracking-[0.1em] text-accent-deep underline-offset-2 hover:underline"
+              className="font-sans text-label-xs uppercase text-accent-deep underline-offset-2 hover:underline"
             >
               {showGuide ? "Hide size guide" : "Size guide"}
             </button>
@@ -139,7 +139,7 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
               id="size-guide-table"
               className="mb-3 overflow-hidden rounded-xl border border-white/50 bg-surface/40 backdrop-blur-md"
             >
-              <table className="w-full font-sans text-[12px] text-ink-dim">
+              <table className="w-full font-sans text-body-sm text-ink-dim">
                 <thead>
                   <tr className="border-b border-ink/10 text-ink">
                     <th className="px-3 py-2 text-left font-medium">Size</th>
@@ -172,7 +172,7 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
                   // "Added to Bag" described the previous size, not this one
                   setAdded(false);
                 }}
-                className={`inline-flex h-11 min-w-11 items-center justify-center rounded-xl border px-3 font-sans text-[12px] transition-colors ${
+                className={`inline-flex h-11 min-w-11 items-center justify-center rounded-xl border px-3 font-sans text-label-sm tracking-normal transition-colors ${
                   s === size
                     ? "border-accent bg-accent text-surface"
                     : "border-ink/15 text-ink-dim hover:border-accent/50 hover:text-accent-deep"
@@ -183,7 +183,7 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
             ))}
           </div>
           {needsSize && (
-            <p role="alert" className="mt-2 font-sans text-[12px] text-accent-deep">
+            <p role="alert" className="mt-2 font-sans text-body-sm text-accent-deep">
               Please select a size first.
             </p>
           )}
@@ -196,7 +196,7 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
               addToBag(piece, size);
               setAdded(true);
             }}
-            className="w-full rounded-full bg-accent py-4 font-sans text-[12px] font-semibold uppercase tracking-[0.15em] text-surface transition-colors hover:bg-accent-deep"
+            className="w-full rounded-full bg-accent py-4 font-sans text-label-sm font-semibold uppercase text-surface transition-colors hover:bg-accent-deep"
           >
             {added ? "Added to Bag" : "Add to Bag"}
           </button>
@@ -211,7 +211,7 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
                 onDone();
                 setBagOpen(true);
               }}
-              className="w-full rounded-full border border-accent/40 py-4 font-sans text-[12px] font-semibold uppercase tracking-[0.15em] text-accent-deep transition-colors hover:border-accent hover:bg-accent/10"
+              className="w-full rounded-full border border-accent/40 py-4 font-sans text-label-sm font-semibold uppercase text-accent-deep transition-colors hover:border-accent hover:bg-accent/10"
             >
               View bag
             </button>
@@ -223,7 +223,7 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
               onDone();
               setBagOpen(true);
             }}
-            className="w-full rounded-full border border-ink/15 py-4 font-sans text-[12px] font-semibold uppercase tracking-[0.15em] text-ink transition-colors hover:border-accent hover:text-accent-deep"
+            className="w-full rounded-full border border-ink/15 py-4 font-sans text-label-sm font-semibold uppercase text-ink transition-colors hover:border-accent hover:text-accent-deep"
           >
             Buy Now
           </button>

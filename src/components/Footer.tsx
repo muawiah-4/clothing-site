@@ -24,14 +24,14 @@ export default function Footer() {
           <button onClick={() => scrollToSection("top")} aria-label="Atelier — go to top">
             <Logo />
           </button>
-          <p className="mt-4 font-sans text-[13px] leading-relaxed text-ink-dim">
+          <p className="mt-4 font-sans text-body-sm leading-relaxed text-ink-dim">
             A small studio. A dozen pieces a season. Considered pieces, made to outlast trend.
           </p>
         </div>
 
         <div className="flex flex-wrap gap-16 sm:gap-24">
           <div>
-            <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.2em] text-accent-deep">
+            <p className="font-sans text-label-xs font-semibold uppercase text-accent-deep">
               Sitemap
             </p>
             <ul className="mt-4 flex flex-col gap-2.5">
@@ -39,7 +39,7 @@ export default function Footer() {
                 <li key={link.id}>
                   <button
                     onClick={() => scrollToSection(link.id)}
-                    className="font-sans text-[13px] text-ink-dim transition-colors hover:text-accent-deep"
+                    className="font-sans text-body-sm text-ink-dim transition-colors hover:text-accent-deep"
                   >
                     {link.label}
                   </button>
@@ -49,7 +49,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className="font-sans text-[11px] font-semibold uppercase tracking-[0.2em] text-accent-deep">
+            <p className="font-sans text-label-xs font-semibold uppercase text-accent-deep">
               Follow
             </p>
             <ul className="mt-4 flex flex-col gap-2.5">
@@ -59,7 +59,7 @@ export default function Footer() {
                     href={s.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex items-center gap-1 font-sans text-[13px] text-ink-dim transition-colors hover:text-accent-deep"
+                    className="group flex items-center gap-1 font-sans text-body-sm text-ink-dim transition-colors hover:text-accent-deep"
                   >
                     {s.label}
                     <ArrowUpRight
@@ -75,7 +75,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="mx-auto mt-14 flex max-w-6xl flex-col gap-3 border-t border-ink/10 pt-6 font-sans text-[11px] uppercase tracking-[0.1em] text-ink-dim sm:flex-row sm:items-center sm:justify-between">
+      <div className="mx-auto mt-14 flex max-w-6xl flex-col gap-3 border-t border-ink/10 pt-6 font-sans text-label-xs uppercase text-ink-dim sm:flex-row sm:items-center sm:justify-between">
         <span>Atelier © 2026 — All rights reserved</span>
         {/* no privacy or terms pages exist yet, so these stay plain text
             rather than links to nowhere. One run of normal-case text (instead

@@ -40,7 +40,7 @@ export default function Craft() {
       <div className="mx-auto max-w-6xl">
         <m.p
           {...fade(reducedMotion, { y: 12, duration: 0.7 })}
-          className="font-sans text-[12px] font-semibold uppercase tracking-[0.25em] text-accent-deep"
+          className="font-sans text-label-xs font-semibold uppercase text-accent-deep"
         >
           Process
         </m.p>
@@ -58,7 +58,7 @@ export default function Craft() {
             >
               {/* surface-dim + ShimmerImage: the bare motion.img flashed a
                   white box until the photo arrived */}
-              <div className="aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-surface-dim">
+              <div className="aspect-[4/5] overflow-hidden rounded-card bg-surface-dim">
                 <m.div
                   initial={
                     reducedMotion
@@ -88,10 +88,10 @@ export default function Craft() {
                 </m.div>
               </div>
               <p className="mt-6 font-display text-xl font-bold text-accent-deep">{step.num}</p>
-              <h3 className="mt-1 font-sans text-[13px] font-semibold uppercase tracking-[0.15em] text-ink">
+              <h3 className="mt-1 font-sans text-label-sm font-semibold uppercase text-ink">
                 {step.title}
               </h3>
-              <p className="mt-3 font-sans text-[14px] leading-relaxed text-ink-dim">
+              <p className="mt-3 font-sans text-sm leading-relaxed text-ink-dim">
                 {step.copy}
               </p>
             </m.div>

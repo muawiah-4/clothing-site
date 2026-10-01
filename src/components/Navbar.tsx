@@ -27,12 +27,12 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 mx-3 mt-3 flex items-center justify-between rounded-2xl border border-white/40 bg-surface/45 max-md:bg-surface/90 px-6 py-4 shadow-[0_10px_30px_-16px_rgba(78,66,110,0.35)] backdrop-blur-xl md:mx-6 md:mt-4 md:px-8">
+      <header className="sticky top-0 z-50 mx-3 mt-3 flex items-center justify-between rounded-soft border border-white/40 bg-surface/45 max-md:bg-surface/90 px-6 py-4 shadow-card backdrop-blur-xl md:mx-6 md:mt-4 md:px-8">
         <button onClick={() => scrollToSection("top")} aria-label="Atelier — go to top">
           <Logo />
         </button>
 
-        <nav className="hidden items-center gap-8 font-sans text-[13px] font-medium text-ink md:flex">
+        <nav className="hidden items-center gap-8 font-sans text-body-sm font-medium text-ink md:flex">
           {LINKS.map((link) => (
             <button
               key={link.id}
@@ -53,7 +53,7 @@ export default function Navbar() {
           >
             <ShoppingBag size={19} strokeWidth={1.6} />
             {bagCount > 0 && (
-              <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-accent font-sans text-[9px] font-semibold text-surface">
+              <span className="absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-accent font-sans text-label-xs tracking-normal font-semibold text-surface">
                 {bagCount}
               </span>
             )}

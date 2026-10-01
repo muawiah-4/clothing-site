@@ -15,7 +15,7 @@ export default function Contact() {
       <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col justify-center">
         <m.p
           {...fade(reducedMotion, { y: 12, duration: 0.7 })}
-          className="font-sans text-[12px] font-semibold uppercase tracking-[0.25em] text-accent-deep"
+          className="font-sans text-label-xs font-semibold uppercase text-accent-deep"
         >
           Visit / Inquire
         </m.p>
@@ -30,7 +30,7 @@ export default function Contact() {
           {...fade(reducedMotion, { y: 12, duration: 0.7, delay: 0.3 })}
           className="mt-12 flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between"
         >
-          <div className="flex flex-col gap-1 font-sans text-[14px] text-ink-dim">
+          <div className="flex flex-col gap-1 font-sans text-sm text-ink-dim">
             <a href="mailto:studio@atelier.house" className="w-fit transition-colors hover:text-accent-deep">
               studio@atelier.house
             </a>
@@ -45,7 +45,7 @@ export default function Contact() {
           <MagneticButton
             href="mailto:studio@atelier.house?subject=Appointment%20request"
             strength={0.15}
-            className="inline-flex w-full justify-center rounded-full border border-white/50 bg-surface/50 px-10 py-5 font-sans text-[12px] font-semibold uppercase tracking-[0.15em] text-accent-deep shadow-[0_16px_30px_-16px_rgba(46,42,82,0.4)] backdrop-blur-xl transition-transform hover:scale-[1.03] hover:bg-surface/70 sm:w-fit"
+            className="inline-flex w-full justify-center rounded-full border border-white/50 bg-surface/50 px-10 py-5 font-sans text-label-sm font-semibold uppercase text-accent-deep shadow-float backdrop-blur-xl transition-transform hover:scale-[1.03] hover:bg-surface/70 sm:w-fit"
           >
             Book an Appointment
           </MagneticButton>

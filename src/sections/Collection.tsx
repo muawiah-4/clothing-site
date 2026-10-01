@@ -42,7 +42,7 @@ export default function Collection() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-10 flex flex-col gap-6 md:mb-14 md:flex-row md:items-end md:justify-between">
             <m.div {...fade(reducedMotion, { y: 16, duration: 0.7 })}>
-              <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.25em] text-accent-deep">
+              <p className="font-sans text-label-xs font-semibold uppercase text-accent-deep">
                 The Archive, Opened
               </p>
               <SplitReveal
@@ -51,7 +51,7 @@ export default function Collection() {
                 className="mt-4 font-display text-3xl font-bold text-ink sm:text-4xl"
               />
             </m.div>
-            <p className="max-w-sm font-sans text-[13px] leading-relaxed text-ink-dim">
+            <p className="max-w-sm font-sans text-body-sm leading-relaxed text-ink-dim">
               Two wardrobes, one philosophy — tailoring, outerwear, and eveningwear cut for men and
               women alike.
             </p>
@@ -101,7 +101,7 @@ export default function Collection() {
           </m.div>
 
           {pieces.length === 0 && (
-            <p className="py-16 text-center font-sans text-[13px] text-ink-dim">
+            <p className="py-16 text-center font-sans text-body-sm text-ink-dim">
               Nothing in this wardrobe yet — check back for the next drop.
             </p>
           )}
@@ -145,8 +145,8 @@ function CollectionCard({
           ring is drawn around the card rather than just the name (the
           button's own ring needs `!` to beat the unlayered global
           :focus-visible rule in index.css). */}
-      <div className="group relative rounded-[1.5rem] outline-offset-4 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-ink has-[:focus-visible]:outline-solid">
-        <div className="aspect-[3/4] overflow-hidden rounded-[1.5rem] bg-surface-dim shadow-[0_16px_34px_-20px_rgba(46,42,82,0.35)]">
+      <div className="group relative rounded-card outline-offset-4 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-ink has-[:focus-visible]:outline-solid">
+        <div className="aspect-[3/4] overflow-hidden rounded-card bg-surface-dim shadow-card">
           <ShimmerImage
             src={unsplash(piece.image, 600)}
             srcSet={unsplashSrcSet(piece.image, CARD_WIDTHS)}
@@ -164,13 +164,13 @@ function CollectionCard({
             under the price */}
         <div className="mt-4 flex flex-col gap-1 border-t border-ink/10 pt-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-3">
           <div className="min-w-0">
-            <p className="font-sans text-[10px] uppercase tracking-[0.15em] text-ink-dim">
+            <p className="font-sans text-label-xs uppercase text-ink-dim">
               {piece.index} — {piece.category}
             </p>
             <h3 className="mt-1 font-display text-base font-semibold text-ink">
               <button
                 type="button"
-                className="text-left after:absolute after:inset-0 after:rounded-[1.5rem] after:content-[''] focus-visible:outline-none!"
+                className="text-left after:absolute after:inset-0 after:rounded-card after:content-[''] focus-visible:outline-none!"
                 onMouseEnter={() => setCursorLabel("View")}
                 onMouseLeave={() => setCursorLabel(null)}
                 onClick={() => setSelectedPiece(piece)}
@@ -179,7 +179,7 @@ function CollectionCard({
               </button>
             </h3>
           </div>
-          <p className="shrink-0 font-sans text-[13px] font-medium text-accent-deep">
+          <p className="shrink-0 font-sans text-body-sm font-medium text-accent-deep">
             {formatPrice(piece.price)}
           </p>
         </div>

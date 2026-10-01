@@ -70,7 +70,7 @@ export default function SocialProof() {
       <div className="mx-auto max-w-6xl">
         <m.p
           {...fade(reducedMotion, { y: 12, duration: 0.7 })}
-          className="font-sans text-[12px] font-semibold uppercase tracking-[0.25em] text-accent-deep"
+          className="font-sans text-label-xs font-semibold uppercase text-accent-deep"
         >
           In Their Words
         </m.p>
@@ -85,12 +85,12 @@ export default function SocialProof() {
             <m.figure
               key={t.name}
               {...fade(reducedMotion, { y: 20, duration: 0.7, delay: i * 0.08 })}
-              className="flex h-full flex-col justify-between rounded-2xl border border-white/40 bg-surface/40 px-6 py-6 backdrop-blur-md"
+              className="flex h-full flex-col justify-between rounded-soft border border-white/40 bg-surface/40 px-6 py-6 backdrop-blur-md"
             >
-              <blockquote className="font-display text-[15px] font-medium leading-snug text-ink">
+              <blockquote className="font-display text-base font-medium leading-snug text-ink">
                 "{t.quote}"
               </blockquote>
-              <figcaption className="mt-6 font-sans text-[12px] uppercase tracking-[0.1em] text-ink-dim">
+              <figcaption className="mt-6 font-sans text-label-sm uppercase text-ink-dim">
                 <span className="font-semibold text-accent-deep">{t.name}</span>
                 {t.detail ? <span className="text-ink-dim"> — {t.detail}</span> : null}
               </figcaption>
@@ -100,11 +100,11 @@ export default function SocialProof() {
 
         <m.div
           {...fade(reducedMotion, { y: 16, duration: 0.8, delay: 0.2 })}
-          className="mt-16 flex flex-col items-start gap-6 rounded-2xl border border-white/40 bg-surface/40 px-6 py-8 backdrop-blur-md sm:flex-row sm:items-center sm:justify-between sm:px-10"
+          className="mt-16 flex flex-col items-start gap-6 rounded-soft border border-white/40 bg-surface/40 px-6 py-8 backdrop-blur-md sm:flex-row sm:items-center sm:justify-between sm:px-10"
         >
           <div>
             <h3 className="font-display text-lg font-bold text-ink">Join the mailing list.</h3>
-            <p className="mt-1 max-w-sm font-sans text-[13px] leading-relaxed text-ink-dim">
+            <p className="mt-1 max-w-sm font-sans text-body-sm leading-relaxed text-ink-dim">
               A quiet note when a new collection is finished. Nothing more, nothing often.
             </p>
           </div>
@@ -112,7 +112,7 @@ export default function SocialProof() {
           {subscribed ? (
             <p
               role="status"
-              className="font-sans text-[13px] font-semibold uppercase tracking-[0.1em] text-accent-deep"
+              className="font-sans text-label-sm font-semibold uppercase text-accent-deep"
             >
               Thank you. This is a demo, so no email was stored or sent.
             </p>
@@ -136,11 +136,11 @@ export default function SocialProof() {
                 aria-label="Email address"
                 aria-invalid={error || undefined}
                 aria-describedby={error ? "newsletter-error" : undefined}
-                className="w-full rounded-full border border-white/50 bg-surface/50 px-5 py-3 font-sans text-[13px] text-ink backdrop-blur-xl transition-colors placeholder:text-ink-dim focus:border-accent-deep sm:w-64"
+                className="w-full rounded-full border border-white/50 bg-surface/50 px-5 py-3 font-sans text-body-sm text-ink backdrop-blur-xl transition-colors placeholder:text-ink-dim focus:border-accent-deep sm:w-64"
               />
               <button
                 type="submit"
-                className="w-full shrink-0 rounded-full bg-accent px-6 py-3 font-sans text-[12px] font-semibold uppercase tracking-[0.15em] text-surface transition-colors hover:bg-accent-deep sm:w-auto"
+                className="w-full shrink-0 rounded-full bg-accent px-6 py-3 font-sans text-label-sm font-semibold uppercase text-surface transition-colors hover:bg-accent-deep sm:w-auto"
               >
                 Sign Up
               </button>
@@ -148,7 +148,7 @@ export default function SocialProof() {
                 <p
                   id="newsletter-error"
                   role="alert"
-                  className="w-full font-sans text-[12px] text-ink sm:text-right"
+                  className="w-full font-sans text-body-sm text-ink sm:text-right"
                 >
                   Please enter a valid email address, like name@example.com.
                 </p>

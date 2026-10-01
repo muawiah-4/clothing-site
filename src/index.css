@@ -75,7 +75,6 @@
 
   /* companion figure (Companion.tsx) */
   --color-figure-skin: #ecc9a6;
-  --color-figure-shoe: #2f3140;
   --color-figure-neutral: #8b8796;
 
   /* type: small labels and secondary body copy */
@@ -130,16 +129,6 @@
   ::-webkit-scrollbar {
     width: 0;
     background: transparent;
-  }
-}
-
-/* same condition as the custom cursor's `md:block` — below it the custom
-   cursor is hidden, so the native one must stay visible (e.g. narrow
-   desktop windows) */
-@media (min-width: 48rem) {
-  .has-custom-cursor,
-  .has-custom-cursor * {
-    cursor: none !important;
   }
 }
 

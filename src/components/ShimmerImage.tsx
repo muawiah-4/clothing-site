@@ -48,7 +48,7 @@ export default function ShimmerImage({
         className="flex h-full w-full items-center justify-center bg-surface-dim p-4 text-center"
       >
         {alt && (
-          <span aria-hidden="true" className="font-sans text-[12px] leading-snug text-ink-dim">
+          <span aria-hidden="true" className="font-sans text-body-sm leading-snug text-ink-dim">
             {alt}
           </span>
         )}

@@ -45,6 +45,9 @@ export function useHorizontalScrollGallery(
   }, [enabled, viewportRef, trackRef]);
 }
 
+/** page scroll per pixel of horizontal travel while pinned */
+const SCROLL_RATIO = 0.6;
+
 function pinGallery(viewport: HTMLDivElement, track: HTMLDivElement) {
   const getDistance = () => Math.max(0, track.scrollWidth - viewport.clientWidth);
 
@@ -54,7 +57,9 @@ function pinGallery(viewport: HTMLDivElement, track: HTMLDivElement) {
     scrollTrigger: {
       trigger: viewport,
       start: "top top",
-      end: () => "+=" + getDistance(),
+      // the track travels its full overflow over ~60% as much page scroll,
+      // so the pin holds the page for a shorter stretch
+      end: () => "+=" + Math.round(getDistance() * SCROLL_RATIO),
       pin: true,
       // the section this lives in has backdrop-blur (backdrop-filter),
       // which makes it a new containing block for position:fixed

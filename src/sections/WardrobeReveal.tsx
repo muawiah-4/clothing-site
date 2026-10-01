@@ -202,7 +202,7 @@ export default function WardrobeReveal() {
           <>
             <div className="absolute inset-0 bg-gradient-to-t from-spotlight via-spotlight/30 to-spotlight/55" />
             <span className="absolute inset-0 flex items-center justify-center bg-spotlight/0 opacity-0 transition-opacity duration-300 group-hover:bg-spotlight/20 group-hover:opacity-100">
-              <span className="flex h-24 w-24 items-center justify-center rounded-full border border-white/50 bg-surface/15 font-sans text-[11px] uppercase tracking-[0.2em] text-surface backdrop-blur-md">
+              <span className="flex h-24 w-24 items-center justify-center rounded-full border border-white/50 bg-surface/15 font-sans text-label-xs uppercase text-surface backdrop-blur-md">
                 Open
               </span>
             </span>
@@ -216,13 +216,13 @@ export default function WardrobeReveal() {
         className="pointer-events-none relative z-10 flex h-full flex-col items-center justify-center px-6 text-center transition-opacity duration-500"
         style={{ opacity: phase === "closed" ? 1 : 0 }}
       >
-        <p className="font-sans text-[12px] font-semibold uppercase tracking-[0.3em] text-accent-soft">
+        <p className="font-sans text-label-xs font-semibold uppercase text-accent-soft">
           The Archive
         </p>
         <h2 className="mt-4 font-display text-4xl font-bold text-surface sm:text-5xl md:text-6xl">
           What the house keeps.
         </h2>
-        <p className="mt-5 max-w-md font-sans text-[15px] leading-relaxed text-surface/70">
+        <p className="mt-5 max-w-md font-sans text-base leading-relaxed text-surface/70">
           Twelve pieces live behind these doors. Open the wardrobe to bring the archive forward.
         </p>
       </div>
@@ -230,7 +230,7 @@ export default function WardrobeReveal() {
       {(phase === "playing" || phase === "bursting") && (
         <button
           onClick={skip}
-          className="absolute right-5 top-5 z-30 rounded-full border border-white/40 bg-spotlight/60 px-4 py-2 font-sans text-[11px] uppercase tracking-[0.15em] text-surface backdrop-blur-md transition-colors hover:bg-spotlight/85"
+          className="absolute right-5 top-5 z-30 rounded-full border border-white/40 bg-spotlight/60 px-4 py-2 font-sans text-label-xs uppercase text-surface backdrop-blur-md transition-colors hover:bg-spotlight/85"
         >
           Skip
         </button>
@@ -239,7 +239,7 @@ export default function WardrobeReveal() {
       {phase === "leaving" && (
         <button
           onClick={() => scrollToSection("collection")}
-          className="absolute bottom-8 left-1/2 z-30 -translate-x-1/2 rounded-full border border-white/40 bg-spotlight/60 px-6 py-3 font-sans text-[11px] uppercase tracking-[0.15em] text-surface backdrop-blur-md transition-colors hover:bg-spotlight/85"
+          className="absolute bottom-8 left-1/2 z-30 -translate-x-1/2 rounded-full border border-white/40 bg-spotlight/60 px-6 py-3 font-sans text-label-xs uppercase text-surface backdrop-blur-md transition-colors hover:bg-spotlight/85"
         >
           Shop the collection
         </button>

@@ -11,8 +11,8 @@ type Props<T extends string> = {
 };
 
 const SIZE = {
-  md: "px-5 py-2.5 text-[12px] tracking-[0.1em]",
-  sm: "px-4 py-2 text-[11px] tracking-[0.08em]",
+  md: "px-5 py-2.5 text-label-sm",
+  sm: "px-4 py-2 text-label-xs",
 };
 
 const ACTIVE = {

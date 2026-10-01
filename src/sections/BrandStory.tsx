@@ -21,7 +21,7 @@ export default function BrandStory() {
           >
             <ShimmerImage
               src={unsplash(PORTRAIT_IMAGE, 900)}
-              alt="Studio portrait"
+              alt="Portrait from the atelier's first lookbook, 2014"
               className="grade-editorial h-full w-full object-cover"
             />
           </m.div>
@@ -43,13 +43,15 @@ export default function BrandStory() {
 
           <div className="mt-8 flex flex-col gap-5 font-sans text-base leading-relaxed text-ink-dim">
             <m.p {...fade(reducedMotion, { y: 12, duration: 0.7, delay: 0.2 })}>
-              We work from a small studio, not a factory floor. Every collection is small by
-              intention — a dozen pieces, each one argued over, unpicked, and re-cut until the
-              proportion holds.
+              Hélène Marchetti opened the atelier in 2014, on the first floor of 14 rue de
+              Miromesnil, after twelve years cutting patterns for a couture house on avenue
+              Montaigne. It is still that room: nine people, and a dozen pieces a season, each one
+              argued over, unpicked and re-cut until the proportion holds.
             </m.p>
             <m.p {...fade(reducedMotion, { y: 12, duration: 0.7, delay: 0.3 })}>
-              Materials are chosen before silhouettes are drawn — the cloth tells us what it wants
-              to become. What we build is meant to be worn for a decade, not a season.
+              Théo Varenne, who trained as a tailor in Naples, runs the workroom. Everything is cut
+              and finished there, from wool woven in Biella and Yorkshire, and made to be worn for a
+              decade, not a season.
             </m.p>
           </div>
 
@@ -57,7 +59,12 @@ export default function BrandStory() {
             {...fade(reducedMotion, { y: 14, duration: 0.8, delay: 0.35 })}
             className="mt-8 rounded-soft border border-white/40 bg-surface/40 px-6 py-5 font-display text-lg font-medium leading-snug text-ink backdrop-blur-md"
           >
-            "We do not chase trend. We chase the garment that still feels correct in ten years."
+            <p>
+              "We do not chase trend. We chase the garment that still feels correct in ten years."
+            </p>
+            <footer className="mt-3 font-sans text-label-xs font-semibold uppercase text-ink-dim">
+              Hélène Marchetti, founder
+            </footer>
           </m.blockquote>
 
           <m.div
@@ -66,8 +73,8 @@ export default function BrandStory() {
           >
             {[
               ["12", "Pieces per collection"],
-              ["1", "Studio, one city"],
-              ["No end date", "Seasons intended"],
+              ["9", "People in one Paris room"],
+              ["2014", "Year founded"],
             ].map(([stat, label]) => (
               <div key={label}>
                 <p className="font-display text-xl font-bold text-accent-deep sm:text-2xl">

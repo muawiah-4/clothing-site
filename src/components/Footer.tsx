@@ -25,7 +25,7 @@ export default function Footer() {
             <Logo />
           </button>
           <p className="mt-4 font-sans text-body-sm leading-relaxed text-ink-dim">
-            A small studio. A dozen pieces a season. Considered pieces, made to outlast trend.
+            Atelier — Form in Material. Ready-to-wear for men and women, cut in Paris since 2014.
           </p>
         </div>
 

@@ -43,17 +43,17 @@ export default function Collection() {
           <div className="mb-10 flex flex-col gap-6 md:mb-14 md:flex-row md:items-end md:justify-between">
             <m.div {...fade(reducedMotion, { y: 16, duration: 0.7 })}>
               <p className="font-sans text-label-xs font-semibold uppercase text-accent-deep">
-                The Archive, Opened
+                The Collection, Opened
               </p>
               <SplitReveal
                 as="h2"
-                text="Shop the Wardrobe."
+                text="Twelve pieces, this season."
                 className="mt-4 font-display text-3xl font-bold text-ink sm:text-4xl"
               />
             </m.div>
             <p className="max-w-sm font-sans text-body-sm leading-relaxed text-ink-dim">
-              Two wardrobes, one philosophy — tailoring, outerwear, and eveningwear cut for men and
-              women alike.
+              Tailoring, outerwear and eveningwear for men and women, cut and finished in the Paris
+              atelier in small numbers.
             </p>
           </div>
 
@@ -102,7 +102,7 @@ export default function Collection() {
 
           {pieces.length === 0 && (
             <p className="py-16 text-center font-sans text-body-sm text-ink-dim">
-              Nothing in this wardrobe yet — check back for the next drop.
+              Nothing here this season. The next collection is still on the cutting table.
             </p>
           )}
         </div>

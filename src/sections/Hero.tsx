@@ -76,7 +76,7 @@ export default function Hero() {
             {...enter(reducedMotion, { y: 10, duration: 0.7 })}
             className="font-sans text-label-xs font-semibold uppercase text-accent-deep"
           >
-            The Current Edit
+            Autumn–Winter 2026
           </m.p>
 
           <m.h1
@@ -95,8 +95,8 @@ export default function Hero() {
             {...enter(reducedMotion, { y: 14, duration: 0.7, delay: 0.2 })}
             className="mt-6 max-w-md font-sans text-base leading-relaxed text-ink/90"
           >
-            A dozen pieces a season, cut for men and women alike. Every silhouette earns its
-            place before it earns a home.
+            Twelve pieces a season for men and women, cut and finished by hand in our atelier in
+            the 8th arrondissement.
           </m.p>
 
           <m.div {...enter(reducedMotion, { y: 14, duration: 0.7, delay: 0.3 })} className="mt-9">

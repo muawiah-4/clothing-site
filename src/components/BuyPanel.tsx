@@ -56,12 +56,13 @@ export default function BuyPanel() {
   );
 }
 
-const ADULT_SIZE_GUIDE: [string, string, string][] = [
-  ["XS", "32-34\"", "26-28\""],
-  ["S", "35-37\"", "29-31\""],
-  ["M", "38-40\"", "32-34\""],
-  ["L", "41-43\"", "35-37\""],
-  ["XL", "44-46\"", "38-40\""],
+// body measurements in cm
+const SIZE_GUIDE: [string, string, string, string][] = [
+  ["XS", "81–86", "66–71", "89–94"],
+  ["S", "89–94", "74–79", "97–102"],
+  ["M", "97–102", "81–86", "104–109"],
+  ["L", "104–109", "89–94", "112–117"],
+  ["XL", "112–117", "97–102", "119–124"],
 ];
 
 function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void }) {
@@ -140,23 +141,35 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
               className="mb-3 overflow-hidden rounded-xl border border-white/50 bg-surface/40 backdrop-blur-md"
             >
               <table className="w-full font-sans text-body-sm text-ink-dim">
+                <caption className="px-3 pt-2 text-left text-label-xs uppercase text-ink-dim">
+                  Body measurements, cm
+                </caption>
                 <thead>
                   <tr className="border-b border-ink/10 text-ink">
                     <th className="px-3 py-2 text-left font-medium">Size</th>
                     <th className="px-3 py-2 text-left font-medium">Chest</th>
                     <th className="px-3 py-2 text-left font-medium">Waist</th>
+                    <th className="px-3 py-2 text-left font-medium">Hip</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {ADULT_SIZE_GUIDE.map(([s, chest, waist]) => (
+                  {SIZE_GUIDE.map(([s, chest, waist, hip]) => (
                     <tr key={s} className="border-b border-ink/5 last:border-0">
                       <td className="px-3 py-2">{s}</td>
                       <td className="px-3 py-2">{chest}</td>
                       <td className="px-3 py-2">{waist}</td>
+                      <td className="px-3 py-2">{hip}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              {piece.category === "Eveningwear" && (
+                <p className="border-t border-ink/10 px-3 py-2 font-sans text-body-sm text-ink-dim">
+                  {piece.gender === "women"
+                    ? "Gowns are cut to fall 2 cm above the floor for a wearer of 170 cm in a 7 cm heel. Between sizes, choose by hip; the atelier hems to your height at no charge."
+                    : "Evening jackets are cut close; between sizes, choose by chest. Sleeves and trousers are finished to your measurements at no charge."}
+                </p>
+              )}
             </div>
           )}
 
@@ -184,7 +197,7 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
           </div>
           {needsSize && (
             <p role="alert" className="mt-2 font-sans text-body-sm text-accent-deep">
-              Please select a size first.
+              Choose a size to continue.
             </p>
           )}
         </div>
@@ -225,7 +238,7 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
             }}
             className="w-full rounded-full border border-ink/15 py-4 font-sans text-label-sm font-semibold uppercase text-ink transition-colors hover:border-accent hover:text-accent-deep"
           >
-            Buy Now
+            Reserve
           </button>
         </div>
       </div>

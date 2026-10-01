@@ -17,7 +17,7 @@ export default function Contact() {
           {...fade(reducedMotion, { y: 12, duration: 0.7 })}
           className="font-sans text-label-xs font-semibold uppercase text-accent-deep"
         >
-          Visit / Inquire
+          Fittings by appointment
         </m.p>
 
         <SplitReveal
@@ -37,7 +37,7 @@ export default function Contact() {
             <a href="tel:+33142960112" className="w-fit transition-colors hover:text-accent-deep">
               +33 1 42 96 01 12
             </a>
-            <p className="mt-2">By appointment · 8th Arrondissement, Paris</p>
+            <p className="mt-2">14 rue de Miromesnil, 75008 Paris · Tuesday to Saturday</p>
           </div>
 
           {/* was a button with no handler; now a real mailto: to the studio

@@ -7,33 +7,43 @@ import SplitReveal from "../components/SplitReveal";
 interface Testimonial {
   quote: string;
   name: string;
-  detail: string;
+  city: string;
+  piece: string;
+  date: string;
 }
 
+// fictional clients; deliberately uneven in length and register
 const TESTIMONIALS: Testimonial[] = [
   {
     quote:
-      "The coat still fits the way it did the day I bought it — which is more than I can say for anything else in my closet.",
-    name: "Elena M.",
-    detail: "Nocturne Coat, Paris",
+      "Two winters in, the Nocturne still sits on the shoulder the way it did at the final fitting. I sent it back once to be relined; it came home in a week.",
+    name: "Élise",
+    city: "Lyon",
+    piece: "Nocturne Coat",
+    date: "March 2026",
+  },
+  {
+    quote: "Good coat. Warm, well made, worth what I paid.",
+    name: "Tom",
+    city: "Leeds",
+    piece: "Colonnade Coat",
+    date: "January 2026",
   },
   {
     quote:
-      "I stopped buying seasonally the year I found this atelier. Everything else started to look temporary by comparison.",
-    name: "Sofia R.",
-    detail: "Amsterdam",
+      "Théo measured me twice, then asked what I would actually be doing in it. Nobody had asked me that before.",
+    name: "Marcus",
+    city: "London",
+    piece: "Silhouette No. IV",
+    date: "June 2026",
   },
   {
     quote:
-      "It is rare to buy something and feel like you actually understand why it costs what it does.",
-    name: "Marcus T.",
-    detail: "Tailored Trousers, London",
-  },
-  {
-    quote:
-      "No returns, no regrets. Every piece has quietly earned its place in my wardrobe.",
-    name: "Camille D.",
-    detail: "Brussels",
+      "I stopped buying by the season the year I found this house. Everything else began to look temporary.",
+    name: "Sofia",
+    city: "Amsterdam",
+    piece: "Grey Hour Blazer",
+    date: "November 2025",
   },
 ];
 
@@ -76,14 +86,14 @@ export default function SocialProof() {
         </m.p>
         <SplitReveal
           as="h2"
-          text="The house, worn. Not just by us."
+          text="The house, worn."
           className="mt-4 max-w-2xl font-display text-3xl font-bold leading-tight text-ink sm:text-4xl"
         />
 
         <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {TESTIMONIALS.map((t, i) => (
             <m.figure
-              key={t.name}
+              key={`${t.name}-${t.city}`}
               {...fade(reducedMotion, { y: 20, duration: 0.7, delay: i * 0.08 })}
               className="flex h-full flex-col justify-between rounded-soft border border-white/40 bg-surface/40 px-6 py-6 backdrop-blur-md"
             >
@@ -91,8 +101,12 @@ export default function SocialProof() {
                 "{t.quote}"
               </blockquote>
               <figcaption className="mt-6 font-sans text-label-sm uppercase text-ink-dim">
-                <span className="font-semibold text-accent-deep">{t.name}</span>
-                {t.detail ? <span className="text-ink-dim"> — {t.detail}</span> : null}
+                <span className="font-semibold text-accent-deep">
+                  {t.name}, {t.city}
+                </span>
+                <span className="mt-1 block text-ink-dim">
+                  {t.piece} · {t.date}
+                </span>
               </figcaption>
             </m.figure>
           ))}
@@ -103,9 +117,9 @@ export default function SocialProof() {
           className="mt-16 flex flex-col items-start gap-6 rounded-soft border border-white/40 bg-surface/40 px-6 py-8 backdrop-blur-md sm:flex-row sm:items-center sm:justify-between sm:px-10"
         >
           <div>
-            <h3 className="font-display text-lg font-bold text-ink">Join the mailing list.</h3>
+            <h3 className="font-display text-lg font-bold text-ink">Letters from the atelier.</h3>
             <p className="mt-1 max-w-sm font-sans text-body-sm leading-relaxed text-ink-dim">
-              A quiet note when a new collection is finished. Nothing more, nothing often.
+              A short note when a new collection is finished. Nothing more, and not very often.
             </p>
           </div>
 
@@ -142,7 +156,7 @@ export default function SocialProof() {
                 type="submit"
                 className="w-full shrink-0 rounded-full bg-accent px-6 py-3 font-sans text-label-sm font-semibold uppercase text-surface transition-colors hover:bg-accent-deep sm:w-auto"
               >
-                Sign Up
+                Subscribe
               </button>
               {error && (
                 <p

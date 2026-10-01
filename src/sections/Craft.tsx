@@ -9,21 +9,21 @@ const STEPS = [
   {
     num: "I",
     title: "Pattern",
-    copy: "Each silhouette is drafted by hand before it is ever cut, held against a form until the proportion earns its place.",
+    copy: "Every silhouette is drafted by hand in paper, then made up in calico and pinned on the form until the proportion earns its place.",
     alt: "Dress forms with chalk-marked toiles in the workroom",
     position: "35% 50%",
   },
   {
     num: "II",
     title: "Cloth",
-    copy: "We choose material before design — the weight and drape of a fabric decides what it is allowed to become.",
+    copy: "Cloth comes before the drawing: wool from Lanificio Sella in Biella, worsteds from Hartley & Crowther in Huddersfield. The weight and drape decide what a piece may become.",
     alt: "Close detail of a tightly woven wool cloth",
     position: "50% 50%",
   },
   {
     num: "III",
     title: "Hand",
-    copy: "Every seam is finished by the same small team that drafted it. Nothing leaves the studio unseen.",
+    copy: "Théo Varenne's workroom cuts and finishes every piece on rue de Miromesnil. Nothing leaves the atelier without a last fitting on the form.",
     alt: "A tailor's hands laying out cut wool pieces on the cutting table",
     position: "50% 60%",
   },
@@ -42,11 +42,11 @@ export default function Craft() {
           {...fade(reducedMotion, { y: 12, duration: 0.7 })}
           className="font-sans text-label-xs font-semibold uppercase text-accent-deep"
         >
-          Process
+          The Workroom
         </m.p>
         <SplitReveal
           as="h2"
-          text="Three steps. No shortcuts."
+          text="Three stages, one room in Paris."
           className="mt-4 max-w-2xl font-display text-3xl font-bold leading-tight text-ink sm:text-4xl"
         />
 

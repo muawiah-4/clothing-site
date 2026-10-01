@@ -58,19 +58,20 @@ export default function Craft() {
             >
               {/* surface-dim + ShimmerImage: the bare motion.img flashed a
                   white box until the photo arrived */}
-              <div className="aspect-[4/5] overflow-hidden rounded-card bg-surface-dim">
+              {/* the in-view observer sits on the unclipped frame: observed on
+                  the fully clipped inner layer it never reported an
+                  intersection on some phones, so the photo never loaded */}
+              <m.div
+                initial="hidden"
+                whileInView="shown"
+                viewport={{ once: true, margin: "-10%" }}
+                className="aspect-[4/5] overflow-hidden rounded-card bg-surface-dim"
+              >
                 <m.div
-                  initial={
-                    reducedMotion
-                      ? { opacity: 0 }
-                      : { clipPath: "inset(0 0 0 100%)", opacity: 1 }
-                  }
-                  whileInView={
-                    reducedMotion
-                      ? { opacity: 1 }
-                      : { clipPath: "inset(0 0 0 0%)", opacity: 1 }
-                  }
-                  viewport={{ once: true, margin: "-10%" }}
+                  variants={{
+                    hidden: reducedMotion ? { opacity: 0 } : { clipPath: "inset(0 0 0 100%)", opacity: 1 },
+                    shown: reducedMotion ? { opacity: 1 } : { clipPath: "inset(0 0 0 0%)", opacity: 1 },
+                  }}
                   transition={{
                     duration: reducedMotion ? 0.15 : 1,
                     delay: reducedMotion ? 0 : 0.15 + i * 0.12,
@@ -86,7 +87,7 @@ export default function Craft() {
                     className="grade-editorial h-full w-full object-cover"
                   />
                 </m.div>
-              </div>
+              </m.div>
               <p className="mt-6 font-display text-xl font-bold text-accent-deep">{step.num}</p>
               <h3 className="mt-1 font-sans text-label-sm font-semibold uppercase text-ink">
                 {step.title}

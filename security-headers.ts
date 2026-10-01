@@ -78,3 +78,28 @@ export const DEV_HEADERS: Record<string, string> = {
   "Content-Security-Policy": DEV_CSP,
   ...COMMON_HEADERS,
 };
+
+const HSTS = "max-age=63072000; includeSubDomains; preload";
+
+/**
+ * Headers for the Node server (`npm start`) serving `dist/` — the same set the
+ * static host configs send, HSTS included (browsers ignore it over plain http).
+ */
+export const PROD_HEADERS: Record<string, string> = {
+  "Content-Security-Policy": PROD_CSP,
+  "Strict-Transport-Security": HSTS,
+  ...COMMON_HEADERS,
+};
+
+/**
+ * Headers for every /api response. JSON is never rendered as a document, so
+ * the policy denies everything; responses are per-request and never cached.
+ */
+export const API_CSP = "default-src 'none'; frame-ancestors 'none'";
+export const API_HEADERS: Record<string, string> = {
+  "Content-Security-Policy": API_CSP,
+  "Strict-Transport-Security": HSTS,
+  "Cache-Control": "no-store",
+  "Cross-Origin-Resource-Policy": "same-origin",
+  ...COMMON_HEADERS,
+};

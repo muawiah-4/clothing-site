@@ -5,6 +5,8 @@ import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { DEV_HEADERS, META_CSP, PREVIEW_HEADERS, PROD_CSP } from './security-headers.ts'
 
+const API_ORIGIN = `http://127.0.0.1:${process.env.API_PORT ?? 8787}`
+
 /**
  * Build-only: inject the baseline CSP <meta> into index.html (it can't live in
  * the source file — `vite dev` needs inline scripts/styles that the production
@@ -75,10 +77,14 @@ export default defineConfig({
       '@': path.resolve(import.meta.dirname, './src'),
     },
   },
+  // /api is served by server/index.ts (`npm run dev:api`); proxying keeps it
+  // same-origin, so connect-src 'self' covers it in every environment
   server: {
     headers: DEV_HEADERS,
+    proxy: { '/api': API_ORIGIN },
   },
   preview: {
     headers: PREVIEW_HEADERS,
+    proxy: { '/api': API_ORIGIN },
   },
 })

@@ -65,7 +65,7 @@ export default function SocialProof() {
   return (
     <section
       id="voices"
-      className="scroll-mt-24 mx-3 mt-3 rounded-[2rem] border border-white/40 bg-surface/55 px-6 py-20 shadow-[0_24px_60px_-30px_rgba(46,42,82,0.35)] backdrop-blur-2xl md:mx-6 md:mt-4 md:px-14 md:py-28"
+      className="scroll-mt-24 px-6 py-16 md:px-14 md:py-24"
     >
       <div className="mx-auto max-w-6xl">
         <m.p

@@ -163,7 +163,7 @@ export default function WardrobeReveal() {
     <section
       id="wardrobe"
       ref={sectionRef}
-      className="card-shell relative mx-3 mt-3 h-[86vh] overflow-hidden bg-spotlight md:mx-6 md:mt-4"
+      className="relative mt-16 h-[86vh] overflow-hidden bg-spotlight md:mt-24"
     >
       {/* the wardrobe itself is now the full-bleed background, not a small floating card */}
       <button

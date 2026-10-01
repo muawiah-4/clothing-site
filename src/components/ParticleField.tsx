@@ -96,7 +96,7 @@ export default function ParticleField() {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = p.hue === "accent" ? "rgba(73,193,214,0.55)" : "rgba(255,255,255,0.45)";
+        ctx.fillStyle = p.hue === "accent" ? "rgba(74,67,119,0.45)" : "rgba(255,255,255,0.45)";
         ctx.fill();
       }
       raf = requestAnimationFrame(tick);

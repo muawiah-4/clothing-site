@@ -35,47 +35,67 @@
 }
 
 /*
- * Light, playful e-commerce palette: a blue → violet → pink diagonal
- * gradient canvas with white/soft-lavender rounded "cards" floating on top —
- * replacing the earlier dark ink/walnut/brass showroom identity with the
- * pastel-gradient storefront look the brand asked to match.
+ * Paper and ink. A restrained warm paper ground for the page, the pastel
+ * blue -> violet -> pink gradient kept for the hero only, and a deep
+ * ink/aubergine accent drawn from the wardrobe's spotlight colour (replacing
+ * the earlier teal, which read SaaS rather than couture). Every text pairing
+ * is checked >= 4.5:1 (WCAG 1.4.3); see the contrast table in the PR notes.
  */
 @theme {
   --font-display: "Fraunces Variable", "Fraunces Fallback", "Iowan Old Style", "Georgia", serif;
   --font-sans: "Inter Variable", "Inter Fallback", ui-sans-serif, system-ui, sans-serif;
 
+  /* hero-only gradient */
   --color-canvas-a: #b9c5f2;
   --color-canvas-b: #cbb7e6;
   --color-canvas-c: #f2c6d8;
 
+  /* the page ground everywhere below the hero */
+  --color-paper: #f3f0ea;
+
   --color-surface: #ffffff;
-  --color-surface-soft: #f5f2fb;
-  --color-surface-dim: #ece7f7;
+  --color-surface-soft: #faf8f4;
+  --color-surface-dim: #e9e5de;
 
-  --color-ink: #363b4a;
-  /* was #7c8291 — computed at only 3.18-3.85:1 against the site's light
-     surfaces, below the 4.5:1 minimum for body text (WCAG 1.4.3) */
-  --color-ink-dim: #4f5566;
+  --color-ink: #2f3140;
+  --color-ink-dim: #464959;
 
-  /* both darkened from the original #49c1d6/#2fa3b8 — white text on the
-     original --color-accent computed at 2.13:1, and --color-accent-deep as
-     running text on white computed at 2.98:1, both well under the 4.5:1
-     minimum. These now clear 4.5:1+ in both directions (button fills with
-     white text, and as text color on the site's card surfaces).
-     accent-deep was darkened again (#14606f -> #10525f) so it also clears
-     4.5:1 as text directly on the bare gradient (the Hero eyebrow):
-     #14606f computed at 3.91:1 against --color-canvas-b, #10525f at 4.78:1 */
-  --color-accent: #178098;
-  --color-accent-deep: #10525f;
-  --color-accent-soft: #d9f2f6;
+  /* accent-deep: ink/aubergine (the spotlight hue) for text, rules and
+     active states; accent: a lifted companion used as a fill under white
+     text; accent-soft: a pale lilac for text on the dark spotlight */
+  --color-accent: #4a4377;
+  --color-accent-deep: #2e2a52;
+  --color-accent-soft: #d9d3ee;
 
   --color-blush: #f5cad8;
 
-  /* a deep-violet "spotlight" surface for the one dramatic dark moment
-     (the wardrobe reveal) — stays in the same purple family as the
-     gradient instead of reintroducing the old near-black palette */
+  /* the one dramatic dark moment (the wardrobe reveal, the preloader) */
   --color-spotlight: #2e2a52;
   --color-spotlight-soft: #241f42;
+
+  /* companion figure (Companion.tsx) */
+  --color-figure-skin: #ecc9a6;
+  --color-figure-shoe: #2f3140;
+  --color-figure-neutral: #8b8796;
+
+  /* type: small labels and secondary body copy */
+  --text-label-xs: 0.6875rem;
+  --text-label-xs--letter-spacing: 0.2em;
+  --text-label-xs--line-height: 1.4;
+  --text-label-sm: 0.75rem;
+  --text-label-sm--letter-spacing: 0.15em;
+  --text-label-sm--line-height: 1.4;
+  --text-body-sm: 0.8125rem;
+  --text-body-sm--line-height: 1.6;
+
+  /* elevation */
+  --shadow-card: 0 16px 34px -20px rgb(46 42 82 / 0.32);
+  --shadow-float: 0 24px 60px -24px rgb(46 42 82 / 0.42);
+
+  /* radii */
+  --radius-soft: 1rem;
+  --radius-card: 1.5rem;
+  --radius-shell: 2rem;
 }
 
 @layer base {
@@ -90,21 +110,12 @@
      the background on every scroll frame (and is ignored on iOS). The plain
      colour on <html> covers overscroll bounce. */
   html {
-    background-color: var(--color-canvas-b);
-  }
-
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background: linear-gradient(135deg, var(--color-canvas-a), var(--color-canvas-b) 55%, var(--color-canvas-c));
+    background-color: var(--color-paper);
   }
 
   body {
     font-family: var(--font-sans);
-    background: transparent;
+    background: var(--color-paper);
     color: var(--color-ink);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
@@ -192,10 +203,19 @@
     display: none;
   }
 
-  /* the floating rounded "card on a gradient" shell used by every section */
-  .card-shell {
-    border-radius: 2.25rem;
-    box-shadow: 0 24px 60px -20px rgba(78, 66, 110, 0.28);
+  /* the glass card, kept for the few "reading" sections (House, Craft,
+     Contact) so it marks a change of register instead of wrapping everything */
+  .glass-card {
+    margin-inline: 0.75rem;
+    border-radius: var(--radius-shell);
+    border: 1px solid rgb(255 255 255 / 0.6);
+    background-color: rgb(255 255 255 / 0.55);
+    box-shadow: var(--shadow-float);
+  }
+  @media (min-width: 48rem) {
+    .glass-card {
+      margin-inline: 1.5rem;
+    }
   }
 }
 

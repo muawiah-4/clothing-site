@@ -44,7 +44,7 @@ export default function Hero() {
   return (
     <section
       id="top"
-      className="relative mx-3 mt-3 overflow-hidden rounded-[2rem] md:mx-6 md:mt-4"
+      className="relative -mt-24 overflow-hidden pt-24"
       style={{
         background:
           "linear-gradient(135deg, var(--color-canvas-a), var(--color-canvas-b) 55%, var(--color-canvas-c))",
@@ -64,7 +64,13 @@ export default function Hero() {
 
       <ParticleField />
 
-      <div className="relative grid grid-cols-1 gap-10 px-6 py-16 md:grid-cols-12 md:gap-6 md:px-14 md:py-24">
+      {/* the gradient belongs to the hero only: let it settle into the paper */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent to-paper"
+      />
+
+      <div className="relative grid grid-cols-1 gap-10 px-6 py-16 md:grid-cols-12 md:gap-6 md:px-14 md:py-28">
         <div className="flex flex-col justify-center md:col-span-6">
           <m.p
             {...enter(reducedMotion, { y: 10, duration: 0.7 })}

@@ -28,8 +28,8 @@ const Contact = lazy(sectionLoaders.contact);
 const BuyPanel = lazy(overlayLoaders.buyPanel);
 const Bag = lazy(overlayLoaders.bag);
 
-/** light card surface without the blur — the real section paints over it */
-const CARD = "mx-3 mt-3 rounded-[2rem] border border-white/40 bg-surface/55 md:mx-6 md:mt-4";
+/** the glass card shell (House, Craft, Contact); other sections sit on the paper */
+const CARD = "glass-card";
 
 /**
  * Stand-in for a lazy section until it mounts: same shell and
@@ -43,11 +43,11 @@ function Placeholder({ className }: { className: string }) {
 function SectionPlaceholders() {
   return (
     <>
-      <Placeholder className="card-shell mx-3 mt-3 h-[86vh] bg-spotlight md:mx-6 md:mt-4" />
-      <Placeholder className={`${CARD} min-h-[2600px] lg:min-h-[3600px]`} />
+      <Placeholder className="mt-16 h-[86vh] bg-spotlight md:mt-24" />
+      <Placeholder className="min-h-[2600px] lg:min-h-[3600px]" />
       <Placeholder className={`${CARD} min-h-[2100px] md:min-h-[900px]`} />
-      <Placeholder className={`${CARD} min-h-[1100px]`} />
-      <Placeholder className={`${CARD} min-h-[1400px] md:min-h-[990px] lg:min-h-[770px]`} />
+      <Placeholder className="min-h-[1100px]" />
+      <Placeholder className="min-h-[1400px] md:min-h-[990px] lg:min-h-[770px]" />
       <Placeholder className={`${CARD} min-h-[70vh]`} />
     </>
   );

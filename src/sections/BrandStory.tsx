@@ -11,7 +11,7 @@ export default function BrandStory() {
   return (
     <section
       id="story"
-      className="scroll-mt-24 mx-3 mt-3 rounded-[2rem] border border-white/40 bg-surface/55 px-6 py-20 shadow-[0_24px_60px_-30px_rgba(46,42,82,0.35)] backdrop-blur-2xl md:mx-6 md:mt-4 md:px-14 md:py-28"
+      className="glass-card scroll-mt-24 mt-3 px-6 py-24 md:mt-4 md:px-14 md:py-40"
     >
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-16 md:grid-cols-12 md:gap-8">
         <div className="md:col-span-5">

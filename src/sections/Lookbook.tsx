@@ -131,9 +131,9 @@ function LookbookHorizontalGallery({ reducedMotion }: { reducedMotion: boolean }
     <div
       ref={viewportRef}
       data-lookbook-row
-      className="lookbook-row relative mt-16 h-[58vh] max-h-[620px] min-h-[420px] overflow-hidden rounded-[1.75rem] sm:h-[62vh] md:h-[66vh]"
+      className="lookbook-row relative mt-14 h-[58vh] max-h-[620px] min-h-[420px] overflow-hidden sm:h-[62vh] md:h-[66vh]"
     >
-      <div ref={trackRef} className="flex h-full w-fit items-start gap-6 will-change-transform md:gap-8">
+      <div ref={trackRef} className="flex h-full w-fit items-start gap-6 px-6 will-change-transform md:gap-8 md:px-14">
         {PLATES.map((plate) => (
           <figure key={plate.look} className="flex h-full shrink-0 flex-col">
             <div
@@ -162,9 +162,9 @@ export default function Lookbook() {
   return (
     <section
       id="lookbook"
-      className="scroll-mt-24 mx-3 mt-3 rounded-[2rem] border border-white/40 bg-surface/55 px-6 py-20 shadow-[0_24px_60px_-30px_rgba(46,42,82,0.35)] backdrop-blur-2xl md:mx-6 md:mt-4 md:px-14 md:py-28"
+      className="scroll-mt-24 py-16 md:py-24"
     >
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-6xl px-6 md:px-14 xl:px-0">
         <m.p
           {...fade(reducedMotion, { y: 12, duration: 0.7 })}
           className="font-sans text-[12px] font-semibold uppercase tracking-[0.25em] text-accent-deep"
@@ -183,13 +183,15 @@ export default function Lookbook() {
           Eight frames pulled from the studio's own archive — the fittings, the stills, the quiet
           ten minutes before a shoot goes to print. Not lookbook copy. The actual room.
         </m.p>
-
-        {reducedMotion ? (
-          <LookbookGrid reducedMotion={reducedMotion} />
-        ) : (
-          <LookbookHorizontalGallery reducedMotion={reducedMotion} />
-        )}
       </div>
+
+      {reducedMotion ? (
+        <div className="mx-auto max-w-6xl px-6 md:px-14 xl:px-0">
+          <LookbookGrid reducedMotion={reducedMotion} />
+        </div>
+      ) : (
+        <LookbookHorizontalGallery reducedMotion={reducedMotion} />
+      )}
     </section>
   );
 }

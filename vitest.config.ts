@@ -1,9 +1,24 @@
-import { defineConfig } from "vitest/config";
+import react from '@vitejs/plugin-react'
+import path from 'node:path'
+import { defineConfig } from 'vitest/config'
 
-// Kept separate from vite.config.ts so tests don't load the site's build plugins.
+/**
+ * Standalone Vitest config (kept separate from vite.config.ts, which wires up
+ * build-only plugins like the CSP <meta> injector that unit tests don't need
+ * and that would otherwise run against a Vitest transform pass).
+ */
 export default defineConfig({
-  test: {
-    include: ["server/**/*.test.ts"],
-    environment: "node",
+  plugins: [react()],
+  resolve: {
+    alias: {
+      '@': path.resolve(import.meta.dirname, './src'),
+    },
   },
-});
+  test: {
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.ts'],
+    globals: false,
+    css: false,
+    exclude: ['**/node_modules/**', '**/e2e/**', '**/dist/**'],
+  },
+})

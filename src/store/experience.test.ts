@@ -15,6 +15,7 @@ function piece(id: string): CollectionPiece {
     fit: 'slim',
     care: 'dry clean',
     objectPosition: '50% 50%',
+    gallery: [],
   }
 }
 

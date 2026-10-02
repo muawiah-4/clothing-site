@@ -1,5 +1,5 @@
 import { lazy, Suspense, useState } from "react";
-import { ShoppingBag, Menu } from "lucide-react";
+import { Heart, ShoppingBag, Menu } from "lucide-react";
 import { scrollToSection } from "../lib/scroll";
 import { useExperienceStore } from "../store/experience";
 import { overlayLoaders } from "../lib/lazySections";
@@ -24,6 +24,8 @@ export default function Navbar() {
   if (menuOpen && !menuUsed) setMenuUsed(true);
   const bagCount = useExperienceStore((s) => s.bagItems.reduce((n, i) => n + i.qty, 0));
   const setBagOpen = useExperienceStore((s) => s.setBagOpen);
+  const savedCount = useExperienceStore((s) => s.wishlist.length);
+  const setWishlistOpen = useExperienceStore((s) => s.setWishlistOpen);
 
   return (
     <>
@@ -46,6 +48,15 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-5">
+          {/* the visible text is the accessible name; below sm only the heart
+              shows and the text stays for screen readers */}
+          <button
+            onClick={() => setWishlistOpen(true)}
+            className="flex items-center gap-1.5 font-sans text-body-sm font-medium text-ink transition-colors hover:text-accent"
+          >
+            <Heart aria-hidden="true" size={18} strokeWidth={1.6} fill={savedCount > 0 ? "currentColor" : "none"} />
+            <span className="max-sm:sr-only">Saved ({savedCount})</span>
+          </button>
           <button
             onClick={() => setBagOpen(true)}
             aria-label={`Open bag${bagCount > 0 ? `, ${bagCount} item${bagCount === 1 ? "" : "s"}` : ""}`}

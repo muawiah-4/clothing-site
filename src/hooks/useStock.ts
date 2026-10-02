@@ -1,6 +1,24 @@
 import { useEffect, useSyncExternalStore } from "react";
 import { fetchStock, type StockMap } from "../lib/api";
 
+/** at or below this many left, a size counts as low */
+export const LOW_STOCK = 3;
+
+export type PieceStockStatus = "sold-out" | "low" | null;
+
+/**
+ * Card-level signal: "sold-out" when every size is gone, "low" when every
+ * size is low or gone, and null otherwise — including when any count is
+ * unknown (loading, or the API is down), so nothing is claimed without data.
+ */
+export function pieceStockStatus(counts: (number | null)[]): PieceStockStatus {
+  if (counts.length === 0 || counts.some((c) => c === null)) return null;
+  const known = counts as number[];
+  if (known.every((c) => c <= 0)) return "sold-out";
+  if (known.every((c) => c <= LOW_STOCK)) return "low";
+  return null;
+}
+
 type StockState =
   | { status: "loading"; stock: null }
   | { status: "ready"; stock: StockMap }

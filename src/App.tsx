@@ -27,6 +27,7 @@ const SocialProof = lazy(sectionLoaders.voices);
 const Contact = lazy(sectionLoaders.contact);
 const BuyPanel = lazy(overlayLoaders.buyPanel);
 const Bag = lazy(overlayLoaders.bag);
+const Wishlist = lazy(overlayLoaders.wishlist);
 
 /** the glass card shell (House, Craft, Contact); other sections sit on the paper */
 const CARD = "glass-card";
@@ -72,6 +73,9 @@ export default function App() {
   const bagOpen = useExperienceStore((s) => s.bagOpen);
   const [buyPanelUsed, setBuyPanelUsed] = useState(false);
   const [bagUsed, setBagUsed] = useState(false);
+  const wishlistOpen = useExperienceStore((s) => s.wishlistOpen);
+  const [wishlistUsed, setWishlistUsed] = useState(false);
+  if (wishlistOpen && !wishlistUsed) setWishlistUsed(true);
   if (buyPanelOpen && !buyPanelUsed) setBuyPanelUsed(true);
   if (bagOpen && !bagUsed) setBagUsed(true);
 
@@ -131,6 +135,7 @@ export default function App() {
         {/* separate boundaries: one overlay's first load must not hide the other */}
         <Suspense fallback={null}>{buyPanelUsed && <BuyPanel />}</Suspense>
         <Suspense fallback={null}>{bagUsed && <Bag />}</Suspense>
+        <Suspense fallback={null}>{wishlistUsed && <Wishlist />}</Suspense>
       </div>
     </LazyMotion>
   );

@@ -1,14 +1,13 @@
-import { useState } from "react";
+import { useState, type KeyboardEvent, type MouseEvent } from "react";
 import { AnimatePresence, m } from "motion/react";
 import { X } from "lucide-react";
 import { useExperienceStore } from "../store/experience";
-import { unsplash, type CollectionPiece } from "../data/collection";
+import { shotSrc, unsplash, type CollectionPiece } from "../data/collection";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import ShimmerImage from "./ShimmerImage";
+import WishlistButton from "./WishlistButton";
 import { formatPrice } from "../lib/format";
-import { useStock } from "../hooks/useStock";
-
-const LOW_STOCK = 3;
+import { LOW_STOCK, useStock } from "../hooks/useStock";
 
 export default function BuyPanel() {
   const piece = useExperienceStore((s) => s.selectedPiece);
@@ -51,7 +50,7 @@ export default function BuyPanel() {
             >
               <X size={18} strokeWidth={1.6} />
             </button>
-            <Details piece={piece} onDone={close} />
+            <Details key={piece.id} piece={piece} onDone={close} />
           </m.div>
         </m.div>
       )}
@@ -94,23 +93,19 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
 
   return (
     <>
-      <div className="aspect-[3/4] w-full overflow-hidden rounded-b-card bg-surface-soft">
-        <ShimmerImage
-          src={unsplash(piece.image, 700)}
-          alt={piece.name}
-          style={{ objectPosition: piece.objectPosition }}
-          className="h-full w-full object-cover"
-        />
-      </div>
+      <Gallery piece={piece} />
       <div className="flex flex-1 flex-col gap-6 px-7 py-8">
-        <div>
-          <p className="font-sans text-label-xs uppercase text-ink-dim">
-            {piece.index} — {piece.category} · {piece.gender}
-          </p>
-          <h3 className="mt-2 font-display text-2xl font-bold text-ink">{piece.name}</h3>
-          <p className="mt-1 font-sans text-base font-medium text-accent-deep">
-            {formatPrice(piece.price)}
-          </p>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="font-sans text-label-xs uppercase text-ink-dim">
+              {piece.index} — {piece.category} · {piece.gender}
+            </p>
+            <h3 className="mt-2 font-display text-2xl font-bold text-ink">{piece.name}</h3>
+            <p className="mt-1 font-sans text-base font-medium text-accent-deep">
+              {formatPrice(piece.price)}
+            </p>
+          </div>
+          <WishlistButton piece={piece} variant="panel" />
         </div>
 
         <div className="flex flex-col gap-2 border-y border-ink/10 py-4 font-sans text-body-sm text-ink-dim">
@@ -259,5 +254,119 @@ function Details({ piece, onDone }: { piece: CollectionPiece; onDone: () => void
         </div>
       </div>
     </>
+  );
+}
+
+const ZOOM = 1.6;
+
+/**
+ * Main photo plus a thumbnail strip. Thumbnails switch the view (click, or
+ * arrow keys within the strip); clicking the main photo toggles a 1.6x zoom
+ * centred on the pointer. Zoom is off under reduced motion.
+ */
+function Gallery({ piece }: { piece: CollectionPiece }) {
+  const reducedMotion = useExperienceStore((s) => s.reducedMotion);
+  const views = [
+    { key: "main", label: "Full look", src: (w: number) => unsplash(piece.image, w), position: piece.objectPosition },
+    ...piece.gallery.map((shot, i) => ({
+      key: `shot-${i}`,
+      label: shot.label,
+      src: (w: number) => shotSrc(shot, w),
+      position: "50% 50%",
+    })),
+  ];
+  const [active, setActive] = useState(0);
+  const [zoomed, setZoomed] = useState(false);
+  const [origin, setOrigin] = useState("50% 50%");
+  const view = views[active];
+  const canZoom = !reducedMotion;
+
+  const select = (i: number) => {
+    setActive(i);
+    setZoomed(false);
+  };
+
+  const onThumbKey = (e: KeyboardEvent<HTMLDivElement>) => {
+    const step = e.key === "ArrowRight" || e.key === "ArrowDown" ? 1 : e.key === "ArrowLeft" || e.key === "ArrowUp" ? -1 : 0;
+    if (!step) return;
+    e.preventDefault();
+    const next = (active + step + views.length) % views.length;
+    select(next);
+    e.currentTarget.querySelectorAll<HTMLButtonElement>("button")[next]?.focus();
+  };
+
+  const trackPointer = (e: MouseEvent<HTMLElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    setOrigin(`${Math.round(x)}% ${Math.round(y)}%`);
+  };
+
+  const image = (
+    <ShimmerImage
+      key={view.key}
+      src={view.src(700)}
+      alt={`${piece.name}, ${view.label.toLowerCase()}`}
+      style={{
+        objectPosition: view.position,
+        transform: zoomed ? `scale(${ZOOM})` : undefined,
+        transformOrigin: origin,
+      }}
+      className="h-full w-full object-cover transition-transform duration-300 ease-out"
+    />
+  );
+
+  return (
+    <div>
+      <div className="aspect-[3/4] w-full overflow-hidden rounded-b-card bg-surface-soft">
+        {canZoom ? (
+          <button
+            type="button"
+            aria-pressed={zoomed}
+            aria-label={`Zoom ${piece.name} photo`}
+            onClick={(e) => {
+              if (e.detail > 0) trackPointer(e);
+              else setOrigin("50% 50%");
+              setZoomed((z) => !z);
+            }}
+            onPointerMove={zoomed ? trackPointer : undefined}
+            className={`block h-full w-full ${zoomed ? "cursor-zoom-out" : "cursor-zoom-in"}`}
+          >
+            {image}
+          </button>
+        ) : (
+          image
+        )}
+      </div>
+      {views.length > 1 && (
+        <div
+          role="group"
+          aria-label="Photos"
+          onKeyDown={onThumbKey}
+          className="flex gap-2 px-7 pt-4"
+        >
+          {views.map((v, i) => (
+            <button
+              key={v.key}
+              type="button"
+              aria-pressed={i === active}
+              aria-label={`Show ${v.label.toLowerCase()}`}
+              onClick={() => select(i)}
+              className={`h-20 w-15 shrink-0 overflow-hidden rounded-xl border-2 transition-colors ${
+                i === active ? "border-accent" : "border-transparent opacity-75 hover:opacity-100"
+              }`}
+            >
+              <ShimmerImage
+                src={v.src(120)}
+                alt=""
+                loading="lazy"
+                style={{ objectPosition: v.position }}
+                className="h-full w-full object-cover"
+              />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }

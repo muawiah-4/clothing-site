@@ -20,6 +20,7 @@ export const sectionLoaders = {
 export const overlayLoaders = {
   buyPanel: once(() => import("../components/BuyPanel")),
   bag: once(() => import("../components/Bag")),
+  wishlist: once(() => import("../components/Wishlist")),
   mobileMenu: once(() => import("../components/MobileMenu")),
 };
 

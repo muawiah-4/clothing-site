@@ -31,3 +31,6 @@ dist-ssr
 *.key
 *.p12
 *.pfx
+
+# SQLite database written by the API server (npm run dev:api / npm start)
+data/

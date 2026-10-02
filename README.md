@@ -1,3 +1,23 @@
+# Atelier
+
+## Running it (Node ≥ 22.18; uses built-in `node:sqlite` and TypeScript type stripping)
+
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Vite on :5173 and the API on :8787. Vite proxies `/api` to the API. |
+| `npm run dev:api` | The API alone, restarting on change. Creates `data/atelier.db` on first run. |
+| `npm run build` | The static site in `dist/`. Unchanged; no server needed. |
+| `npm start` | Production: one Node process serves `dist/` and `/api` (`PORT`, default 8787). |
+| `npm test` | Vitest: pricing, stock and 409s, idempotent replay, HTTP headers. |
+
+API: `GET /api/health`, `GET /api/stock` → `{productId: {size: stock}}`, and
+`POST /api/orders` (needs an `Idempotency-Key` header) with body `{items:[{productId,size,qty}]}`
+→ `{orderId,totalCents,currency}`. Insufficient stock returns 409. There are no payments.
+Static hosts can't run the API, so checkout needs a Node host. See
+[SECURITY.md](./SECURITY.md#deploying).
+
+---
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.

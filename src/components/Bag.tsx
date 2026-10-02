@@ -7,6 +7,8 @@ import { useFocusTrap } from "../hooks/useFocusTrap";
 import { scrollToSection } from "../lib/scroll";
 import ShimmerImage from "./ShimmerImage";
 import { formatPrice } from "../lib/format";
+import { formatCents, placeOrder, type OrderConfirmation } from "../lib/api";
+import { refreshStock } from "../hooks/useStock";
 
 /**
  * The "Add to Bag" payoff — previously the bag count lived only in the
@@ -21,8 +23,46 @@ export default function Bag() {
   const setQty = useExperienceStore((s) => s.setQty);
   const removeFromBag = useExperienceStore((s) => s.removeFromBag);
   const reducedMotion = useExperienceStore((s) => s.reducedMotion);
-  const [placed, setPlaced] = useState(false);
+  // the server's confirmation (its id and its own total), or null while shopping
+  const [placed, setPlaced] = useState<OrderConfirmation | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [orderError, setOrderError] = useState<string | null>(null);
+  // one Idempotency-Key per bag contents: a retry after a network blip reuses
+  // it (so it can't double-order), any change to the bag gets a fresh one
+  const orderKey = useRef<{ key: string; bag: string } | null>(null);
   const close = () => setOpen(false);
+
+  const submitOrder = async () => {
+    const lines = items.map((i) => ({ productId: i.piece.id, size: i.size, qty: i.qty }));
+    const bag = JSON.stringify(lines);
+    if (orderKey.current?.bag !== bag) orderKey.current = { key: crypto.randomUUID(), bag };
+    setSubmitting(true);
+    setOrderError(null);
+    const result = await placeOrder(lines, orderKey.current.key);
+    setSubmitting(false);
+    if (result.ok) {
+      orderKey.current = null;
+      clearBag();
+      setPlaced(result.order);
+      void refreshStock();
+      return;
+    }
+    if (result.kind === "stock") {
+      const name = (id: string) => items.find((i) => i.piece.id === id)?.piece.name ?? id;
+      setOrderError(
+        result.shortages
+          .map((s) =>
+            s.available === 0
+              ? `${name(s.productId)}, size ${s.size} is sold out.`
+              : `${name(s.productId)}, size ${s.size}: only ${s.available} left.`,
+          )
+          .join(" ") + " Adjust your bag and try again.",
+      );
+      void refreshStock();
+      return;
+    }
+    setOrderError(result.message);
+  };
   const containerRef = useFocusTrap(open, close);
   const placedHeadingRef = useRef<HTMLHeadingElement>(null);
 
@@ -42,7 +82,12 @@ export default function Bag() {
     // reset the confirmation only once the panel has fully left, whichever
     // way it was closed (X, Esc, backdrop, Continue Browsing), so the next
     // open shows the bag rather than a stale "Demo order placed"
-    <AnimatePresence onExitComplete={() => setPlaced(false)}>
+    <AnimatePresence
+      onExitComplete={() => {
+        setPlaced(null);
+        setOrderError(null);
+      }}
+    >
       {open && (
         <m.div
           className="fixed inset-0 z-[85] flex items-stretch justify-end"
@@ -92,9 +137,13 @@ export default function Bag() {
                 >
                   Demo order placed.
                 </h3>
+                <p className="font-sans text-body-sm text-ink">
+                  Order {placed.orderId.slice(0, 8).toUpperCase()} ·{" "}
+                  <span className="font-semibold">{formatCents(placed.totalCents, placed.currency)}</span>
+                </p>
                 <p className="max-w-xs font-sans text-body-sm text-ink-dim">
-                  This is a demo storefront: no payment was taken, no order was sent, and
-                  nothing will ship. Your bag has been cleared.
+                  This is a demo storefront: no payment was taken and nothing will ship.
+                  Your bag has been cleared.
                 </p>
                 <button
                   onClick={close}
@@ -189,24 +238,27 @@ export default function Bag() {
                       {formatPrice(total)}
                     </span>
                   </div>
+                  {orderError && (
+                    <p role="alert" className="font-sans text-[12px] leading-relaxed text-accent-deep">
+                      {orderError}
+                    </p>
+                  )}
                   <button
-                    onClick={() => {
-                      clearBag();
-                      setPlaced(true);
-                    }}
+                    onClick={submitOrder}
+                    disabled={submitting}
                     aria-describedby="bag-demo-note"
-                    className="w-full rounded-full bg-accent py-4 font-sans text-label-sm font-semibold uppercase text-surface transition-colors hover:bg-accent-deep"
+                    className="w-full rounded-full bg-accent py-4 font-sans text-label-sm font-semibold uppercase text-surface transition-colors hover:bg-accent-deep disabled:cursor-wait disabled:opacity-70"
                   >
-                    Place demo order
+                    {submitting ? "Placing order…" : "Place demo order"}
                   </button>
-                  {/* the checkout collects no payment or delivery details and
-                      sends nothing anywhere; say so before the click, not only
-                      after it (CWE-451: don't imply a real purchase) */}
+                  {/* the checkout collects no payment, delivery or personal
+                      details; say so before the click, not only after it
+                      (CWE-451: don't imply a real purchase) */}
                   <p
                     id="bag-demo-note"
                     className="text-center font-sans text-label-xs tracking-normal leading-relaxed text-ink-dim"
                   >
-                    Demo storefront: no payment is taken and no order is sent.
+                    Demo storefront: the order is recorded, but no payment is taken and nothing ships.
                   </p>
                 </div>
               </>

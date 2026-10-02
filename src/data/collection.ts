@@ -15,8 +15,8 @@ export interface CollectionPiece {
   /** CSS object-position for the 3:4 card crop, tuned so the garment, not the face, holds the frame */
   objectPosition: string;
   /**
-   * Extra views for the buy panel: tighter crops of the same photograph
-   * (Unsplash/imgix focal-point crops), so every view is the same garment.
+   * Extra views for the buy panel: other Unsplash photographs of the same
+   * garment type, each checked by eye to show the garment, not just a face.
    */
   gallery: GalleryShot[];
   fabric: string;
@@ -27,21 +27,12 @@ export interface CollectionPiece {
 export interface GalleryShot {
   image: string;
   label: string;
-  /** focal point, 0–1 across and down the source photo */
-  fx: number;
-  fy: number;
-  /** imgix fp-z: 1 is the full frame, higher crops in */
-  zoom: number;
+  /** CSS object-position for the 3:4 crop in the buy panel */
+  objectPosition: string;
 }
 
-/** Two closer views of a piece's photo, centred on where its card crop sits. */
-function detailShots(image: string, objectPosition: string, fx = 0.5): GalleryShot[] {
-  const y = Number.parseFloat(objectPosition.split(" ")[1] ?? "50") / 100;
-  const round = (n: number) => Math.round(n * 100) / 100;
-  return [
-    { image, label: "Upper detail", fx, fy: round(Math.max(0.3, y - 0.12)), zoom: 1.6 },
-    { image, label: "Close-up", fx: round(fx - 0.05), fy: round(Math.max(0.3, y - 0.05)), zoom: 2.4 },
-  ];
+function shot(id: string, label: string, objectPosition = "50% 40%"): GalleryShot {
+  return { image: `${U}${id}`, label, objectPosition };
 }
 
 export const COLLECTION: CollectionPiece[] = [
@@ -55,7 +46,7 @@ export const COLLECTION: CollectionPiece[] = [
     price: 1980,
     image: `${U}1553143820-6bb68bc34679`,
     objectPosition: "50% 55%",
-    gallery: detailShots(`${U}1553143820-6bb68bc34679`, "50% 55%"),
+    gallery: [shot("1619603364904-c0498317e145", "Front"), shot("1619603364937-8d7af41ef206", "Collar detail")],
     fabric: "Brushed wool-cashmere blend",
     fit: "Relaxed through the shoulder, tapered at the hem",
     care: "Dry clean only",
@@ -69,7 +60,7 @@ export const COLLECTION: CollectionPiece[] = [
     price: 2150,
     image: `${U}1585820122150-3a0909e77e20`,
     objectPosition: "50% 50%",
-    gallery: detailShots(`${U}1585820122150-3a0909e77e20`, "50% 50%"),
+    gallery: [shot("1617137977259-bb83e191f377", "Walking", "50% 45%"), shot("1744812103770-4f0e44576ced", "Profile")],
     fabric: "Double-faced Italian wool",
     fit: "Structured shoulder, knee-length",
     care: "Dry clean only",
@@ -83,7 +74,7 @@ export const COLLECTION: CollectionPiece[] = [
     price: 1240,
     image: `${U}1507679799987-c73779587ccf`,
     objectPosition: "50% 40%",
-    gallery: detailShots(`${U}1507679799987-c73779587ccf`, "50% 40%"),
+    gallery: [shot("1617137984095-74e4e5e3613f", "Jacket open")],
     fabric: "Super 120s wool",
     fit: "Slim through the waist, full-canvas construction",
     care: "Dry clean, press with a cloth",
@@ -97,7 +88,7 @@ export const COLLECTION: CollectionPiece[] = [
     price: 1380,
     image: `${U}1546572797-e8c933a75a1f`,
     objectPosition: "50% 60%",
-    gallery: detailShots(`${U}1546572797-e8c933a75a1f`, "50% 60%"),
+    gallery: [shot("1622497170185-5d668f816a56", "Jacket detail"), shot("1613209642416-f6e86d4c8e17", "In black and white", "45% 50%")],
     fabric: "Brushed flannel wool",
     fit: "Classic straight, single-button",
     care: "Dry clean, press with a cloth",
@@ -111,7 +102,7 @@ export const COLLECTION: CollectionPiece[] = [
     price: 2450,
     image: `${U}1755537131223-7c1b667696fd`,
     objectPosition: "50% 45%",
-    gallery: detailShots(`${U}1755537131223-7c1b667696fd`, "50% 45%"),
+    gallery: [shot("1539025828301-b314ca222fa9", "Outdoors")],
     fabric: "Silk-faced wool jacquard",
     fit: "Shawl collar, fitted through the torso",
     care: "Dry clean only",
@@ -125,7 +116,7 @@ export const COLLECTION: CollectionPiece[] = [
     price: 2680,
     image: `${U}1522968439036-e6338d0ed84f`,
     objectPosition: "50% 50%",
-    gallery: detailShots(`${U}1522968439036-e6338d0ed84f`, "50% 50%"),
+    gallery: [shot("1592878897400-43fb1f1cc324", "Three-piece")],
     fabric: "Barathea wool, satin lapel",
     fit: "Peak lapel, fitted",
     care: "Dry clean only",
@@ -141,7 +132,7 @@ export const COLLECTION: CollectionPiece[] = [
     price: 1080,
     image: `${U}1613915617430-8ab0fd7c6baf`,
     objectPosition: "50% 45%",
-    gallery: detailShots(`${U}1613915617430-8ab0fd7c6baf`, "50% 45%"),
+    gallery: [shot("1608234808654-2a8875faa7fd", "Over a shirt")],
     fabric: "Wool-mohair blend",
     fit: "Sharp shoulder, cropped at the hip",
     care: "Dry clean only",
@@ -155,7 +146,7 @@ export const COLLECTION: CollectionPiece[] = [
     price: 2450,
     image: `${U}1664076458686-3449062080ac`,
     objectPosition: "50% 55%",
-    gallery: detailShots(`${U}1664076458686-3449062080ac`, "50% 60%", 0.72),
+    gallery: [shot("1623580674393-edf6eb7090f8", "Studio"), shot("1651047666890-8eab731ee345", "Open back", "50% 60%")],
     fabric: "100% silk charmeuse",
     fit: "Bias-cut, floor length",
     care: "Dry clean only",
@@ -169,7 +160,7 @@ export const COLLECTION: CollectionPiece[] = [
     price: 1320,
     image: `${U}1659522761084-79196b64abe4`,
     objectPosition: "50% 50%",
-    gallery: detailShots(`${U}1659522761084-79196b64abe4`, "50% 50%", 0.68),
+    gallery: [shot("1746864946956-0c047289abaf", "On the street", "50% 45%"), shot("1760543998147-117ae5649c5c", "Seated")],
     fabric: "Wool crepe",
     fit: "Structured, nipped waist",
     care: "Dry clean only",
@@ -183,7 +174,7 @@ export const COLLECTION: CollectionPiece[] = [
     price: 2680,
     image: `${U}1551113006-731674fbb3ff`,
     objectPosition: "50% 70%",
-    gallery: detailShots(`${U}1551113006-731674fbb3ff`, "50% 70%"),
+    gallery: [shot("1779763320794-e5c2483bae28", "Full length", "50% 50%"), shot("1766282088783-8bc59121039d", "On film", "50% 50%")],
     fabric: "Hand-embroidered sequin mesh",
     fit: "Fitted through the hip, fluted hem",
     care: "Dry clean only",
@@ -197,7 +188,7 @@ export const COLLECTION: CollectionPiece[] = [
     price: 2190,
     image: `${U}1762843352680-21a700cb56ac`,
     objectPosition: "50% 50%",
-    gallery: detailShots(`${U}1762843352680-21a700cb56ac`, "50% 50%"),
+    gallery: [shot("1767679456819-9921c2bd7275", "Shearling cuff", "50% 30%")],
     fabric: "Shearling, leather trim",
     fit: "Oversized, dropped shoulder",
     care: "Specialist leather clean only",
@@ -211,7 +202,7 @@ export const COLLECTION: CollectionPiece[] = [
     price: 1860,
     image: `${U}1566174053879-31528523f8ae`,
     objectPosition: "50% 65%",
-    gallery: detailShots(`${U}1566174053879-31528523f8ae`, "50% 65%"),
+    gallery: [shot("1765229277389-3a4a0de325c2", "Full length", "50% 50%"), shot("1765229277842-5f6b8510d00c", "Seated", "50% 50%")],
     fabric: "Silk crêpe-back satin",
     fit: "Off the shoulder, draped through the bodice",
     care: "Dry clean only",
@@ -235,8 +226,3 @@ export function unsplashSrcSet(id: string, widths: number[]): string {
   return widths.map((w) => `${unsplash(id, w)} ${w}w`).join(", ");
 }
 
-/** A 3:4 focal-point crop of a gallery shot at `width`. */
-export function shotSrc(shot: GalleryShot, width: number): string {
-  const h = Math.round((width * 4) / 3);
-  return `${shot.image}?w=${width}&h=${h}&q=80&auto=format&fit=crop&crop=focalpoint&fp-x=${shot.fx}&fp-y=${shot.fy}&fp-z=${shot.zoom}`;
-}

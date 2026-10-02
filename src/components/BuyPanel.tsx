@@ -2,7 +2,7 @@ import { useState, type KeyboardEvent, type MouseEvent } from "react";
 import { AnimatePresence, m } from "motion/react";
 import { X } from "lucide-react";
 import { useExperienceStore } from "../store/experience";
-import { shotSrc, unsplash, type CollectionPiece } from "../data/collection";
+import { unsplash, type CollectionPiece } from "../data/collection";
 import { useFocusTrap } from "../hooks/useFocusTrap";
 import ShimmerImage from "./ShimmerImage";
 import WishlistButton from "./WishlistButton";
@@ -271,8 +271,8 @@ function Gallery({ piece }: { piece: CollectionPiece }) {
     ...piece.gallery.map((shot, i) => ({
       key: `shot-${i}`,
       label: shot.label,
-      src: (w: number) => shotSrc(shot, w),
-      position: "50% 50%",
+      src: (w: number) => unsplash(shot.image, w),
+      position: shot.objectPosition,
     })),
   ];
   const [active, setActive] = useState(0);

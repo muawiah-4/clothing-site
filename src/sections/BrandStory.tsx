@@ -21,6 +21,7 @@ export default function BrandStory() {
           >
             <ShimmerImage
               src={unsplash(PORTRAIT_IMAGE, 900)}
+              loading="lazy"
               alt="Portrait from the atelier's first lookbook, 2014"
               className="grade-editorial h-full w-full object-cover"
             />

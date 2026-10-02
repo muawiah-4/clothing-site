@@ -22,8 +22,12 @@ const FEATURED = FEATURED_FOUND.length > 0 ? FEATURED_FOUND : COLLECTION.slice(0
 // The first featured photo is the page's LCP element. index.html preloads
 // exactly these URLs — keep HERO_WIDTHS / HERO_SIZES / the default src in
 // sync with the <link rel="preload"> there if you change them or FEATURED[0].
-const HERO_WIDTHS = [360, 540, 720, 1080];
-const HERO_SIZES = "(min-width: 640px) 360px, 78vw";
+// The photo is 78% of the padded column on phones (px-6, so 78vw − 37px):
+// 284px on a 412px phone, so a 1.75x screen picks the 600w file (~70 KB AVIF
+// at q=60, vs ~140 KB for the old 720w/q=80). Capped at 360px from `sm` up.
+const HERO_WIDTHS = [400, 600, 800, 1080];
+const HERO_SIZES = "(min-width: 640px) 360px, calc(78vw - 37px)";
+const HERO_QUALITY = 60;
 
 export default function Hero() {
   const reducedMotion = useExperienceStore((s) => s.reducedMotion);
@@ -166,8 +170,8 @@ export default function Hero() {
             className="relative aspect-[3/4] w-[78%] max-w-[360px] overflow-hidden rounded-card bg-surface shadow-float sm:w-[68%]"
           >
             <ShimmerImage
-              src={unsplash(piece.image, 720)}
-              srcSet={unsplashSrcSet(piece.image, HERO_WIDTHS)}
+              src={unsplash(piece.image, 600, HERO_QUALITY)}
+              srcSet={unsplashSrcSet(piece.image, HERO_WIDTHS, HERO_QUALITY)}
               sizes={HERO_SIZES}
               width={720}
               height={960}

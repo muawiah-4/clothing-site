@@ -86,14 +86,21 @@ export default function App() {
   // Below-the-fold sections mount after the first frame has painted, in a
   // transition so React renders them in small, interruptible slices instead
   // of one long task competing with the hero's first paint. Their chunks
-  // start downloading right away.
+  // start downloading once that frame is out (the rAF, then a task after it),
+  // so they don't share the first round trips with the hero photo.
   const [mountRest, setMountRest] = useState(false);
   useEffect(() => {
-    void preloadSections();
+    let timer = 0;
     const raf = requestAnimationFrame(() => {
-      startTransition(() => setMountRest(true));
+      timer = window.setTimeout(() => {
+        void preloadSections();
+        startTransition(() => setMountRest(true));
+      }, 0);
     });
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(timer);
+    };
   }, []);
 
   // warm the overlay chunks once the page is idle so the first open is instant

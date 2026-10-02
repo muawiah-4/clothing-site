@@ -217,12 +217,16 @@ export const CRAFT_IMAGES = [
   `${U}1584184924103-e310d9dc82fc`,
 ];
 
-export function unsplash(id: string, width: number): string {
-  return `${id}?w=${width}&q=80&auto=format&fit=crop`;
+/**
+ * An Unsplash (imgix) URL at `width`. `auto=format` serves AVIF to browsers
+ * that send it in Accept (WebP or JPEG otherwise), so no `fm=` is pinned.
+ */
+export function unsplash(id: string, width: number, quality = 80): string {
+  return `${id}?w=${width}&q=${quality}&auto=format&fit=crop`;
 }
 
 /** `srcset` for an Unsplash photo at each of `widths` (Unsplash resizes via `w=`). */
-export function unsplashSrcSet(id: string, widths: number[]): string {
-  return widths.map((w) => `${unsplash(id, w)} ${w}w`).join(", ");
+export function unsplashSrcSet(id: string, widths: number[], quality = 80): string {
+  return widths.map((w) => `${unsplash(id, w, quality)} ${w}w`).join(", ");
 }
 

@@ -1,7 +1,8 @@
 import type { IncomingMessage, ServerResponse } from "node:http";
 import type { DatabaseSync } from "node:sqlite";
 import { randomUUID } from "node:crypto";
-import { createReadStream, statSync } from "node:fs";
+import { createReadStream, readFileSync, statSync } from "node:fs";
+import { brotliCompressSync, constants as zlib, gzipSync } from "node:zlib";
 import path from "node:path";
 import { API_HEADERS, PROD_HEADERS } from "../security-headers.ts";
 import { getStock, idempotencyKeySchema, orderRequestSchema, placeOrder } from "./orders.ts";
@@ -122,14 +123,50 @@ function serveStatic(root: string, req: IncomingMessage, res: ServerResponse, pa
     }
   }
   const immutable = file.startsWith(path.join(root, "assets") + path.sep);
-  res.writeHead(200, {
+  const headers = {
     ...PROD_HEADERS,
     "Content-Type": MIME[path.extname(file).toLowerCase()] ?? "application/octet-stream",
-    "Content-Length": stat.size,
     "Cache-Control": immutable ? "public, max-age=31536000, immutable" : "no-cache",
-  });
+  };
+  const compressed = COMPRESSIBLE.has(path.extname(file).toLowerCase())
+    ? compress(file, stat.mtimeMs, req.headers["accept-encoding"])
+    : null;
+  if (compressed) {
+    res.writeHead(200, {
+      ...headers,
+      "Content-Encoding": compressed.encoding,
+      "Content-Length": compressed.body.length,
+      Vary: "Accept-Encoding",
+    });
+    res.end(req.method === "HEAD" ? undefined : compressed.body);
+    return;
+  }
+  res.writeHead(200, { ...headers, "Content-Length": stat.size });
   if (req.method === "HEAD") res.end();
   else createReadStream(file).pipe(res);
+}
+
+// Text assets are sent brotli/gzip-compressed (most hosts do this for you;
+// `npm start` has to do it itself). The built files are few and immutable, so
+// each encoding is compressed once and kept, keyed by path + mtime.
+const COMPRESSIBLE = new Set([".html", ".js", ".css", ".svg", ".json", ".txt"]);
+const compressedCache = new Map<string, Buffer>();
+
+function compress(file: string, mtimeMs: number, acceptEncoding: string | string[] | undefined) {
+  const accepted = String(acceptEncoding ?? "");
+  const encoding = /\bbr\b/.test(accepted) ? "br" : /\bgzip\b/.test(accepted) ? "gzip" : null;
+  if (!encoding) return null;
+  const key = `${encoding}:${mtimeMs}:${file}`;
+  let body = compressedCache.get(key);
+  if (!body) {
+    const raw = readFileSync(file);
+    body =
+      encoding === "br"
+        ? brotliCompressSync(raw, { params: { [zlib.BROTLI_PARAM_QUALITY]: 11, [zlib.BROTLI_PARAM_SIZE_HINT]: raw.length } })
+        : gzipSync(raw, { level: 9 });
+    compressedCache.set(key, body);
+  }
+  return { encoding, body };
 }
 
 function statSafe(file: string) {

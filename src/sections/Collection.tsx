@@ -1,12 +1,16 @@
-import { useState, type Ref } from "react";
+import { useId, useState, type Ref } from "react";
 import { AnimatePresence, LazyMotion, domMax, m } from "motion/react";
-import { COLLECTION, unsplash, unsplashSrcSet, type CollectionPiece } from "../data/collection";
+import { Search } from "lucide-react";
+import { COLLECTION, SIZES, unsplash, unsplashSrcSet, type CollectionPiece } from "../data/collection";
 import { useExperienceStore, type GenderFilter } from "../store/experience";
 import { fade } from "../lib/motion";
 import ShimmerImage from "../components/ShimmerImage";
 import SplitReveal from "../components/SplitReveal";
 import FilterPills from "../components/FilterPills";
+import WishlistButton from "../components/WishlistButton";
 import { formatPrice } from "../lib/format";
+import { queryCollection, SORT_OPTIONS, type SortKey } from "../lib/collection-query";
+import { pieceStockStatus, useStock } from "../hooks/useStock";
 
 // 2 columns below sm, 3 from sm up, inside a max-w-7xl container
 const CARD_WIDTHS = [300, 400, 600, 800];
@@ -23,12 +27,25 @@ export default function Collection() {
   const setActiveGender = useExperienceStore((s) => s.setActiveGender);
   const reducedMotion = useExperienceStore((s) => s.reducedMotion);
   const [activeCategory, setActiveCategory] = useState("all");
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState<SortKey>("featured");
+  const searchId = useId();
+  const sortId = useId();
 
   const genderPieces = COLLECTION.filter((p) => activeGender === "all" || p.gender === activeGender);
   const categories = Array.from(new Set(genderPieces.map((p) => p.category)));
-  const pieces = genderPieces.filter(
-    (p) => activeCategory === "all" || p.category === activeCategory,
-  );
+  const pieces = queryCollection(COLLECTION, {
+    gender: activeGender,
+    category: activeCategory,
+    search,
+    sort,
+  });
+  const filtered = search.trim() !== "" || activeCategory !== "all" || activeGender !== "all";
+  const clearFilters = () => {
+    setSearch("");
+    setActiveCategory("all");
+    setActiveGender("all");
+  };
 
   // `layout` + popLayout need Motion's projection engine (domMax). Loading it
   // here keeps it in this lazy chunk instead of the entry bundle, where the
@@ -69,19 +86,64 @@ export default function Collection() {
             className="mb-8 border-b border-ink/10 pb-6 md:mb-10"
           />
 
-          {categories.length > 1 && (
-            <FilterPills
-              label="Filter by category"
-              size="sm"
-              options={[
-                { id: "all", label: "All categories" },
-                ...categories.map((cat) => ({ id: cat, label: cat })),
-              ]}
-              value={activeCategory}
-              onChange={setActiveCategory}
-              className="mb-10 md:mb-12"
-            />
-          )}
+          <div className="mb-10 flex flex-col gap-4 md:mb-12 lg:flex-row lg:items-center lg:justify-between">
+            {categories.length > 1 ? (
+              <FilterPills
+                label="Filter by category"
+                size="sm"
+                options={[
+                  { id: "all", label: "All categories" },
+                  ...categories.map((cat) => ({ id: cat, label: cat })),
+                ]}
+                value={activeCategory}
+                onChange={setActiveCategory}
+              />
+            ) : (
+              <span />
+            )}
+            <div className="flex flex-wrap items-center gap-2">
+              <label htmlFor={searchId} className="sr-only">
+                Search the collection
+              </label>
+              <div className="relative min-w-0 flex-1 sm:flex-none">
+                <Search
+                  aria-hidden="true"
+                  size={14}
+                  strokeWidth={1.8}
+                  className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-dim"
+                />
+                <input
+                  id={searchId}
+                  type="search"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search name, fabric…"
+                  autoComplete="off"
+                  className="h-10 w-full rounded-full border border-white/50 bg-surface/30 pl-9 pr-4 font-sans text-body-sm text-ink backdrop-blur-md placeholder:text-ink-dim focus:border-accent/60 sm:w-56"
+                />
+              </div>
+              <label htmlFor={sortId} className="sr-only">
+                Sort by
+              </label>
+              <select
+                id={sortId}
+                value={sort}
+                onChange={(e) => setSort(e.target.value as SortKey)}
+                className="h-10 cursor-pointer rounded-full border border-white/50 bg-surface/30 px-4 font-sans text-label-xs font-medium uppercase text-ink-dim backdrop-blur-md hover:border-accent/50 hover:text-accent-deep"
+              >
+                {SORT_OPTIONS.map((o) => (
+                  <option key={o.id} value={o.id}>
+                    {o.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* announces how many pieces the filters left, without moving focus */}
+          <p role="status" className="sr-only">
+            {filtered ? `${pieces.length} ${pieces.length === 1 ? "piece" : "pieces"} shown` : ""}
+          </p>
 
           {/* md:pb-40 keeps the last row's prices clear of the fixed Companion
               badge (72px button + label, 32px from the viewport bottom) when
@@ -101,9 +163,21 @@ export default function Collection() {
           </m.div>
 
           {pieces.length === 0 && (
-            <p className="py-16 text-center font-sans text-body-sm text-ink-dim">
-              Nothing here this season. The next collection is still on the cutting table.
-            </p>
+            <div className="flex flex-col items-center gap-4 py-16 text-center">
+              <p className="font-display text-lg font-semibold text-ink">No pieces match.</p>
+              <p className="max-w-sm font-sans text-body-sm text-ink-dim">
+                {search.trim()
+                  ? `Nothing this season matches “${search.trim()}”. Try a fabric, like wool or silk.`
+                  : "Nothing here this season. The next collection is still on the cutting table."}
+              </p>
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="rounded-full bg-accent px-6 py-3 font-sans text-label-sm font-semibold uppercase text-surface transition-colors hover:bg-accent-deep"
+              >
+                Clear filters
+              </button>
+            </div>
           )}
         </div>
       </section>
@@ -125,6 +199,8 @@ function CollectionCard({
 }) {
   const setCursorLabel = useExperienceStore((s) => s.setCursorLabel);
   const setSelectedPiece = useExperienceStore((s) => s.setSelectedPiece);
+  const { left } = useStock();
+  const stock = pieceStockStatus(SIZES.map((size) => left(piece.id, size)));
   const offset = index % 3 === 1 ? "sm:mt-14" : "";
 
   return (
@@ -145,8 +221,8 @@ function CollectionCard({
           ring is drawn around the card rather than just the name (the
           button's own ring needs `!` to beat the unlayered global
           :focus-visible rule in index.css). */}
-      <div className="group relative rounded-card outline-offset-4 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-ink has-[:focus-visible]:outline-solid">
-        <div className="aspect-[3/4] overflow-hidden rounded-card bg-surface-dim shadow-card">
+      <div className="group relative rounded-card outline-offset-4 has-[h3_button:focus-visible]:outline-2 has-[h3_button:focus-visible]:outline-ink has-[h3_button:focus-visible]:outline-solid">
+        <div className="relative aspect-[3/4] overflow-hidden rounded-card bg-surface-dim shadow-card">
           <ShimmerImage
             src={unsplash(piece.image, 600)}
             srcSet={unsplashSrcSet(piece.image, CARD_WIDTHS)}
@@ -158,6 +234,13 @@ function CollectionCard({
             style={{ objectPosition: piece.objectPosition }}
             className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
           />
+          {stock && (
+            <span className="pointer-events-none absolute left-3 top-3 rounded-full border border-white/50 bg-surface/75 px-3 py-1 font-sans text-label-xs font-semibold uppercase text-accent-deep backdrop-blur-md">
+              {stock === "sold-out" ? "Sold out" : "Low stock"}
+            </span>
+          )}
+          {/* above the name button's stretched ::after, so it gets its own clicks */}
+          <WishlistButton piece={piece} className="absolute right-3 top-3 z-10" />
         </div>
         {/* stacked below sm: at 2 columns (~150px cards on a 390px phone) the
             meta line and price didn't fit side by side and the meta wrapped

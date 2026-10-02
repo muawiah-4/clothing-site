@@ -85,7 +85,8 @@ needed. Where it runs depends on the host:
 
 ## Reporting a vulnerability
 
-Please report security issues privately. Don't open a public issue. Email the
-maintainer at the address on the repository owner's profile. Include steps to
-reproduce and the affected URL or commit. We aim to acknowledge reports within
+Please report security issues privately. Don't open a public issue. Use
+GitHub's private vulnerability reporting:
+<https://github.com/muawiah-4/clothing-site/security/advisories/new>. Include
+steps to reproduce and the affected URL or commit. We aim to acknowledge reports within
 3 business days.

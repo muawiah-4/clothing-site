@@ -39,4 +39,4 @@ blob-report
 *.pfx
 
 # SQLite database written by the API server (npm run dev:api / npm start)
-data/
+/data/

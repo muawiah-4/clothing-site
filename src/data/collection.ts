@@ -16,7 +16,8 @@ export interface CollectionPiece {
   objectPosition: string;
   /**
    * Extra views for the buy panel: other Unsplash photographs of the same
-   * garment type, each checked by eye to show the garment, not just a face.
+   * garment type and colour, each checked by eye to show the garment, not just
+   * a face; or close-ups of the main photo where no such match exists.
    */
   gallery: GalleryShot[];
   fabric: string;
@@ -29,10 +30,22 @@ export interface GalleryShot {
   label: string;
   /** CSS object-position for the 3:4 crop in the buy panel */
   objectPosition: string;
+  /**
+   * Optional server-side detail crop (Unsplash/imgix focal-point zoom: x/y are
+   * 0–1 of the photo, z the zoom factor). Used where no other photograph of a
+   * matching garment and colour exists, so the extra view is a close-up of
+   * the main photo instead of a different-coloured garment.
+   */
+  crop?: { x: number; y: number; z: number };
 }
 
 function shot(id: string, label: string, objectPosition = "50% 40%"): GalleryShot {
   return { image: `${U}${id}`, label, objectPosition };
+}
+
+/** A close-up of a piece's own main photo (see GalleryShot.crop). */
+function detail(id: string, label: string, crop: GalleryShot["crop"]): GalleryShot {
+  return { image: `${U}${id}`, label, objectPosition: "50% 50%", crop };
 }
 
 export const COLLECTION: CollectionPiece[] = [
@@ -74,7 +87,11 @@ export const COLLECTION: CollectionPiece[] = [
     price: 1240,
     image: `${U}1507679799987-c73779587ccf`,
     objectPosition: "50% 40%",
-    gallery: [shot("1617137984095-74e4e5e3613f", "Jacket open")],
+    // close-ups of the main photo: no other free photo matches its dark navy
+    gallery: [
+      detail("1507679799987-c73779587ccf", "Buttoning", { x: 0.5, y: 0.4, z: 2 }),
+      detail("1507679799987-c73779587ccf", "Lapel and tie", { x: 0.6, y: 0.3, z: 2.2 }),
+    ],
     fabric: "Super 120s wool",
     fit: "Slim through the waist, full-canvas construction",
     care: "Dry clean, press with a cloth",
@@ -132,7 +149,8 @@ export const COLLECTION: CollectionPiece[] = [
     price: 1080,
     image: `${U}1613915617430-8ab0fd7c6baf`,
     objectPosition: "50% 45%",
-    gallery: [shot("1608234808654-2a8875faa7fd", "Over a shirt")],
+    // a close-up of the main photo: the old extra view was a grey check blazer
+    gallery: [detail("1613915617430-8ab0fd7c6baf", "Lapel detail", { x: 0.35, y: 0.45, z: 2.6 })],
     fabric: "Wool-mohair blend",
     fit: "Sharp shoulder, cropped at the hip",
     care: "Dry clean only",
@@ -146,7 +164,11 @@ export const COLLECTION: CollectionPiece[] = [
     price: 2450,
     image: `${U}1664076458686-3449062080ac`,
     objectPosition: "50% 55%",
-    gallery: [shot("1623580674393-edf6eb7090f8", "Studio"), shot("1651047666890-8eab731ee345", "Open back", "50% 60%")],
+    // close-ups of the main photo: the old extra views were black and red satin
+    gallery: [
+      detail("1664076458686-3449062080ac", "Bodice", { x: 0.5, y: 0.45, z: 1.8 }),
+      detail("1664076458686-3449062080ac", "Satin drape", { x: 0.52, y: 0.62, z: 2.4 }),
+    ],
     fabric: "100% silk charmeuse",
     fit: "Bias-cut, floor length",
     care: "Dry clean only",
@@ -221,8 +243,9 @@ export const CRAFT_IMAGES = [
  * An Unsplash (imgix) URL at `width`. `auto=format` serves AVIF to browsers
  * that send it in Accept (WebP or JPEG otherwise), so no `fm=` is pinned.
  */
-export function unsplash(id: string, width: number, quality = 80): string {
-  return `${id}?w=${width}&q=${quality}&auto=format&fit=crop`;
+export function unsplash(id: string, width: number, quality = 80, crop?: GalleryShot["crop"]): string {
+  const base = `${id}?w=${width}&q=${quality}&auto=format&fit=crop`;
+  return crop ? `${base}&crop=focalpoint&fp-x=${crop.x}&fp-y=${crop.y}&fp-z=${crop.z}&ar=3:4` : base;
 }
 
 /** `srcset` for an Unsplash photo at each of `widths` (Unsplash resizes via `w=`). */

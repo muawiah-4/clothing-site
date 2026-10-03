@@ -271,7 +271,7 @@ function Gallery({ piece }: { piece: CollectionPiece }) {
     ...piece.gallery.map((shot, i) => ({
       key: `shot-${i}`,
       label: shot.label,
-      src: (w: number) => unsplash(shot.image, w),
+      src: (w: number) => unsplash(shot.image, w, 80, shot.crop),
       position: shot.objectPosition,
     })),
   ];

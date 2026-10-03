@@ -1,6 +1,8 @@
 import { defineConfig, devices } from '@playwright/test'
 
-const PORT = 4441
+// E2E_PORT lets parallel checkouts (worktrees) run their own server side by side.
+const PORT = Number(process.env.E2E_PORT ?? 4441)
+const API_PORT = PORT + 100
 const LOCAL_CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
 
 // PLAYWRIGHT_CHROME lets local runs drive the real, already-licensed/installed
@@ -25,15 +27,34 @@ export default defineConfig({
     // versions) the way video recording would.
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
-    launchOptions: executablePath ? { executablePath } : undefined,
   },
+  // The same suite runs in Chromium and WebKit (Safari): WebKit differs in
+  // focus-on-click, CSP handling (upgrade-insecure-requests on localhost) and
+  // CSS feature support, which is exactly what these runs are here to catch.
   projects: [
-    { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'], launchOptions: executablePath ? { executablePath } : undefined },
+    },
+    { name: 'webkit', use: { ...devices['Desktop Safari'] } },
   ],
-  webServer: {
-    command: `npm run build && npm run preview -- --port ${PORT} --strictPort`,
-    url: `http://localhost:${PORT}`,
-    reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
-  },
+  // The API (server/index.ts) on its own port and database, so demo orders in
+  // tests never touch a dev server's data; vite preview proxies /api to it.
+  webServer: [
+    {
+      // a fresh database per run, so demo orders never deplete the stock
+      command: 'rm -f data/e2e.db* && node server/index.ts',
+      url: `http://127.0.0.1:${API_PORT}/api/stock`,
+      env: { API_PORT: String(API_PORT), DB_PATH: 'data/e2e.db' },
+      reuseExistingServer: !process.env.CI,
+      timeout: 60_000,
+    },
+    {
+      command: `npm run build && npm run preview -- --port ${PORT} --strictPort`,
+      url: `http://localhost:${PORT}`,
+      env: { API_PORT: String(API_PORT) },
+      reuseExistingServer: !process.env.CI,
+      timeout: 120_000,
+    },
+  ],
 })

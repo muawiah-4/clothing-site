@@ -6,6 +6,8 @@ import { createRoot } from 'react-dom/client'
 import '@fontsource-variable/fraunces/opsz.css'
 import '@fontsource-variable/inter/wght.css'
 import './index.css'
+// before any lazy panel loads: records the pointer-pressed trigger for focus return
+import './lib/focusTrigger.ts'
 import App from './App.tsx'
 import { ErrorBoundary } from './components/ErrorBoundary.tsx'
 

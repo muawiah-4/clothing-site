@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { getTrigger } from "../lib/focusTrigger";
 import { lockScroll, unlockScroll } from "../lib/scroll";
 
 const FOCUSABLE = 'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
@@ -11,7 +12,7 @@ const FOCUSABLE = 'a[href], button:not([disabled]), textarea, input, select, [ta
  */
 export function useFocusTrap(open: boolean, onClose: () => void) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const triggerRef = useRef<Element | null>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
   // callers pass inline close fns (a new identity every render) — keep the
   // latest one in a ref so the trap only re-runs when `open` changes, instead
   // of re-focusing the first element and re-locking scroll on every render
@@ -22,7 +23,7 @@ export function useFocusTrap(open: boolean, onClose: () => void) {
 
   useEffect(() => {
     if (!open) return;
-    triggerRef.current = document.activeElement;
+    triggerRef.current = getTrigger();
 
     const container = containerRef.current;
     const focusables = container?.querySelectorAll<HTMLElement>(FOCUSABLE);
@@ -34,17 +35,17 @@ export function useFocusTrap(open: boolean, onClose: () => void) {
         return;
       }
       if (e.key !== "Tab" || !container) return;
-      const items = container.querySelectorAll<HTMLElement>(FOCUSABLE);
+      const items = Array.from(container.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
+        (el) => !el.closest('[hidden], [inert], [aria-hidden="true"]'),
+      );
       if (items.length === 0) return;
-      const first = items[0];
-      const last = items[items.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first.focus();
-      }
+      // Move focus ourselves on every Tab rather than only wrapping at the
+      // ends: Safari's default Tab skips buttons and links, so it would jump
+      // past the "last" item straight out of the panel.
+      e.preventDefault();
+      const at = items.indexOf(document.activeElement as HTMLElement);
+      const next = e.shiftKey ? (at <= 0 ? items.length - 1 : at - 1) : at === -1 || at === items.length - 1 ? 0 : at + 1;
+      items[next].focus();
     };
 
     window.addEventListener("keydown", onKey);
@@ -55,7 +56,8 @@ export function useFocusTrap(open: boolean, onClose: () => void) {
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
       unlockScroll();
-      (triggerRef.current as HTMLElement | null)?.focus?.();
+      const trigger = triggerRef.current;
+      if (trigger?.isConnected) trigger.focus({ preventScroll: true });
     };
   }, [open]);
 
